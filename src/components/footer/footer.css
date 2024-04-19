@@ -1,0 +1,25 @@
+.background-footer {
+    background-color: black;
+    width: 100vw;
+    height: 10vh;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.icon-insta {
+    color: white;
+    width: 40px;
+    height: 40px;
+}
+
+p {
+    text-align: center;
+    color: white;
+}
+
+.logo-branca {
+    height: 50px;
+}

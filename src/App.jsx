@@ -1,9 +1,13 @@
 import './App.css';
+import React from 'react';
+import Header from './components/header/header';
+import Footer from './components/footer/footer';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Projeto WEB - Bazaar</h1>
+    <div className="container">
+      <Header />
+      <Footer />
     </div>
   );
 }
