@@ -8,10 +8,18 @@ export default function FormContent() {
     const [nomeCompleto, setNomeCompleto] = useState();
     const [email, setEmail] = useState();
     const [senha, setSenha] = useState();
+    const [confirmarSenha, setConfirmarSenha] = useState();
+    
     const [cpf, setCpf] = useState();
     const [numeroTelefone, setNumeroTelefone] = useState();
 
     function salvar() {
+
+        // Verifica se as senhas coincidem
+        if (senha !== confirmarSenha) {
+            console.log("As senhas não coincidem.");
+            return;
+        }
 
 		let usuarioRequest = {
             nomeCompleto: nomeCompleto,
@@ -62,14 +70,18 @@ export default function FormContent() {
                                 fluid
                                 label='Senha'
                                 placeholder='senha'
+                                type="password"
                                 value={senha}
                                 onChange={e => setSenha(e.target.value)}
                             />
                             <FormInput
                                 required
                                 fluid
-                                label='Confirmar Senha'
+                                label='confirmarSenha'
                                 placeholder='confirmar senha'
+                                type="password"
+                                value={confirmarSenha}
+                                onChange={e => setConfirmarSenha(e.target.value)}
                             />
                         </FormGroup>
                         <FormGroup widths='equal'>
