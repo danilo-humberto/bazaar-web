@@ -45,7 +45,7 @@ export default function FormContent() {
                                 label='Nome Completo'
                                 placeholder='nome completo'
                                 value={nomeCompleto}
-                                onchange={e => setNomeCompleto(e.target.value)}
+                                onChange={e => setNomeCompleto(e.target.value)}
                             />
                             <FormInput
                                 required
@@ -53,7 +53,7 @@ export default function FormContent() {
                                 label='Email'
                                 placeholder='email'
                                 value={email}
-                                onchange={e => setEmail(e.target.value)}
+                                onChange={e => setEmail(e.target.value)}
                             />
                         </FormGroup>
                         <FormGroup widths='equal'>
@@ -63,7 +63,7 @@ export default function FormContent() {
                                 label='Senha'
                                 placeholder='senha'
                                 value={senha}
-                                onchange={e => setSenha(e.target.value)}
+                                onChange={e => setSenha(e.target.value)}
                             />
                             <FormInput
                                 required
@@ -80,7 +80,7 @@ export default function FormContent() {
                                 <InputMask
                                     mask="(99) 99999-9999"
                                     value={numeroTelefone}
-                                    onchange={e => setNumeroTelefone(e.target.value)}
+                                    onChange={e => setNumeroTelefone(e.target.value)}
                                 />
                             </FormInput>
                             <FormInput
@@ -90,7 +90,7 @@ export default function FormContent() {
                                 <InputMask
                                     mask="999.999.999-99"
                                     value={cpf}
-                                    onchange={e => setCpf(e.target.value)}
+                                    onChange={e => setCpf(e.target.value)}
                                 />
                             </FormInput>
                         </FormGroup>
