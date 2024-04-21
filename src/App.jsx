@@ -1,13 +1,11 @@
 import './App.css';
 import React from 'react';
-import Header from './components/header/header';
-import Footer from './components/footer/footer';
+import RegisterPage from './pages/registerPage/registerPage';
 
 function App() {
   return (
     <div className="container">
-      <Header />
-      <Footer />
+      <RegisterPage />
     </div>
   );
 }

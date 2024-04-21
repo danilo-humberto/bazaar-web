@@ -11,8 +11,7 @@ body, html {
 }
 
 .container {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
     max-width: 1400px;
+    display: flex;
+    flex-direction: column;
 }
