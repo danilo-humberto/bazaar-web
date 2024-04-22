@@ -9,10 +9,6 @@ export default function AsideContent() {
                 <h2>bem vindo ao bazaar</h2>
                 <p>o bazaar com os melhores preços e peças.</p>
             </div>
-            <div className="bottom-content">
-                <p>Já tem uma conta ?</p>
-                <button>Entrar</button>
-            </div>
         </div>
     )
 }

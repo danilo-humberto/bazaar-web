@@ -10,8 +10,7 @@ function App() {
       <RegisterPage />
       <ToastContainer 
         position="top-right"
-        autoClose={5000}
-        closeOnClick
+        autoClose={3000}
       />
     </div>
   );

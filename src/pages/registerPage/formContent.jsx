@@ -5,13 +5,14 @@ import InputMask from "react-input-mask";
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
+import './formContent.css'
+
 export default function FormContent() {
 
     const [nomeCompleto, setNomeCompleto] = useState();
     const [email, setEmail] = useState();
     const [senha, setSenha] = useState();
     const [confirmarSenha, setConfirmarSenha] = useState();
-    
     const [cpf, setCpf] = useState();
     const [numeroTelefone, setNumeroTelefone] = useState();
 
@@ -29,36 +30,32 @@ export default function FormContent() {
 
 		let usuarioRequest = {
             nomeCompleto: nomeCompleto,
-		     email: email,
-		     senha: senha,
-		     cpf: cpf,
-		     numeroTelefone: numeroTelefone
+		    email: email,
+		    senha: senha,
+		    cpf: cpf,
+		    numeroTelefone: numeroTelefone
 		}
 	
 		axios.post("http://localhost:8080/api/usuario", usuarioRequest)
 		.then((response) => {
-            toast.success("Cadastro Realizado!",{
+            toast.warning("Confirme seu cadastro pelo código enviado para o seu e-mail!",{
                 position: "top-right",
-                autoClose: 5000,
-                closeOnClick: true,
+                autoClose: 3000,
             })
 		})
 		.catch((error) => {
             toast.error("Falha no Cadastro!", {
                 position: "top-right",
-                autoClose: 5000,
-                closeOnClick: true,
+                autoClose: 3000,
             })
 		})
 	}
 
-
-
     return (
-        <div style={{ marginTop: '25%' }}>
+        <div className="content-form">
             <Container textAlign="center">
                 <h1>Crie a Sua Conta</h1>
-                <div style={{ marginTop: '5%' }}>
+                <div className="container-form">
                     <Form>
                         <FormGroup widths='equal'>
                             <FormInput
@@ -73,7 +70,7 @@ export default function FormContent() {
                                 required
                                 fluid
                                 label='Email'
-                                placeholder='email'
+                                placeholder='teste@gmail.com'
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                             />
@@ -123,8 +120,19 @@ export default function FormContent() {
                     </Form>
                 </div>
 
-                <Button color="orange" circular size="large" style={{ color: 'black' }} onClick={() => salvar()} 
+                <Button 
+                color="orange" 
+                circular 
+                size="large" 
+                style={{ color: 'black' }} 
+                onClick={() => salvar()} 
                 >Cadastrar</Button>
+
+                <Button
+                size="large"
+                circular
+                style={{marginBottom: '10%', color: 'black'}}
+                >Entrar</Button>
             </Container>
         </div>
     )

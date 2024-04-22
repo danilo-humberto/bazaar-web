@@ -56,3 +56,23 @@
     background-color: black;
     color: white;
 }
+
+@media(max-width: 1300px) {
+    .container-aside{
+        width: 500px;
+        height: 500px;
+        margin-left: 10%;
+    }
+}
+
+@media(max-width: 1060px) {
+    .container-aside{
+        margin-left: 2%;
+    }
+}
+
+@media (max-width: 990px) {
+    .container-aside {
+        display: none;
+    }
+}

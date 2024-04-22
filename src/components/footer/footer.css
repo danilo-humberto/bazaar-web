@@ -23,3 +23,28 @@ p {
 .logo-branca {
     height: 50px;
 }
+
+@media(max-width: 600px) {
+    .background-footer{
+        position: relative;
+        flex-direction: column;
+        height: 15vh;
+    }
+
+    a {
+        margin-top: 20px;
+    }
+    
+    .icon-insta{
+        width: 30px;
+        height: 30px;
+    }
+
+    p {
+        font-size: 12px;
+    }
+
+    .logo-branca {
+        display: none;
+    }
+}
