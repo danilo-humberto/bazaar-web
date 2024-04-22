@@ -19,7 +19,11 @@ export default function FormContent() {
 
         // Verifica se as senhas coincidem
         if (senha !== confirmarSenha) {
-            console.log("As senhas não coincidem.");
+            toast.error("As senhas não coincidem!", {
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+            })
             return;
         }
 
