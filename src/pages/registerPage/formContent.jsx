@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Form, FormGroup, FormInput, Container, Button } from "semantic-ui-react"
 import InputMask from "react-input-mask";
+import { toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 export default function FormContent() {
 
@@ -31,10 +33,18 @@ export default function FormContent() {
 	
 		axios.post("http://localhost:8080/api/usuario", usuarioRequest)
 		.then((response) => {
-		     console.log('Usuario cadastrado com sucesso.')
+            toast.success("Cadastro Realizado!",{
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+            })
 		})
 		.catch((error) => {
-		     console.log('Erro ao incluir o um Usuario.')
+            toast.error("Falha no Cadastro!", {
+                position: "top-right",
+                autoClose: 5000,
+                closeOnClick: true,
+            })
 		})
 	}
 
