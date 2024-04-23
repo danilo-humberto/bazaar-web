@@ -1,0 +1,23 @@
+/*
+import React from 'react';
+import { Route, Routes } from "react-router-dom";
+
+import RegisterPage from './pages/registerPage/registerPage';
+import AccAuthentication from './pages/accAuthentication/accAuthentication';
+
+
+
+function Rotas() {
+    return (
+        <>
+            <Routes>
+                <Route path="register-page" element={ <RegisterPage/> } />
+                <Route path="acc-authentication" element={ <AccAuthentication/> } />
+            </Routes>
+        </>
+    )
+}
+
+export default Rotas
+
+*/

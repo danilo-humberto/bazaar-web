@@ -10,7 +10,7 @@ export default function Footer() {
             <a href="https://www.instagram.com/bazaarofc/" target="_blank" rel="noreferrer">
                 <BsInstagram className="icon-insta"/>
             </a>
-            <p>Uma plataforma feita por alunos do <br />IFPE-CAMPUS JABOATÃO DOS GUARARAPES.</p>
+            <p>Uma plataforma feita por alunos do <br />IFPE-CAMPUS JABOATÃO DOS GUARARAPES</p>
             <img src={LogoBranca} alt="logo branca do bazaar" className="logo-branca"/>
         </div>
     )
