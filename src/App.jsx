@@ -1,13 +1,13 @@
 import './App.css';
 import React from 'react';
-import AccAuthentication from './pages/accAuthentication/accAuthentication';
+import AccActivation from './pages/accActivation/accActivation';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <div className="container">
-      <AccAuthentication />
+      <AccActivation />
       <ToastContainer 
         position="top-right"
         autoClose={3000}

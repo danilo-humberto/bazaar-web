@@ -6,14 +6,13 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from '../../components/header/header'
 import Footer from '../../components/footer/footer'
 
-import './accAuthentication.css'
+import './accActivation.css'
 
 
-export default function AccAuthentication() {
+export default function AccActivation() {
 
     const [codigoConfirmacao, setCodigoConfirmacao] = useState();
 
-//Talvez usar para o email?
     function salvar() {
 
         let usuarioRequest = {

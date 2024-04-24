@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, Routes } from "react-router-dom";
 
 import RegisterPage from './pages/registerPage/registerPage';
-import AccAuthentication from './pages/accAuthentication/accAuthentication';
+import AccActivation from './pages/accActivation/accActivation';
 
 
 
@@ -12,7 +12,7 @@ function Rotas() {
         <>
             <Routes>
                 <Route path="register-page" element={ <RegisterPage/> } />
-                <Route path="acc-authentication" element={ <AccAuthentication/> } />
+                <Route path="acc-activation" element={ <AccActivation/> } />
             </Routes>
         </>
     )
