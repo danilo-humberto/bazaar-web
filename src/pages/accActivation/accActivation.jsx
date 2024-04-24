@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Form, FormGroup, FormInput, Container, Button } from "semantic-ui-react"
+import { Form, FormInput, Container, Button } from "semantic-ui-react"
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Header from '../../components/header/header'
@@ -37,33 +37,31 @@ export default function AccActivation() {
     return (
         <div>
             <Header />
-        <div className="content-form">
-            <Container textAlign="center">
-                <h2>Digite abaixo o código que enviamos por email</h2>
-                <div className="container-form">
-                    <Form>
-                        <FormGroup widths='equal'>
+            <div className="content-form">
+                <Container textAlign="center">
+                    <h2>Código de Confirmação!</h2>
+                    <div className="teste">
+                        <Form size="big" style={{marginBottom: "1%"}}>
                             <FormInput
                                 required
-                                width= {6}
+                                fluid
                                 placeholder='Insira o código'
                                 value={codigoConfirmacao}
                                 onChange={e => setCodigoConfirmacao(e.target.value)}
+                                className="input"
                             />
-                        </FormGroup>
-                    </Form>
-                </div>
+                        </Form>
+                    </div>
 
-                <Button 
-                color="orange" 
-                circular 
-                size="large" 
-                style={{ color: 'black' }} 
-                onClick={() => salvar()} 
-                >Confirmar Código</Button>
-
+                    <Button 
+                    color="orange" 
+                    circular 
+                    size="large" 
+                    style={{ color: 'black' }} 
+                    onClick={() => salvar()} 
+                    >Confirmar Código</Button>
             </Container>
-        </div>
+            </div>
             <Footer />
         </div>
     )

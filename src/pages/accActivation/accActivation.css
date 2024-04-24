@@ -1,28 +1,37 @@
 .content-form {
-    margin-top: 15%;
-    margin-left: 40%;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.input {
+    width: 800px;
+    margin-left: 20%;
 }
 
 @media(max-width: 1300px) {
-    .content-form {
-        margin-top: 15%;
+    .input {
+        margin-left: 42%;
+        width: 600px;
     }
 }
 
-@media(max-width: 990px) {
-    .content-form{
-        margin-top: 0;
+@media(max-width: 900px) {
+    .input {
+        margin-left: 10%;
     }
 }
 
-@media(max-width: 600px) {
-    .content-form {
-        margin-top: 10%;
+@media(max-width: 500px) {
+    .input {
+        margin-left: 0;
+        width: 350px;
     }
-}
 
-@media(max-width: 400px) {
-    .content-form {
-        margin-top: 15%;
+    .teste{
+        margin-bottom: 5%;
     }
 }
