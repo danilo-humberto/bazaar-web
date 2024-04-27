@@ -11,17 +11,14 @@ import './accActivation.css'
 
 export default function AccActivation() {
 
-    const [codigoConfirmacao, setCodigoConfirmacao] = useState();
+    const [verificador, setVerificador] = useState();
 
     function salvar() {
 
-        let usuarioRequest = {
-            codigoConfirmacao: codigoConfirmacao,
-        }
 
-        axios.post("http://localhost:8080/api/usuario", usuarioRequest)
+        axios.get(`http://localhost:8080/api/usuario/verificarCadastro/${verificador}` )
         .then((response) => {
-            toast.warning("Código confirmado com sucesso!",{
+            toast.success("Código confirmado com sucesso!",{
                 position: "top-right",
                 autoClose: 3000,
             })
@@ -32,6 +29,7 @@ export default function AccActivation() {
                 autoClose: 3000,
             })
         })
+        setVerificador("")
     }
 
     return (
@@ -46,8 +44,8 @@ export default function AccActivation() {
                                 required
                                 fluid
                                 placeholder='Insira o código'
-                                value={codigoConfirmacao}
-                                onChange={e => setCodigoConfirmacao(e.target.value)}
+                                value={verificador}
+                                onChange={e => setVerificador(e.target.value)}
                                 className="input"
                             />
                         </Form>

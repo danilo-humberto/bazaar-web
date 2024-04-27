@@ -22,8 +22,8 @@ export default function FormContent() {
         if (senha !== confirmarSenha) {
             toast.error("As senhas não coincidem!", {
                 position: "top-right",
-                autoClose: 5000,
-                closeOnClick: true,
+                autoClose: 3000,
+        
             })
             return;
         }
