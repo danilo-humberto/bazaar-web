@@ -4,6 +4,7 @@ import { Form, FormGroup, FormInput, Container, Button } from "semantic-ui-react
 import InputMask from "react-input-mask";
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 import './formContent.css'
 
@@ -126,7 +127,9 @@ export default function FormContent() {
                 size="large" 
                 style={{ color: 'black' }} 
                 onClick={() => salvar()} 
-                >Cadastrar</Button>
+                >
+                <Link to={'/acctivation'}>Cadastrar</Link>
+                </Button>
 
                 <Button
                 size="large"
