@@ -124,18 +124,19 @@ export default function FormContent() {
                 <Button 
                 color="orange" 
                 circular 
-                size="large" 
-                style={{ color: 'black' }} 
+                size="large"
                 onClick={() => salvar()} 
                 >
-                <Link to={'/acctivation'}>Cadastrar</Link>
+                    <Link to={'/activation'} style={{color: 'black'}}>Cadastrar</Link>
                 </Button>
 
                 <Button
                 size="large"
                 circular
                 style={{marginBottom: '10%', color: 'black'}}
-                >Entrar</Button>
+                >
+                    <Link to={'/login'} style={{color: 'black'}}>Entrar</Link>
+                </Button>
             </Container>
         </div>
     )

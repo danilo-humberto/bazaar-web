@@ -35,10 +35,10 @@ export default function AccActivation() {
     return (
         <div>
             <Header />
-            <div className="content-form">
+            <div className="content-form-activation">
                 <Container textAlign="center">
                     <h2>Código de Confirmação!</h2>
-                    <div className="container-form">
+                    <div className="container-form-activation">
                         <Form size="big" style={{marginBottom: "1%"}}>
                             <FormInput
                                 required

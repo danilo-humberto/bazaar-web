@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import AccActivation from './pages/accActivation/accActivation';
+import RegisterPage from './pages/registerPage/registerPage';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from 'react-toastify';
 import Rotas from './Rotas';
@@ -10,8 +10,8 @@ function App() {
     <div className="container">
 
       <Rotas />
-
-      <AccActivation />
+      
+      <RegisterPage/>
       <ToastContainer 
         position="top-right"
         autoClose={3000}
