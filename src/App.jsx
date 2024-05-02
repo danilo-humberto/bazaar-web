@@ -1,21 +1,14 @@
-import './App.css';
-import React from 'react';
-import RegisterPage from './pages/registerPage/registerPage';
+import "./App.css";
+import React from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from 'react-toastify';
-import Rotas from './Rotas';
+import { ToastContainer } from "react-toastify";
+import Rotas from "./Rotas";
 
 function App() {
   return (
     <div className="container">
-
       <Rotas />
-      
-      <RegisterPage/>
-      <ToastContainer 
-        position="top-right"
-        autoClose={3000}
-      />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 }
