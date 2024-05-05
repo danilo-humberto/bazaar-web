@@ -6,11 +6,12 @@ import {
   FormInput,
   Container,
   Button,
+  Loader,
 } from "semantic-ui-react";
 import InputMask from "react-input-mask";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./formContent.css";
 
@@ -21,13 +22,16 @@ export default function FormContent() {
   const [confirmarSenha, setConfirmarSenha] = useState();
   const [cpf, setCpf] = useState();
   const [numeroTelefone, setNumeroTelefone] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate()
 
   function salvar() {
     // Verifica se as senhas coincidem
     if (senha !== confirmarSenha) {
       toast.error("As senhas não coincidem!", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 2000,
       });
       return;
     }
@@ -40,21 +44,25 @@ export default function FormContent() {
       numeroTelefone: numeroTelefone,
     };
 
+    setLoading(true);
     axios
       .post("http://localhost:8080/api/usuario", usuarioRequest)
-      .then((response) => {
+      .then(() => {
+        setLoading(false);
         toast.warning(
           "Confirme seu cadastro pelo código enviado para o seu e-mail!",
           {
             position: "top-right",
-            autoClose: 3000,
+            autoClose: 2000,
           }
         );
+        navigate('/activation')
       })
       .catch((error) => {
+        setLoading(false);
         toast.error("Falha no Cadastro!", {
           position: "top-right",
-          autoClose: 3000,
+          autoClose: 2000,
         });
       });
   }
@@ -85,6 +93,8 @@ export default function FormContent() {
             </FormGroup>
             <FormGroup widths="equal">
               <FormInput
+                minLength={5}
+                maxLength={10}
                 required
                 fluid
                 label="Senha"
@@ -94,6 +104,8 @@ export default function FormContent() {
                 onChange={(e) => setSenha(e.target.value)}
               />
               <FormInput
+                minLength={5}
+                maxLength={10}
                 required
                 fluid
                 label="confirmarSenha"
@@ -122,10 +134,18 @@ export default function FormContent() {
           </Form>
         </div>
 
-        <Button color="orange" circular size="large" onClick={() => salvar()}>
-          <Link to={"/activation"} style={{ color: "black" }}>
-            Cadastrar
-          </Link>
+        <Button
+          color="orange"
+          circular
+          size="large"
+          onClick={() => salvar()}
+          disabled={loading}
+        >
+          {loading ? (
+            <Loader active inline inverted size="tiny" />
+          ) : (
+            <span style={{ color: "black" }}>Cadastro</span>
+          )}
         </Button>
 
         <Button
