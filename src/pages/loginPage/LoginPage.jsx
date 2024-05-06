@@ -66,7 +66,7 @@ export default function LoginPage() {
               <p>Não tem uma conta?</p>
               <Link to={"/register-page"}>Cadastre-se</Link>
             </div>
-            <span className="forgotPassword">Esqueceu sua senha?</span>
+            <span className="forgotPassword"><Link to={"/forgotPassword"} style={{color: 'red'}}>Esqueceu sua senha?</Link></span>
           </div>
         </div>
       </div>
