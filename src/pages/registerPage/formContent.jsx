@@ -18,6 +18,7 @@ import "./formContent.css";
 export default function FormContent() {
   const [nomeCompleto, setNomeCompleto] = useState();
   const [email, setEmail] = useState();
+  const [login, setLogin] = useState();
   const [senha, setSenha] = useState();
   const [confirmarSenha, setConfirmarSenha] = useState();
   const [cpf, setCpf] = useState();
@@ -39,6 +40,7 @@ export default function FormContent() {
     let usuarioRequest = {
       nomeCompleto: nomeCompleto,
       email: email,
+      login: login,
       senha: senha,
       cpf: cpf,
       numeroTelefone: numeroTelefone,
@@ -89,6 +91,13 @@ export default function FormContent() {
                 placeholder="teste@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+              <FormInput
+                required
+                fluid
+                label="Login"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
               />
             </FormGroup>
             <FormGroup widths="equal">

@@ -1,16 +1,30 @@
 import React, { useState } from "react";
 import { Form, Input, FormField, Icon, Button } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 
 import "./LoginPage.css";
+import axios from "axios";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState();
+  const [login, setLogin] = useState();
   const [senha, setSenha] = useState();
+  const navigation = useNavigate()
 
-  function salvar() {}
+  function salvar() {
+
+    axios.post('api/login', {login, senha})
+     .then((response) => {
+        const token = response.data.token;
+        localStorage.setItem('token', token);
+
+        navigation('/')
+     })
+     .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
     <div>
@@ -22,17 +36,17 @@ export default function LoginPage() {
             <div className="form-content-login">
               <Form widths="equal" size="large">
                 <FormField>
-                  <label>E-mail</label>
+                  <label>Usuário</label>
                   <Input
                     iconPosition="left"
-                    placeholder="Email"
-                    type="email"
+                    placeholder="usuario"
+                    type="text"
                     style={{ margin: "0" }}
                   >
-                    <Icon name="at" />
+                    <Icon name="user" />
                     <input
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={login}
+                      onChange={(e) => setLogin(e.target.value)}
                     />
                   </Input>
                 </FormField>
