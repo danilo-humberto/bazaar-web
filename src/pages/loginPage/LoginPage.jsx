@@ -8,18 +8,26 @@ import "./LoginPage.css";
 import axios from "axios";
 
 export default function LoginPage() {
-  const [login, setLogin] = useState();
-  const [senha, setSenha] = useState();
+  const [login, setLogin] = useState("");
+  const [senha, setSenha] = useState("");
+  const [token, setToken] = useState("");
   const navigation = useNavigate()
 
   function salvar() {
 
-    axios.post('api/login', {login, senha})
-     .then((response) => {
-        const token = response.data.token;
-        localStorage.setItem('token', token);
+    let user = {
+      login: login,
+      senha:senha
+    }
 
-        navigation('/')
+    axios.post('http://localhost:8080/auth/login', user)
+     .then((response) => {
+        const tokenData = response.data.token;
+        setToken(tokenData);
+        localStorage.setItem('token', tokenData);
+        console.log(tokenData);
+
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + tokenData;
      })
      .catch((error) => {
         console.log(error);

@@ -13,7 +13,7 @@ export default function AccActivation() {
 
   function salvar() {
     axios
-      .get(`http://localhost:8080/api/usuario/verificarCadastro/${verificador}`)
+      .get(`http://localhost:8080/auth/verificarCadastro/${verificador}`)
       .then((response) => {
         toast.success("Código confirmado com sucesso!", {
           position: "top-right",
