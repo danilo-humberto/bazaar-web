@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Form, Input, FormField, Icon, Button } from "semantic-ui-react";
+import { Form, Input, FormField, Icon, Button, Loader} from "semantic-ui-react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./LoginPage.css";
 import axios from "axios";
@@ -10,27 +12,45 @@ import axios from "axios";
 export default function LoginPage() {
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
-  const [token, setToken] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigate()
 
   function salvar() {
 
     let user = {
-      login: login,
-      senha:senha
+      username: login,
+      password: senha
     }
 
+    setLoading(true);
     axios.post('http://localhost:8080/auth/login', user)
      .then((response) => {
-        const tokenData = response.data.token;
-        setToken(tokenData);
-        localStorage.setItem('token', tokenData);
-        console.log(tokenData);
+        localStorage.setItem("token", response.data.token);
+        setLoading(false);
 
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + tokenData;
+        toast.success(
+          "Logado com Sucesso!",
+          {
+            position: "top-right",
+            autoClose: 2000,
+          }
+        );
+
+        setLogin('');
+        setSenha('');
+        navigation('/')
      })
      .catch((error) => {
-        console.log(error);
+      toast.error(
+        "Login ou senha Inválidos!",
+        {
+          position: "top-right",
+          autoClose: 2000,
+        }
+      );
+
+      setLogin('');
+      setSenha('');
       });
   }
 
@@ -79,9 +99,13 @@ export default function LoginPage() {
                 circular
                 size="medium"
                 style={{ color: "black", marginTop: "5%" }}
-                onClick={salvar()}
+                onClick={() => salvar()}
               >
-                Entrar
+                {loading ? (
+                  <Loader active inline inverted size="tiny" />
+                ) : (
+                  <span style={{color: 'black'}}>Entrar</span>
+                )}
               </Button>
             </div>
             <div className="haveAcount">

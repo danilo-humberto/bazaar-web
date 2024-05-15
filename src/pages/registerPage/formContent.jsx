@@ -48,7 +48,7 @@ export default function FormContent() {
 
     setLoading(true);
     axios
-      .post("http://localhost:8080/auth/Usuario", usuarioRequest)
+      .post("http://localhost:8080/auth/register", usuarioRequest)
       .then((response) => {
         setLoading(false);
         const token = response.data.token;
