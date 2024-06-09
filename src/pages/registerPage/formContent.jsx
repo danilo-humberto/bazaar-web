@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 
-import "./formContent.css";
 
 export default function FormContent() {
   const [nomeCompleto, setNomeCompleto] = useState();

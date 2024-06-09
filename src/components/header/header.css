@@ -4,7 +4,7 @@
     width: 100vw;
     height: 10vh;
     display: flex;
-    justify-content: center;
+    justify-content:  center;
     align-items: center;
     z-index: 1000;
 }
@@ -12,4 +12,15 @@
 img {
     width: 170px;
     height: 100px;
+}
+.icon {
+    color: #fd7900;
+}
+.notification {
+    color: #fd7900;
+    margin: 15px;
+}
+.shopping-basket {
+    color: #fd7900;
+    margin: 15px;
 }
