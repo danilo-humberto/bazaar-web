@@ -1,6 +1,7 @@
 import React, { useState} from "react";
 import {useNavigate} from "react-router-dom"
-import { Form, FormField, Input, Icon, Button } from "semantic-ui-react";
+import { Form, FormField, Input, Icon, Button, Loader } from "semantic-ui-react";
+import { toast } from "react-toastify";
 
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
@@ -10,14 +11,24 @@ import axios from "axios";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   function redefinir() {
     let emailRequest = {email:email}
 
+    setLoading(true);
     axios.post("http://localhost:8080/auth/redefinir-senha",emailRequest)
     .then((Response)=>{
-        navigate("/login")
+      setLoading(false);
+      toast.warning(
+        "Confirme sua alteração de senha no e-mail!",
+        {
+          position: "top-right",
+          autoClose: 2000,
+        }
+      );
+      navigate("/login")
     }) 
   }
   return (
@@ -41,8 +52,17 @@ export default function ForgotPassword() {
                   </Input>
                 </FormField>
               </Form>
-              <Button color="orange" circular size="medium" style={{ color: "black", marginTop: "5%", width: "50%" }} onClick={redefinir}>
-                Enviar
+              <Button  
+                color="orange" 
+                circular size="medium" 
+                style={{ color: "black", marginTop: "5%", width: "50%" }} 
+                onClick={redefinir}
+                >
+                  {loading ? (
+                    <Loader active inline inverted size="tiny" />
+                  ) : (
+                    <span style={{ color: "black" }}>Cadastro</span>
+                  )}
               </Button>
             </div>
           </div>
