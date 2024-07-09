@@ -53,13 +53,13 @@ export default function FormContent() {
         const token = response.data.token;
         localStorage.setItem('token', token);
         toast.warning(
-          "Confirme seu cadastro pelo código enviado para o seu e-mail!",
+          "Confirme seu cadastro no e-mail!",
           {
             position: "top-right",
             autoClose: 2000,
           }
         );
-        navigate('/activation')
+        navigate('/login')
       })
       .catch((error) => {
         setLoading(false);

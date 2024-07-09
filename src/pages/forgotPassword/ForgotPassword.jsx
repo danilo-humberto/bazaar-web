@@ -1,82 +1,74 @@
-import React, { useState } from "react";
-import { Form, FormField, Input, Icon, Button } from 'semantic-ui-react'
+import React, { useState} from "react";
+import {useNavigate} from "react-router-dom"
+import { Form, FormField, Input, Icon, Button, Loader } from "semantic-ui-react";
+import { toast } from "react-toastify";
 
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 
-import './ForgotPassword.css'
+import "./ForgotPassword.css";
+import axios from "axios";
 
 export default function ForgotPassword() {
+  const [email, setEmail] = useState();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-    const [isOpen, setIsOpen] = useState(false);
+  function redefinir() {
+    let emailRequest = {email:email}
 
-    const toggleIsOpen = () => {
-        setIsOpen(!isOpen);
-    }
-
-    return (
-        <div>
-            <Header />
-            <div className="container-password">
-                <div className="background-password">
-                    <div className="content-password">
-                        <h1>Esqueceu a sua senha?</h1>
-                        <p>Não se preocupe! Insira o seu e-mail de cadastro e enviaremos um código para você.</p>
-                        <div className="form-content-recover">
-                            <Form size="large" style={{width: '300px'}}>
-                                <FormField>
-                                    <label>E-mail</label>
-                                    <Input
-                                        iconPosition="left"
-                                        placeholder="Email"
-                                        type="email"
-                                        style={{margin: '0', width: '100%'}}
-                                    >
-                                        <Icon name="at" />
-                                        <input/>
-                                    </Input>
-                                </FormField>
-                            </Form>
-                            <Button
-                                color="orange"
-                                circular
-                                size="medium"
-                                style={{ color: "black", marginTop: "5%", width: "50%" }}
-                                onClick={toggleIsOpen}
-                            >
-                                Enviar
-                            </Button>
-                        </div>
-                        <div 
-                            className="recieve-code"
-                            style={{display: isOpen ? "flex" : "none"}}
-                            >
-                            <Form size="large">
-                                <FormField>
-                                    <Input
-                                        iconPosition="left"
-                                        placeholder="Insira o código"
-                                        type="text"
-                                        style={{margin: '0'}}
-                                    >
-                                        <Icon name="archive" />
-                                        <input/>
-                                    </Input>
-                                </FormField>
-                            </Form>
-                            <Button
-                                color="orange"
-                                circular
-                                size="tiny"
-                                style={{ color: "black", marginTop: "5%"}}
-                            >
-                                Confirmar
-                            </Button>
-                        </div>
-                    </div>
-                </div>
+    setLoading(true);
+    axios.post("http://localhost:8080/auth/redefinir-senha",emailRequest)
+    .then((Response)=>{
+      setLoading(false);
+      toast.warning(
+        "Confirme sua alteração de senha no e-mail!",
+        {
+          position: "top-right",
+          autoClose: 2000,
+        }
+      );
+      navigate("/login")
+    }) 
+  }
+  return (
+    <div>
+      <Header />
+      <div className="container-password">
+        <div className="background-password">
+          <div className="content-password">
+            <h1>Esqueceu a sua senha?</h1>
+            <p>Não se preocupe! Insira o seu e-mail de cadastro e enviaremos um código para você.</p>
+            <div className="form-content-recover">
+              <Form size="large" style={{ width: "300px" }}>
+                <FormField>
+                  <label>E-mail</label>
+                  <Input iconPosition="left" placeholder="Email" type="email" style={{ margin: "0", width: "100%" }}
+                  value={email}
+                  onChange={(e)=> setEmail(e.target.value)}
+                  >
+                    <Icon name="at" />
+                    <input />
+                  </Input>
+                </FormField>
+              </Form>
+              <Button  
+                color="orange" 
+                circular size="medium" 
+                style={{ color: "black", marginTop: "5%", width: "50%" }} 
+                onClick={redefinir}
+                >
+                  {loading ? (
+                    <Loader active inline inverted size="tiny" />
+                  ) : (
+                    <span style={{ color: "black" }}>Cadastro</span>
+                  )}
+              </Button>
             </div>
-            <Footer />
+          </div>
         </div>
-    )
+      </div>
+      <Footer />
+    </div>
+  );
 }
