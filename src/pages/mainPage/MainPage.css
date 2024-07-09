@@ -1,0 +1,11 @@
+.background-main {
+    margin: 10vh 0;
+    width: 100vw;
+    height: 80vh;
+}
+
+.slide-item {
+    width: 100vw;
+    height: 450px;
+    object-fit: inherit;
+}
