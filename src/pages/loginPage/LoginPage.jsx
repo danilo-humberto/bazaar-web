@@ -23,7 +23,7 @@ export default function LoginPage() {
     }
 
     setLoading(true);
-    axios.post('http://localhost:8080/auth/login', user)
+    axios.post('http://localhost:8080/usuario/login', user)
      .then((response) => {
         localStorage.setItem("token", response.data.token);
         setLoading(false);
@@ -110,7 +110,7 @@ export default function LoginPage() {
             </div>
             <div className="haveAcount">
               <p>Não tem uma conta?</p>
-              <Link to={"/register-page"}>Cadastre-se</Link>
+              <Link to={"/register"}>Cadastre-se</Link>
             </div>
             <span className="forgotPassword"><Link to={"/forgotPassword"} style={{color: 'red'}}>Esqueceu sua senha?</Link></span>
           </div>

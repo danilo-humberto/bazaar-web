@@ -10,10 +10,10 @@ function Rotas() {
   return (
     <>
       <Routes>
-        <Route path="register-page" element={<RegisterPage />} />
+        <Route path="register" element={<RegisterPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="forgotPassword" element={<ForgotPassword />} />
-        <Route path="main" element={ <MainPage />}/>
+        <Route path="/" element={ <MainPage />}/>
       </Routes>
     </>
   );

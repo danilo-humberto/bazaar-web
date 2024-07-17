@@ -1,0 +1,9 @@
+.background-grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column {
+    width: 100rem;
+}
