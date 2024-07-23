@@ -38,3 +38,11 @@
     height: 30px;
     width: 30px;
 }
+
+.btn-login {
+    padding: 10px 30px;
+    border-radius: 20px;
+    outline: none;
+    border: 1px solid #FF7A00;
+    background-color: #FFFEFD;
+}

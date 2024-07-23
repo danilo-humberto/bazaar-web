@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from 'semantic-ui-react'
 import { FaBell, FaShoppingBag } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
@@ -8,6 +8,9 @@ import LogoLaranja from '../../assets/logo-laranja.png'
 import "./otherHeader.css"
 
 export default function OtherHeader () {
+
+    const [isLogged, setIsLogged] = useState(false);
+
     return (
         <div className='new-background'>
             <div>
@@ -18,7 +21,11 @@ export default function OtherHeader () {
             <div>
                 <FaBell className='bell'/>
                 <FaShoppingBag className='shop'/>
-                <CgProfile className='profile'/>
+                {isLogged ? (
+                    <CgProfile className='profile'/>
+                ) : (
+                    <button className='btn-login'>Entrar</button>
+                )}
             </div>
         </div>
     )

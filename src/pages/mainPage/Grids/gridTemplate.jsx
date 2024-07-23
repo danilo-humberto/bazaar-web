@@ -5,22 +5,11 @@ import CardComponente from "../cards";
 export default function GridTemplate() {
   return (
     <div className="background-grid">
-      <Grid columns={4}>
+      <Grid columns={5}>
         <GridRow>
           <GridColumn>
             <CardComponente />
           </GridColumn>
-          <GridColumn>
-            <CardComponente />
-          </GridColumn>
-          <GridColumn>
-            <CardComponente />
-          </GridColumn>
-          <GridColumn>
-            <CardComponente />
-          </GridColumn>
-        </GridRow>
-        <GridRow>
           <GridColumn>
             <CardComponente />
           </GridColumn>

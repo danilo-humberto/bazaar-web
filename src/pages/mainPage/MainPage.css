@@ -1,12 +1,23 @@
 .background-main {
-    margin: 10vh auto 0 auto;
+    margin-top: 10vh;
     width: 100vw;
-    height: 80vh;
-    max-width: 1550px;
+    background-image: url('../../assets/logoTimbrada.png');
 }
 
 .slide-item {
     width: 100%;
     height: 400px;
     object-fit: none;
+}
+
+main {
+    width: 100vw;
+    max-width: 1520px;
+    margin: 1vh auto;
+}
+
+.content-above-grids {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
