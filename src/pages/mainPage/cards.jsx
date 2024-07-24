@@ -2,7 +2,6 @@ import {
   Card,
   Image,
   CardContent,
-  CardMeta,
   CardDescription,
   CardHeader,
   Icon,

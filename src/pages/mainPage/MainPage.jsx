@@ -42,19 +42,47 @@ export default function MainPage() {
         </div>
         <main>
           <div className="content-above-grids">
-            <h1>Produtos Mais Próximos de Você</h1>
+            <h1>Principais Produtos Masculinos</h1>
             <a href="#"><span>Ver mais...</span></a>
           </div>
           <GridTemplate />
 
           <div className="content-above-grids" style={{paddingTop: "20px"}}>
-            <h1>Mais Vendidos</h1>
+            <h1>Principais Produtos Femininos</h1>
             <a href="#"><span>Ver mais...</span></a>
           </div>
           <GridTemplate />
+
+          <div className="content-above-grids" style={{paddingTop: "20px"}}>
+            <h1>Principais Produtos Infantis</h1>
+            <a href="#"><span>Ver mais...</span></a>
+          </div>
+          <GridTemplate />
+
         </main>
         <div className="contact">
-
+              <div className="image-contact"></div>
+              <div className="form-contact">
+                <h2>Entre em Contato</h2>
+                <div className="form-content-contact">
+                  <div className="form-inputs">
+                    <input type="text" name="fullName" placeholder="Nome Completo"/>
+                    <input type="text" name="email" placeholder="E-mail"/>
+                    <input type="text" name="message" placeholder="Mensagem"/>
+                    <button>Contato Agora</button>
+                  </div>
+                  <div className="form-social">
+                    <div className="form-social-contact">
+                      <h3>Contato</h3>
+                      <span>bazaarroupas@gmail.com</span>
+                    </div>
+                    <div className="form-social-locate">
+                      <h3>Localizado em</h3>
+                      <span>Pernambuco, Recife</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
         <OtherFooter />
       </div>
