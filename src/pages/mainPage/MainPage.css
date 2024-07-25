@@ -33,7 +33,12 @@ main {
 .image-contact {
     width: 600px;
     height: 450px;
-    background-color: red;
+}
+
+.image-contact img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
 }
 
 .form-contact {
@@ -79,11 +84,12 @@ main {
 }
 
 .form-inputs button {
-    padding: 10px 0;
+    padding: 15px 0;
     border: none;
     border-radius: 20px;
-    background-color: black;
-    color: white;
+    background-color:#FF7A00;
+    color: black;
+    font-weight: bold;
     cursor: pointer;
 }
 
@@ -122,4 +128,45 @@ main {
     display: flex;
     flex-direction: column;
     gap: 5px;
+}
+
+.info {
+    width: 50px;
+    height: 50px;
+    background-color: rgb(241, 241, 71);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    position: fixed;
+    left: 1830px;
+    bottom: 110px;
+    border: 1px solid black;
+    transition: transform 0.4s;
+    cursor: pointer;
+}
+
+.exclamation-icon {
+    font-size: 25px;
+}
+
+
+.info span {
+    visibility: hidden;
+    position: absolute;
+    width: 200px;
+    border: 1px solid black;
+    padding: 5px;
+    background-color: white;
+    left: -210px;
+    bottom: 20px;
+    border-radius: 10px 10px 0 10px;
+}
+
+.info:hover {
+    transform: scale(1.1);
+}
+
+.info:hover span {
+    visibility: visible;
 }
