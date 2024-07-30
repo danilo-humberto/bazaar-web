@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./MainPage.css";
 import OtherHeader from "../../components/otherHeader/otherHeader";
@@ -11,8 +11,21 @@ import ContactImage from "../../assets/image-contact.png";
 import { Autoplay, Pagination } from "swiper/modules";
 import GridTemplate from "./Grids/gridTemplate";
 import { AiTwotoneExclamationCircle } from "react-icons/ai";
+import axios from "axios";
 
 export default function MainPage() {
+
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const IdUser = localStorage.getItem("id");
+
+    // axios.get(`http://localhost:8080/api/usuario/${IdUser}`)
+    //   .then((response) => {
+
+    //   })
+  }, [])
+
   return (
     <div>
       <OtherHeader />
@@ -95,10 +108,14 @@ export default function MainPage() {
             </div>
           </div>
         </div>
-        <div className="info">
-          <AiTwotoneExclamationCircle className="exclamation-icon"/>
-          <span>Verifique a sua conta no e-mail informado no cadastro !</span>
-        </div>
+         {isActive ?(
+             <div style={{display: 'none'}}></div> 
+          ) : (
+            <div className="info">
+              <AiTwotoneExclamationCircle className="exclamation-icon"/>
+              <span>Verifique a sua conta no e-mail para uma melhor experiência !</span>
+            </div>
+         )}
         <OtherFooter />
       </div>
     </div>

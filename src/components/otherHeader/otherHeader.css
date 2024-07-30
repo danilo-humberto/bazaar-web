@@ -45,4 +45,11 @@
     outline: none;
     border: 1px solid #FF7A00;
     background-color: #FFFEFD;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #FF7A00;
+    border: 1px solid #FFFEFD;
 }

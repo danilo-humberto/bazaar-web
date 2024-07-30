@@ -18,7 +18,7 @@ export default function ForgotPassword() {
     let emailRequest = {email:email}
 
     setLoading(true);
-    axios.post("http://localhost:8080/usuario/redefinir-senha",emailRequest)
+    axios.post("http://localhost:8080/api/usuario/redefinir-senha",emailRequest)
     .then((Response)=>{
       setLoading(false);
       toast.warning(
