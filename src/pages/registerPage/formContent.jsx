@@ -47,11 +47,12 @@ export default function FormContent() {
 
     setLoading(true);
     axios
-      .post("http://localhost:8080/auth/register", usuarioRequest)
+      .post("http://localhost:8080/api/usuario/register", usuarioRequest)
       .then((response) => {
         setLoading(false);
         const token = response.data.token;
         localStorage.setItem('token', token);
+        localStorage.setItem('id', response.data.id);
         toast.warning(
           "Confirme seu cadastro no e-mail!",
           {

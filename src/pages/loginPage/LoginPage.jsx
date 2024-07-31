@@ -13,7 +13,7 @@ export default function LoginPage() {
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigate()
+  const navigation = useNavigate();
 
   function salvar() {
 
@@ -23,11 +23,11 @@ export default function LoginPage() {
     }
 
     setLoading(true);
-    axios.post('http://localhost:8080/auth/login', user)
+    axios.post('http://localhost:8080/api/usuario/login', user)
      .then((response) => {
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem('id', response.data.id);
         setLoading(false);
-
         toast.success(
           "Logado com Sucesso!",
           {
@@ -35,7 +35,7 @@ export default function LoginPage() {
             autoClose: 2000,
           }
         );
-
+        console.log(response);
         setLogin('');
         setSenha('');
         navigation('/')
@@ -48,7 +48,7 @@ export default function LoginPage() {
           autoClose: 2000,
         }
       );
-
+      setLoading(false);
       setLogin('');
       setSenha('');
       });
@@ -110,7 +110,7 @@ export default function LoginPage() {
             </div>
             <div className="haveAcount">
               <p>Não tem uma conta?</p>
-              <Link to={"/register-page"}>Cadastre-se</Link>
+              <Link to={"/register"}>Cadastre-se</Link>
             </div>
             <span className="forgotPassword"><Link to={"/forgotPassword"} style={{color: 'red'}}>Esqueceu sua senha?</Link></span>
           </div>

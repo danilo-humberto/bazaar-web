@@ -18,7 +18,7 @@ export default function ForgotPassword() {
     let emailRequest = {email:email}
 
     setLoading(true);
-    axios.post("http://localhost:8080/auth/redefinir-senha",emailRequest)
+    axios.post("http://localhost:8080/api/usuario/redefinir-senha",emailRequest)
     .then((Response)=>{
       setLoading(false);
       toast.warning(
@@ -61,7 +61,7 @@ export default function ForgotPassword() {
                   {loading ? (
                     <Loader active inline inverted size="tiny" />
                   ) : (
-                    <span style={{ color: "black" }}>Cadastro</span>
+                    <span style={{ color: "black" }}>Enviar</span>
                   )}
               </Button>
             </div>

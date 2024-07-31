@@ -9,7 +9,7 @@ export default function RegisterPage() {
   return (
     <div>
       <Header />
-      <div className="content">
+      <div className="content-register">
         <Grid columns={2} padded="vertically" doubling>
           <GridColumn width={8}>
           </GridColumn>
