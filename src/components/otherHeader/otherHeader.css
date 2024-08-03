@@ -21,22 +21,11 @@
     margin-right: 20px;
 }
 
-.bell {
+.bell, .shop, .profile {
     color: #ff7a00;
     height: 30px;
     width: 30px;
-}
-
-.shop {
-    color: #ff7a00;
-    height: 30px;
-    width: 30px;
-}
-
-.profile {
-    color: #ff7a00;
-    height: 30px;
-    width: 30px;
+    cursor: pointer;
 }
 
 .btn-login {

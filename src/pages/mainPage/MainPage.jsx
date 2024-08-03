@@ -18,12 +18,15 @@ export default function MainPage() {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    const IdUser = localStorage.getItem("id");
-
-    // axios.get(`http://localhost:8080/api/usuario/${IdUser}`)
-    //   .then((response) => {
-
-    //   })
+    const loginUser = localStorage.getItem("login")
+    axios.get("http://localhost:8080/api/usuario/userCondition?login=" + loginUser)
+      .then((response) => {
+        if(response.data === true) {
+          setIsActive(true)
+        } else {
+          setIsActive(false)
+        }
+      })
   }, [])
 
   return (
@@ -55,28 +58,28 @@ export default function MainPage() {
         </div>
         <main>
           <div className="content-above-grids">
-            <h1>Principais Produtos Masculinos</h1>
+            <h1>Produtos Mais Baratos da Moda Masculina</h1>
             <a href="#">
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate />
+          <GridTemplate descricao = 'Moda masculina'/>
 
           <div className="content-above-grids" style={{ paddingTop: "20px" }}>
-            <h1>Principais Produtos Femininos</h1>
+            <h1>Produtos Mais Baratos da Moda Feminina</h1>
             <a href="#">
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate />
+          <GridTemplate descricao = 'Moda feminina'/>
 
           <div className="content-above-grids" style={{ paddingTop: "20px" }}>
-            <h1>Principais Produtos Infantis</h1>
+            <h1>Produtos Mais Baratos da Moda Infantil</h1>
             <a href="#">
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate />
+          <GridTemplate descricao = 'Moda infantil'/>
         </main>
         <div className="contact">
           <div className="image-contact">

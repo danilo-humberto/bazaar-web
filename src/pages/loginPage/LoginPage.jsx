@@ -26,7 +26,7 @@ export default function LoginPage() {
     axios.post('http://localhost:8080/api/usuario/login', user)
      .then((response) => {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem('id', response.data.id);
+        localStorage.setItem('login', response.data.login);
         setLoading(false);
         toast.success(
           "Logado com Sucesso!",
@@ -35,7 +35,6 @@ export default function LoginPage() {
             autoClose: 2000,
           }
         );
-        console.log(response);
         setLogin('');
         setSenha('');
         navigation('/')
