@@ -1,0 +1,46 @@
+.container-profile {
+    width: 1000vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.background-profile {
+    width: 500px;
+    height: 550px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    position: relative;
+}
+
+.content-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.form-content-profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    padding-top: 30px;
+}
+
+
+@media(max-width: 500px) {
+    .background-profile {
+        border: none;
+    }
+}
+
+.name{
+    font-size: 20px;
+}
+
+.infos{
+    font-size: 10px
+}
