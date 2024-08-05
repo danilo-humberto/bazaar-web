@@ -15,7 +15,7 @@ function Rotas() {
         <Route path="register" element={<RegisterPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="forgotPassword" element={<ForgotPassword />} />
-        <Route path="profilepage" element={<ProfilePage />} />
+        <Route path="profilePage" element={<ProfilePage />} />
         <Route path="/" element={ <MainPage />}/>
       </Routes>
     </>
