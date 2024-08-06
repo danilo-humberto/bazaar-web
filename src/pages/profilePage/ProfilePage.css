@@ -1,5 +1,5 @@
 .container-profile {
-    width: 1000vw;
+    width: 100vw;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -7,7 +7,7 @@
 }
 
 .background-profile {
-    width: 500px;
+    width: 1000px;
     height: 550px;
     background-color: white;
     border: 2px solid black;
@@ -16,8 +16,9 @@
 }
 
 .content-profile {
+    margin-top: 50px;
+    margin-left: 200px;
     display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
@@ -38,9 +39,15 @@
 }
 
 .name{
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 .infos{
-    font-size: 10px
+    font-size: 15px;
+}
+
+.profile-edit{
+    color: white;
 }

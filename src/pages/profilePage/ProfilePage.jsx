@@ -1,21 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Grid,
   Image,
   GridColumn,
   ButtonGroup,
+  Form,
 } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 
 import "./ProfilePage.css";
 
+
 /* 
 O primeiro GridColumn ainda precisar ser integrado com o banco, então o código nem é esse, tem que fazer ele buscando direto no banco.
 */
 
 export default function ProfilePage() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleIsOpen() {
+    setIsOpen(true);
+  }
+
   return (
     <div>
       <Header />
@@ -41,17 +49,38 @@ export default function ProfilePage() {
 
                 <GridColumn center>
                   <ButtonGroup vertical>
-                    <Button color="orange" circular size="big">
-                      Editar Perfil
+                    <Button
+                    color="orange" circular
+                    size="big"
+                    onClick={handleIsOpen}>
+                    Editar Perfil  
+                      {isOpen && (
+                      <Form className="profile-edit"><Image
+                      src="https://react.semantic-ui.com/images/wireframe/square-image.png"
+                      size="medium"
+                    />
+                    <p className="name">FULANO DE SOUZA</p>
+                    <p className="infos">
+                      Cep: 55555-55
+                      <br />
+                      (81) 9 9999-9999
+                      <br />
+                      fulano@gmail.com
+                    </p></Form>
+                   )}  
                     </Button>
                     <br />
                     <br />
-                    <Button color="orange" circular size="big">
+                    <Button
+                    color="orange"
+                    circular size="big">
                       Produtos
                     </Button>
                     <br />
                     <br />
-                    <Button color="orange" circular size="big">
+                    <Button
+                    color="orange"
+                    circular size="big">
                       Adicionar Endereço
                     </Button>
                     <br />
