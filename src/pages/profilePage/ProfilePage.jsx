@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Grid,
   Image,
   GridColumn,
   ButtonGroup,
+  List
 } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
@@ -54,7 +55,7 @@ export default function ProfilePage() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const testUserId = "1";
+    const testUserId = "3";
     localStorage.setItem("userId", testUserId);
 
     fetchUserData(setUserData);

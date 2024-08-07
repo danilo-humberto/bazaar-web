@@ -63,7 +63,7 @@ export default function MainPage() {
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate descricao = 'Moda masculina'/>
+          {/* <GridTemplate descricao = 'Moda masculina'/> */}
 
           <div className="content-above-grids" style={{ paddingTop: "20px" }}>
             <h1>Produtos Mais Baratos da Moda Feminina</h1>
@@ -71,7 +71,7 @@ export default function MainPage() {
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate descricao = 'Moda feminina'/>
+          <GridTemplate descricao = 'ModaFeminina'/>
 
           <div className="content-above-grids" style={{ paddingTop: "20px" }}>
             <h1>Produtos Mais Baratos da Moda Infantil</h1>
@@ -79,7 +79,7 @@ export default function MainPage() {
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate descricao = 'Moda infantil'/>
+          {/* <GridTemplate descricao = 'Moda infantil'/> */}
         </main>
         <div className="contact">
           <div className="image-contact">
