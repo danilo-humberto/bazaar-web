@@ -1,42 +1,49 @@
 import React, { useState } from "react";
-import { Form, Input, FormField, Icon, Button, Loader,Container} from "semantic-ui-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Form, Icon, Button, Container, Input } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import Header from "../../components/otherHeader/otherHeader";
 import Footer from "../../components/otherFooter/otherFooter";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-
-import "./FormProductPage.css"
+import "./FormProductPage.css"; // Certifique-se de importar o CSS
 
 export default function FormCliente() {
   const [idProduto, setIdProduto] = useState();
-
   const [codigo, setCodigo] = useState();
   const [titulo, setTitulo] = useState();
-  const [descricao, setDescricao] = useState();
   const [valorUnitario, setValorUnitario] = useState();
   const [tempoEntregaMinimo, setTempoEntregaMinimo] = useState();
   const [tempoEntregaMaximo, setTempoEntregaMaximo] = useState();
-  const [listaCategoria, setListaCategoria] = useState([]);
   const [idCategoria, setIdCategoria] = useState();
+  const [imagem, setImagem] = useState(null);
 
+  const handleFileChange = (e) => {
+    setImagem(e.target.files[0]);
+  };
 
-  function salvar() {
+  const salvar = () => {
     let produtoRequest = {
       idCategoria: idCategoria,
       codigo: codigo,
       titulo: titulo,
-      descricao: descricao,
       valorUnitario: valorUnitario,
       tempoEntregaMinimo: tempoEntregaMinimo,
       tempoEntregaMaximo: tempoEntregaMaximo,
     };
 
+    let formData = new FormData();
+    formData.append("produto", JSON.stringify(produtoRequest));
+    if (imagem) {
+      formData.append("imagem", imagem);
+    }
+
     if (idProduto != null) {
-      //Alteração:
+      // Alteração:
       axios
-        .put("http://localhost:8080/api/produto/" + idProduto, produtoRequest)
+        .put("http://localhost:8080/api/produto/" + idProduto, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log("Produto alterado com sucesso.");
         })
@@ -44,9 +51,13 @@ export default function FormCliente() {
           console.log("Erro ao alterar um produto.");
         });
     } else {
-      //Cadastro:
+      // Cadastro:
       axios
-        .post("http://localhost:8080/api/produto", produtoRequest)
+        .post("http://localhost:8080/api/produto", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log("Produto cadastrado com sucesso.");
         })
@@ -54,18 +65,16 @@ export default function FormCliente() {
           console.log("Erro ao incluir o produto.");
         });
     }
-  }
+  };
 
   return (
     <div>
-        <Header />
+      <Header />
       <div>
-        <Container textAlign="justified" style={{height: "610px", marginTop: "25vh"}}>
+        <Container textAlign="justified" style={{ height: "610px", marginTop: "25vh" }}>
           {idProduto === undefined && (
             <h2>
-              {" "}
               <span style={{ color: "darkgray" }}>
-                {" "}
                 Produto &nbsp;
                 <Icon name="angle double right" size="small" />{" "}
               </span>{" "}
@@ -75,16 +84,13 @@ export default function FormCliente() {
 
           {idProduto !== undefined && (
             <h2>
-              {" "}
               <span style={{ color: "darkgray" }}>
-                {" "}
                 Produto &nbsp;
                 <Icon name="angle double right" size="small" />{" "}
               </span>{" "}
               Alteração
             </h2>
           )}
-
 
           <div style={{ marginTop: "4%" }}>
             <Form>
@@ -116,13 +122,11 @@ export default function FormCliente() {
                 tabIndex="3"
                 placeholder="Selecione"
                 label="Categoria"
-                options={listaCategoria}
                 value={idCategoria}
                 onChange={(e, { value }) => {
                   setIdCategoria(value);
                 }}
               />
-
 
               <Form.Group>
                 <Form.Input
@@ -133,25 +137,18 @@ export default function FormCliente() {
                   value={valorUnitario}
                   onChange={(e) => setValorUnitario(e.target.value)}
                 ></Form.Input>
-
-                <Form.Input
-                  fluid
-                  label="Tempo de Entrega Mínimo em Minutos"
-                  width={5}
-                  placeholder="30"
-                  value={tempoEntregaMinimo}
-                  onChange={(e) => setTempoEntregaMinimo(e.target.value)}
-                />
-
-                <Form.Input
-                  fluid
-                  label="Tempo de Entrega Máximo em Minutos"
-                  width={5}
-                  placeholder="40"
-                  value={tempoEntregaMaximo}
-                  onChange={(e) => setTempoEntregaMaximo(e.target.value)}
-                />
               </Form.Group>
+
+              {/* Campo de Upload de Imagem */}
+              <div className="upload-container">
+                <label>Imagem do Produto</label>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="file-input"
+                />
+              </div>
             </Form>
 
             <div style={{ marginTop: "4%" }}>
@@ -179,7 +176,7 @@ export default function FormCliente() {
                 onClick={() => salvar()}
               >
                 <Icon name="save" />
-                Salvar
+                Salvar 
               </Button>
             </div>
           </div>
