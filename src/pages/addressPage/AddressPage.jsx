@@ -1,12 +1,17 @@
-import { Button, Container, Divider, Icon, Table } from "semantic-ui-react";
-import React from "react";
-import Header from "../../components/header/header";
+import { Button, Container, Divider, Icon, Modal, Table } from "semantic-ui-react";
+import React, {useState} from "react";
+import HeaderComponent from "../../components/header/header";
 import Footer from "../../components/footer/footer";
+import { Link } from "react-router-dom";
+import RegisterAddress from "./RegisterAddress";
 
 export default function AddressPage() {
+
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <div>
-      <Header />
+      <HeaderComponent />
       <div
         style={{ height: "100vh", width: "80vw", margin: "20vh auto 0 auto" }}
       >
@@ -15,7 +20,18 @@ export default function AddressPage() {
           className="container-address-page"
           fluid
         >
-          <h1>Endereços</h1>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <h1>Endereços</h1>
+            <Button
+                label="Novo"
+                circular
+                color="orange"
+                icon="clipboard outline"
+                floated="right"
+                as={Link}
+                onClick={() => setOpenModal(true)}
+              />
+          </div>
           <Divider />
 
           <div>
@@ -69,6 +85,14 @@ export default function AddressPage() {
         </Container>
       </div>
       <Footer />
+      <Modal
+        basic
+        onClose={() => setOpenModal(false)}
+        onOpen={() => setOpenModal(true)}
+        open={openModal}
+      >
+        <RegisterAddress />
+      </Modal>
     </div>
   );
 }

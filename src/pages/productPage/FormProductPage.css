@@ -1,0 +1,49 @@
+.background-formProduct {
+    height: 100vh;
+}
+
+/* Estiliza o container do campo de upload */
+.upload-container {
+    margin-top: 20px;
+  }
+  
+  /* Estiliza o label do campo de upload */
+  .upload-container label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  /* Estiliza o input file */
+  .upload-container .file-input {
+    display: block;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Estiliza a borda quando o campo está em foco */
+  .upload-container .file-input:focus {
+    background-color: #e6e6e6;
+  }
+  
+  /* Oculta o input real e estiliza a área de visualização */
+  .upload-container input[type="file"] {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  /* Adiciona um texto padrão para o input */
+  .upload-container .file-input::before {
+    content: 'Escolha uma imagem';
+    color: #555;
+  }

@@ -5,60 +5,55 @@ import {
   Image,
   GridColumn,
   ButtonGroup,
-  List
+  List,
 } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
+import axios from "axios";
 
 import "./ProfilePage.css";
-
-const getUserId = () => {
-  const userId = localStorage.getItem("userId");
-  console.log("Obtained userId:", userId);
-  return userId;
-};
-
-const fetchUserData = async (setUserData) => {
-  const userId = getUserId();
-
-  if (!userId) {
-    console.error("ID do usuário não encontrado");
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      `http://localhost:8080/api/usuario/${userId}`,
-      {
-        method: "GET",
-      }
-    );
-
-    console.log("Response status:", response.status);
-    if (response.ok) {
-      const userData = await response.json();
-      console.log("User data fetched successfully:", userData);
-      setUserData(userData);
-    } else {
-      console.error(
-        "Erro ao buscar dados do usuário",
-        response.status,
-        response.statusText
-      );
-    }
-  } catch (error) {
-    console.error("Erro ao fazer a requisição:", error);
-  }
-};
+import { Link } from "react-router-dom";
 
 export default function ProfilePage() {
+  const getUserId = () => {
+    const userId = localStorage.getItem("userId");
+    console.log("userId obtido:", userId);
+    return userId;
+  };
+
+  const UserData = async (setUserData) => {
+    const userId = getUserId();
+
+    if (!userId) {
+      console.error("ID do usuário não encontrado");
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/usuario/${userId}`
+      );
+      console.log("Estado da Resposta:", response.status);
+      if (response.status === 200) {
+        const userData = response.data;
+        console.log("Dados do usuário obtidos com sucesso:", userData);
+        setUserData(userData);
+      } else {
+        console.error(
+          "Erro ao buscar dados do usuário",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao fazer a requisição:", error);
+    }
+  };
+
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const testUserId = "3";
-    localStorage.setItem("userId", testUserId);
-
-    fetchUserData(setUserData);
+    UserData(setUserData);
   }, []);
 
   return (
@@ -103,12 +98,12 @@ export default function ProfilePage() {
                     <br />
                     <br />
                     <Button color="orange" circular size="big">
-                      Produtos
+                      <Link to={"/listProduct"} style={{color: 'white'}}>Produtos</Link>
                     </Button>
                     <br />
                     <br />
                     <Button color="orange" circular size="big">
-                      Adicionar Endereço
+                      <Link to={"/address"} style={{color: "white"}}>Adicionar Endereço</Link>
                     </Button>
                     <br />
                     <br />

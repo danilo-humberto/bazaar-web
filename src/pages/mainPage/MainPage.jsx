@@ -20,15 +20,21 @@ export default function MainPage() {
 
   useEffect(() => {
     const loginUser = localStorage.getItem("login");
-    axios
-      .get("http://localhost:8080/api/usuario/userCondition?login=" + loginUser)
-      .then((response) => {
-        if (response.data === true) {
-          setIsActive(true);
-        } else {
-          setIsActive(false);
-        }
-      });
+    if (loginUser == null) {
+      console.log("sem Id");
+    } else {
+      axios
+        .get(
+          "http://localhost:8080/api/usuario/userCondition?login=" + loginUser
+        )
+        .then((response) => {
+          if (response.data === true) {
+            setIsActive(true);
+          } else {
+            setIsActive(false);
+          }
+        });
+    }
   }, []);
 
   return (
@@ -46,7 +52,7 @@ export default function MainPage() {
               disableOnInteraction: false,
             }}
             modules={[Autoplay, Pagination]}
-            style={{zIndex: '0'}}
+            style={{ zIndex: "0" }}
           >
             <SwiperSlide>
               <img src={Banner1} alt="" className="slide-item" />

@@ -27,6 +27,7 @@ export default function LoginPage() {
      .then((response) => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem('login', response.data.login);
+        localStorage.setItem('userId', response.data.userId);
         setLoading(false);
         toast.success(
           "Logado com Sucesso!",

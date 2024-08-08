@@ -7,6 +7,8 @@ import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
 import MainPage from "./pages/mainPage/MainPage";
 import ProfilePage from "./pages/profilePage/ProfilePage";
 import AddressPage from "./pages/addressPage/AddressPage";
+import FormProductPage from "./pages/productPage/FormProductPage"
+import ListProductPage from "./pages/productPage/ListProductPage"
 
 function Rotas() {
   return (
@@ -18,6 +20,8 @@ function Rotas() {
         <Route path="profile" element={<ProfilePage />} />
         <Route path="address" element={<AddressPage />} />
         <Route path="/" element={ <MainPage />}/>
+        <Route path="/formProduct" element={ <FormProductPage />}/>
+        <Route path="/listProduct" element={ <ListProductPage />}/>
       </Routes>
     </>
   );
