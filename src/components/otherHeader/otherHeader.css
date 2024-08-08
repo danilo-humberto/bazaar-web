@@ -21,7 +21,7 @@
     margin-right: 20px;
 }
 
-.bell, .shop, .profile {
+.bell, .cart-icon, .profile {
     color: #ff7a00;
     height: 30px;
     width: 30px;
@@ -40,5 +40,4 @@
 
 .btn-login:hover {
     background-color: #FF7A00;
-    border: 1px solid #FFFEFD;
 }

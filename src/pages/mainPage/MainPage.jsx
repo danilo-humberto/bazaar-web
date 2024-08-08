@@ -12,28 +12,33 @@ import { Autoplay, Pagination } from "swiper/modules";
 import GridTemplate from "./Grids/gridTemplate";
 import { AiTwotoneExclamationCircle } from "react-icons/ai";
 import axios from "axios";
+import Cart from "./Cart/Cart";
+import { CartProvider } from "./Cart/CartContext";
 
 export default function MainPage() {
-
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    const loginUser = localStorage.getItem("login")
-    axios.get("http://localhost:8080/api/usuario/userCondition?login=" + loginUser)
+    const loginUser = localStorage.getItem("login");
+    axios
+      .get("http://localhost:8080/api/usuario/userCondition?login=" + loginUser)
       .then((response) => {
-        if(response.data === true) {
-          setIsActive(true)
+        if (response.data === true) {
+          setIsActive(true);
         } else {
-          setIsActive(false)
+          setIsActive(false);
         }
-      })
-  }, [])
+      });
+  }, []);
 
   return (
     <div>
-      <OtherHeader />
+      <CartProvider>
+        <OtherHeader />
+        <Cart />
+      </CartProvider>
       <div className="background-main">
-        <div className="slider-contents">
+        <div>
           <Swiper
             pagination={{ clickable: true }}
             autoplay={{
@@ -41,6 +46,7 @@ export default function MainPage() {
               disableOnInteraction: false,
             }}
             modules={[Autoplay, Pagination]}
+            style={{zIndex: '0'}}
           >
             <SwiperSlide>
               <img src={Banner1} alt="" className="slide-item" />
@@ -63,7 +69,7 @@ export default function MainPage() {
               <span>Ver mais...</span>
             </a>
           </div>
-          {/* <GridTemplate descricao = 'Moda masculina'/> */}
+          <GridTemplate descricao="ModaMasculina" />
 
           <div className="content-above-grids" style={{ paddingTop: "20px" }}>
             <h1>Produtos Mais Baratos da Moda Feminina</h1>
@@ -71,7 +77,7 @@ export default function MainPage() {
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate descricao = 'ModaFeminina'/>
+          <GridTemplate descricao="ModaFeminina" />
 
           <div className="content-above-grids" style={{ paddingTop: "20px" }}>
             <h1>Produtos Mais Baratos da Moda Infantil</h1>
@@ -79,7 +85,7 @@ export default function MainPage() {
               <span>Ver mais...</span>
             </a>
           </div>
-          {/* <GridTemplate descricao = 'Moda infantil'/> */}
+          <GridTemplate descricao="ModaInfantil" />
         </main>
         <div className="contact">
           <div className="image-contact">
@@ -111,14 +117,16 @@ export default function MainPage() {
             </div>
           </div>
         </div>
-         {isActive ?(
-             <div style={{display: 'none'}}></div> 
-          ) : (
-            <div className="info">
-              <AiTwotoneExclamationCircle className="exclamation-icon"/>
-              <span>Verifique a sua conta no e-mail para uma melhor experiência !</span>
-            </div>
-         )}
+        {isActive ? (
+          <div style={{ display: "none" }}></div>
+        ) : (
+          <div className="info">
+            <AiTwotoneExclamationCircle className="exclamation-icon" />
+            <span>
+              Verifique a sua conta no e-mail para uma melhor experiência !
+            </span>
+          </div>
+        )}
         <OtherFooter />
       </div>
     </div>
