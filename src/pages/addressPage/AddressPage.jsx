@@ -91,7 +91,7 @@ export default function AddressPage() {
         onOpen={() => setOpenModal(true)}
         open={openModal}
       >
-        <RegisterAddress />
+        <RegisterAddress onCloseModal = {() => setOpenModal(false)}/>
       </Modal>
     </div>
   );

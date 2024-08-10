@@ -41,3 +41,11 @@
 .btn-login:hover {
     background-color: #FF7A00;
 }
+
+.img-user {
+    background-color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: fill;
+}

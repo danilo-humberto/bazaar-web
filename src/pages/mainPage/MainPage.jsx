@@ -14,9 +14,11 @@ import { AiTwotoneExclamationCircle } from "react-icons/ai";
 import axios from "axios";
 import Cart from "./Cart/Cart";
 import { CartProvider } from "./Cart/CartContext";
+import { Link } from "react-router-dom";
 
 export default function MainPage() {
   const [isActive, setIsActive] = useState(false);
+  const [profileClick, setProfileClick] = useState(false);
 
   useEffect(() => {
     const loginUser = localStorage.getItem("login");
@@ -40,7 +42,7 @@ export default function MainPage() {
   return (
     <div>
       <CartProvider>
-        <OtherHeader />
+        <OtherHeader onClickProfile = {() => setProfileClick(!profileClick)}/>
         <Cart />
       </CartProvider>
       <div className="background-main">
@@ -134,6 +136,12 @@ export default function MainPage() {
           </div>
         )}
         <OtherFooter />
+        {profileClick && (
+          <div className="pop-up">
+            <Link to={"/profile"} style={{color: 'black'}}><span>Ver perfil</span></Link>
+            <span style={{color: 'black'}}>Sair</span>
+          </div>
+        )}
       </div>
     </div>
   );

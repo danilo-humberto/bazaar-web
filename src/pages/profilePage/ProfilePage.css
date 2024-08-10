@@ -1,6 +1,6 @@
 .container-profile {
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,4 +40,22 @@
 
 .profile-edit {
    color: white;
+}
+
+.img-profile {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: fill;
+    object-position: center;
+}
+
+.profile-without-photo {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(222, 222, 222);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

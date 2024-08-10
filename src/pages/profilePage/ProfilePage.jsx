@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Button,
   Grid,
-  Image,
   GridColumn,
   ButtonGroup,
   List,
@@ -10,6 +9,7 @@ import {
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 import axios from "axios";
+import ImageTeste from "../../assets/imageteste.jpeg"
 
 import "./ProfilePage.css";
 import { Link } from "react-router-dom";
@@ -33,10 +33,10 @@ export default function ProfilePage() {
       const response = await axios.get(
         `http://localhost:8080/api/usuario/${userId}`
       );
-      console.log("Estado da Resposta:", response.status);
       if (response.status === 200) {
         const userData = response.data;
-        console.log("Dados do usuário obtidos com sucesso:", userData);
+        console.log(userData);
+        
         setUserData(userData);
       } else {
         console.error(
@@ -67,23 +67,24 @@ export default function ProfilePage() {
                 <GridColumn width={4}>
                   {userData && (
                     <>
-                      <Image src={userData.imagemUrl} size="small" />
+                      <div>
+                        {userData && userData.imageUrl ? (
+                          <img src={ImageTeste} alt="foto de perfil" className="img-profile"/>
+                        ) : (
+                          <div className="profile-without-photo">
+                            <span>Sem Foto</span>
+                          </div>
+                        )}
+                      </div>
                       <List>
                         <List.Item>
-                          <List.Header className>Nome</List.Header>
-                          {userData.nomeCompleto}
+                          <List.Header className>Nome: <span style={{color: 'black'}}>{userData.nomeCompleto}</span></List.Header>
                         </List.Item>
                         <List.Item>
-                          <List.Header>Número</List.Header>
-                          {userData.numeroTelefone}
+                          <List.Header>Número: <span style={{color: 'black'}}>{userData.numeroTelefone}</span></List.Header>                          
                         </List.Item>
                         <List.Item>
-                          <List.Header>Email</List.Header>
-                          {userData.email}
-                        </List.Item>
-                        <List.Item>
-                          <List.Header>Endereço</List.Header>
-                          {userData.endereco}
+                          <List.Header>Email: <span style={{color: 'black'}}>{userData.email}</span></List.Header>
                         </List.Item>
                       </List>
                     </>
@@ -92,20 +93,17 @@ export default function ProfilePage() {
 
                 <GridColumn center>
                   <ButtonGroup vertical>
-                    <Button color="orange" circular size="big">
+                    <Button color="orange" size="big" style={{borderRadius: "5px"}}>
                       Editar Perfil
                     </Button>
                     <br />
-                    <br />
-                    <Button color="orange" circular size="big">
+                    <Button color="orange" size="big" style={{borderRadius: "5px"}}>
                       <Link to={"/listProduct"} style={{color: 'white'}}>Produtos</Link>
                     </Button>
                     <br />
-                    <br />
-                    <Button color="orange" circular size="big">
+                    <Button color="orange" size="big" style={{borderRadius: "5px"}}>
                       <Link to={"/address"} style={{color: "white"}}>Adicionar Endereço</Link>
                     </Button>
-                    <br />
                     <br />
                   </ButtonGroup>
                 </GridColumn>
