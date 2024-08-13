@@ -9,7 +9,6 @@ import {
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 import axios from "axios";
-import ImageTeste from "../../assets/imageteste.jpeg"
 
 import "./ProfilePage.css";
 import { Link } from "react-router-dom";
@@ -30,8 +29,10 @@ export default function ProfilePage() {
     }
 
     try {
+      const token = localStorage.getItem('token')
+
       const response = await axios.get(
-        `http://localhost:8080/api/usuario/${userId}`
+        `http://localhost:8080/api/usuario/${userId}`, {headers: { Authorization: `Bearer ${token}`}}
       );
       if (response.status === 200) {
         const userData = response.data;
@@ -69,7 +70,7 @@ export default function ProfilePage() {
                     <>
                       <div>
                         {userData && userData.imageUrl ? (
-                          <img src={ImageTeste} alt="foto de perfil" className="img-profile"/>
+                          <img src={userData.imageUrl} alt="foto de perfil" className="img-profile"/>
                         ) : (
                           <div className="profile-without-photo">
                             <span>Sem Foto</span>
@@ -94,7 +95,7 @@ export default function ProfilePage() {
                 <GridColumn center>
                   <ButtonGroup vertical>
                     <Button color="orange" size="big" style={{borderRadius: "5px"}}>
-                      Editar Perfil
+                      <Link to={"/editProfile"} style={{color: 'white'}}>Editar Perfil</Link>
                     </Button>
                     <br />
                     <Button color="orange" size="big" style={{borderRadius: "5px"}}>
