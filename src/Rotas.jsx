@@ -10,6 +10,7 @@ import AddressPage from "./pages/addressPage/AddressPage";
 import FormProductPage from "./pages/productPage/FormProductPage"
 import ListProductPage from "./pages/productPage/ListProductPage"
 import DetailsProduct from "./pages/detailsProductPage/DetailsProduct";
+import Payment from "./pages/paymentPage/Payment";
 
 function Rotas() {
   return (
@@ -24,6 +25,7 @@ function Rotas() {
         <Route path="/formProduct" element={ <FormProductPage />}/>
         <Route path="/listProduct" element={ <ListProductPage />}/>
         <Route path="/detailsProduct" element={ <DetailsProduct />}/>
+        <Route path="/payment" element={ <Payment />}/>
       </Routes>
     </>
   );
