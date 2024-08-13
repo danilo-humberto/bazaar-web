@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 import axios from "axios";
-import "./FormProductPage.css"; // Certifique-se de importar o CSS
+import "./FormProductPage.css"; 
 
 export default function FormCliente() {
   const [idProduto, setIdProduto] = useState();
@@ -39,7 +39,7 @@ export default function FormCliente() {
     if (idProduto != null) {
       // Alteração:
       axios
-        .put("http://localhost:8080/api/produto/" + idProduto, formData, {
+        .put("http://localhost:8080/api/produto" + idProduto, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
