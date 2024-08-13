@@ -8,11 +8,16 @@ export default function GridTemplate({descricao}) {
   const [listProduto, setListProduto] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/produto/mais-baratos/${descricao}`)
-      .then((response) => {
-        setListProduto(response.data);
-      });
+    mostrarProdutos();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const mostrarProdutos = async () => {
+    await axios.get(`http://localhost:8080/api/produto/mais-baratos/${descricao}`)
+    .then((response) => {
+      setListProduto(response.data);
+    });
+  }
 
   return (
     <div className="background-grid">

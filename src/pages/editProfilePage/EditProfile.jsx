@@ -3,7 +3,8 @@ import { Button, Grid, GridColumn, Form, Input, Icon } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 import axios from "axios";
-import "../profilePage/ProfilePage";
+import "../profilePage/ProfilePage.css";
+import { Link } from "react-router-dom";
 
 export default function EditProfile() {
   const getUserId = () => {
@@ -14,11 +15,11 @@ export default function EditProfile() {
   const [userData, setUserData] = useState({
     nomeCompleto: "",
     numeroTelefone: "",
-    cpf: "",
-    imageUrl: "",
+    novaSenha: "",
+    confirmaSenha: ""
   });
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -58,20 +59,21 @@ export default function EditProfile() {
   };
 
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+    setImage(e.target.files[0]);
   };
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
 
     const userId = getUserId();
 
+    const { id, cpf, email, endereco, login, situacao, senha, ...dataToSend } = userData;
+    console.log(dataToSend);
+    
+
     const formData = new FormData();
-    formData.append("nomeCompleto", userData.nomeCompleto);
-    formData.append("cpf", userData.cpf);
-    formData.append("numeroTelefone", userData.numeroTelefone);
-    if (selectedFile) {
-      formData.append("image", selectedFile);
+    formData.append("usuario", JSON.stringify(dataToSend));
+    if (image) {
+      formData.append("imagem", image);
     }
 
     try {
@@ -105,13 +107,12 @@ export default function EditProfile() {
           <div className="content-profile">
             <Grid columns={1}>
               <GridColumn width={6}>
-                <Form>
+                <Form onSubmit={handleFormSubmit}>
                   <Form.Field>
                     <label>Foto de Perfil</label>
                     <Input type="file" onChange={handleFileChange} />
                   </Form.Field>
                   <Form.Field>
-                    <br />
                     <label>Nome Completo</label>
                     <Input
                       name="nomeCompleto"
@@ -121,17 +122,24 @@ export default function EditProfile() {
                     />
                   </Form.Field>
                   <Form.Field>
-                    <br />
-                    <label>CPF</label>
+                    <label>Nova Senha</label>
                     <Input
-                      name="cpf"
-                      placeholder="999.999.999-99"
-                      value={userData.cpf}
+                      type="password"
+                      name="novaSenha"
+                      value={userData.novaSenha}
                       onChange={handleInputChange}
                     />
                   </Form.Field>
                   <Form.Field>
-                    <br />
+                    <label>Confirmar Nova Senha</label>
+                    <Input
+                      type="password"
+                      name="confirmaSenha"
+                      value={userData.confirmaSenha}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Field>
+                  <Form.Field>
                     <label>Número de Telefone</label>
                     <Input
                       name="numeroTelefone"
@@ -140,8 +148,6 @@ export default function EditProfile() {
                       onChange={handleInputChange}
                     />
                   </Form.Field>
-                  <br />
-                  <br />
                   <br />
                   <Button
                     type="button"
@@ -152,10 +158,11 @@ export default function EditProfile() {
                     color="orange"
                   >
                     <Icon name="reply" />
-                    Voltar
+                    <Link to={"/profile"} style={{color: 'orange'}}>Voltar</Link>
                   </Button>
 
                   <Button
+                    type="submit"
                     inverted
                     circular
                     icon

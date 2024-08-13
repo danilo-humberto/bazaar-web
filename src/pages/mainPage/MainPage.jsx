@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./MainPage.css";
@@ -22,12 +23,14 @@ export default function MainPage() {
 
   useEffect(() => {
     const loginUser = localStorage.getItem("login");
+    const token = localStorage.getItem("token");
     if (loginUser == null) {
       console.log("sem Id");
     } else {
       axios
         .get(
-          "http://localhost:8080/api/usuario/userCondition?login=" + loginUser
+          "http://localhost:8080/api/usuario/userCondition?login=" + loginUser,
+          { headers: { Authorization: `Bearer ${token}` } }
         )
         .then((response) => {
           if (response.data === true) {
@@ -42,7 +45,7 @@ export default function MainPage() {
   return (
     <div>
       <CartProvider>
-        <OtherHeader onClickProfile = {() => setProfileClick(!profileClick)}/>
+        <OtherHeader onClickProfile={() => setProfileClick(!profileClick)} />
         <Cart />
       </CartProvider>
       <div className="background-main">
@@ -138,8 +141,10 @@ export default function MainPage() {
         <OtherFooter />
         {profileClick && (
           <div className="pop-up">
-            <Link to={"/profile"} style={{color: 'black'}}><span>Ver perfil</span></Link>
-            <span style={{color: 'black'}}>Sair</span>
+            <Link to={"/profile"} style={{ color: "black" }}>
+              <span>Ver perfil</span>
+            </Link>
+            <span style={{ color: "black" }}>Sair</span>
           </div>
         )}
       </div>

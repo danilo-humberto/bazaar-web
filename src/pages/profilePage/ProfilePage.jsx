@@ -55,6 +55,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     UserData(setUserData);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -69,8 +70,8 @@ export default function ProfilePage() {
                   {userData && (
                     <>
                       <div>
-                        {userData && userData.imageUrl ? (
-                          <img src={userData.imageUrl} alt="foto de perfil" className="img-profile"/>
+                        {userData && userData.imagemUrl ? (
+                          <img src={userData.imagemUrl} alt="foto de perfil" className="img-profile"/>
                         ) : (
                           <div className="profile-without-photo">
                             <span>Sem Foto</span>
