@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useCallback } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -20,11 +21,11 @@ export default function ListProductPage() {
   const [filteredList, setFilteredList] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [idRemover, setIdRemover] = useState();
-  const [titulo, setTitulo] = useState('');
-  const [codigo, setCodigo] = useState('');
-  const [valorUnitario, setValorUnitario] = useState('');
-  const [imagem, setImagem] = useState('');
-  const [descricao, setDescricao] = useState('');
+  const [titulo, setTitulo] = useState("");
+  const [codigo, setCodigo] = useState("");
+  const [valorUnitario, setValorUnitario] = useState("");
+  const [imagem, setImagem] = useState("");
+  const [descricao, setDescricao] = useState("");
 
   const getUserId = () => {
     return localStorage.getItem("userId");
@@ -32,7 +33,8 @@ export default function ListProductPage() {
 
   const carregarLista = useCallback(() => {
     const userId = getUserId();
-    axios.get(`http://localhost:8080/api/usuario/${userId}`)
+    axios
+      .get(`http://localhost:8080/api/usuario/${userId}`)
       .then((response) => {
         console.log("Resposta da API:", response.data);
         setLista(response.data.produtos || []);
@@ -50,23 +52,29 @@ export default function ListProductPage() {
   }, [carregarLista]);
 
   const handleFilter = () => {
-    const filtered = lista.filter(produto =>
-      (titulo ? produto.titulo.includes(titulo) : true) &&
-      (codigo ? produto.codigo.includes(codigo) : true) &&
-      (valorUnitario ? produto.valorUnitario.toString().includes(valorUnitario) : true) &&
-      (descricao ? produto.descricao.includes(descricao) : true)
+    const filtered = lista.filter(
+      (produto) =>
+        (titulo ? produto.titulo.includes(titulo) : true) &&
+        (codigo ? produto.codigo.includes(codigo) : true) &&
+        (valorUnitario
+          ? produto.valorUnitario.toString().includes(valorUnitario)
+          : true) &&
+        (descricao ? produto.descricao.includes(descricao) : true)
     );
     setFilteredList(filtered);
   };
 
   const remover = async () => {
-    await axios.delete(`http://localhost:8080/api/usuario/${getUserId()}/produto/${idRemover}`)
+    await axios
+      .delete(
+        `http://localhost:8080/api/usuario/${getUserId()}/produto/${idRemover}`
+      )
       .then((response) => {
-        console.log('Produto removido com sucesso.');
+        console.log("Produto removido com sucesso.");
         carregarLista(); // Recarregar a lista de produtos após remoção
       })
       .catch((error) => {
-        console.log('Erro ao remover o produto.', error);
+        console.log("Erro ao remover o produto.", error);
       });
     setOpenModal(false);
   };
@@ -74,9 +82,15 @@ export default function ListProductPage() {
   return (
     <div>
       <HeaderComponent />
-      <div style={{ marginTop: "8%", height: "69.7vh" }}>
+      <div style={{ marginTop: "8%", height: "100%" }}>
         <Container textAlign="justified">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <h1> Produtos </h1>
             <Button
               label="Novo"
@@ -91,8 +105,8 @@ export default function ListProductPage() {
 
           <Divider />
 
-          <div style={{ marginTop: "5%", marginBottom: "3%"}}>
-            <div style={{ marginBottom: '20px' }}>
+          <div style={{ marginTop: "5%", marginBottom: "3%" }}>
+            <div style={{ marginBottom: "20px" }}>
               <Input
                 placeholder="Título"
                 value={titulo}
@@ -102,18 +116,18 @@ export default function ListProductPage() {
                 placeholder="Código"
                 value={codigo}
                 onChange={(e) => setCodigo(e.target.value)}
-                style={{ marginLeft: '10px' }}
+                style={{ marginLeft: "10px" }}
               />
               <Input
                 placeholder="Valor Unitário"
                 value={valorUnitario}
                 onChange={(e) => setValorUnitario(e.target.value)}
-                style={{ marginLeft: '10px' }}
+                style={{ marginLeft: "10px" }}
               />
               <Button
                 color="blue"
                 onClick={handleFilter}
-                style={{ marginLeft: '10px' }}
+                style={{ marginLeft: "10px" }}
               >
                 Filtrar
               </Button>
@@ -136,7 +150,10 @@ export default function ListProductPage() {
                   filteredList.map((produto) => (
                     <Table.Row key={produto.id}>
                       <Table.Cell>
-                        <Image src={produto.imagemUrl || 'default-image.jpg'} size='small' />
+                        <Image
+                          src={produto.imagemUrl || "default-image.jpg"}
+                          size="small"
+                        />
                       </Table.Cell>
                       <Table.Cell>{produto.codigo}</Table.Cell>
                       <Table.Cell>{produto.titulo}</Table.Cell>
@@ -186,7 +203,7 @@ export default function ListProductPage() {
             </Table>
           </div>
         </Container>
-        <OtherFooter />
+      <OtherFooter />
       </div>
       <Modal
         basic

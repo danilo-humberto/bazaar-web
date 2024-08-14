@@ -3,9 +3,14 @@ import "./gridTemplate.css";
 import CardComponente from "../cards";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function GridTemplate({descricao}) {
   const [listProduto, setListProduto] = useState([]);
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   useEffect(() => {
     mostrarProdutos();
@@ -13,12 +18,15 @@ export default function GridTemplate({descricao}) {
   }, []);
 
   const mostrarProdutos = async () => {
-    await axios.get(`http://localhost:8080/api/produto/mais-baratos/${descricao}`)
+    await axios.get(`http://localhost:8080/api/produto/mais-baratos/${descricao}`, {headers: {Authorization: `Bearer ${token}`}})
     .then((response) => {
       setListProduto(response.data);
     })
     .catch((error) => {
-      console.log("Erro: " + error);
+      if(error.reponse && error.response.status === 401){
+        navigate('/login')
+        toast.warning("Tempo de login foi expirado, faça login novamente!", {position: 'top-right', autoClose: 2000})
+      } else console.log("Erro: " + error);
     })
     ;
   }

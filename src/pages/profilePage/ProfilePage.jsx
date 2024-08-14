@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Grid,
-  GridColumn,
-  ButtonGroup,
-  List,
-} from "semantic-ui-react";
+import { Button, Grid, GridColumn, ButtonGroup, List } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 import axios from "axios";
@@ -29,15 +23,16 @@ export default function ProfilePage() {
     }
 
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://localhost:8080/api/usuario/${userId}`, {headers: { Authorization: `Bearer ${token}`}}
+        `http://localhost:8080/api/usuario/${userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.status === 200) {
         const userData = response.data;
         console.log(userData);
-        
+
         setUserData(userData);
       } else {
         console.error(
@@ -55,7 +50,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     UserData(setUserData);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -71,7 +66,11 @@ export default function ProfilePage() {
                     <>
                       <div>
                         {userData && userData.imagemUrl ? (
-                          <img src={userData.imagemUrl} alt="foto de perfil" className="img-profile"/>
+                          <img
+                            src={userData.imagemUrl}
+                            alt="foto de perfil"
+                            className="img-profile"
+                          />
                         ) : (
                           <div className="profile-without-photo">
                             <span>Sem Foto</span>
@@ -80,13 +79,28 @@ export default function ProfilePage() {
                       </div>
                       <List>
                         <List.Item>
-                          <List.Header className>Nome: <span style={{color: 'black'}}>{userData.nomeCompleto}</span></List.Header>
+                          <List.Header className>
+                            Nome:{" "}
+                            <span style={{ color: "black" }}>
+                              {userData.nomeCompleto}
+                            </span>
+                          </List.Header>
                         </List.Item>
                         <List.Item>
-                          <List.Header>Número: <span style={{color: 'black'}}>{userData.numeroTelefone}</span></List.Header>                          
+                          <List.Header>
+                            Número:{" "}
+                            <span style={{ color: "black" }}>
+                              {userData.numeroTelefone}
+                            </span>
+                          </List.Header>
                         </List.Item>
                         <List.Item>
-                          <List.Header>Email: <span style={{color: 'black'}}>{userData.email}</span></List.Header>
+                          <List.Header>
+                            Email:{" "}
+                            <span style={{ color: "black" }}>
+                              {userData.email}
+                            </span>
+                          </List.Header>
                         </List.Item>
                       </List>
                     </>
@@ -95,16 +109,34 @@ export default function ProfilePage() {
 
                 <GridColumn center>
                   <ButtonGroup vertical>
-                    <Button color="orange" size="big" style={{borderRadius: "5px"}}>
-                      <Link to={"/editProfile"} style={{color: 'white'}}>Editar Perfil</Link>
+                    <Link to={"/editProfile"} style={{ color: "white" }}>
+                      <Button
+                        color="orange"
+                        size="big"
+                        style={{ borderRadius: "5px" }}
+                      >
+                        Editar Perfil
+                      </Button>
+                    </Link>
+                    <br />
+                    <Button
+                      color="orange"
+                      size="big"
+                      style={{ borderRadius: "5px" }}
+                    >
+                      <Link to={"/listProduct"} style={{ color: "white" }}>
+                        Produtos
+                      </Link>
                     </Button>
                     <br />
-                    <Button color="orange" size="big" style={{borderRadius: "5px"}}>
-                      <Link to={"/listProduct"} style={{color: 'white'}}>Produtos</Link>
-                    </Button>
-                    <br />
-                    <Button color="orange" size="big" style={{borderRadius: "5px"}}>
-                      <Link to={"/address"} style={{color: "white"}}>Adicionar Endereço</Link>
+                    <Button
+                      color="orange"
+                      size="big"
+                      style={{ borderRadius: "5px" }}
+                    >
+                      <Link to={"/address"} style={{ color: "white" }}>
+                        Adicionar Endereço
+                      </Link>
                     </Button>
                     <br />
                   </ButtonGroup>

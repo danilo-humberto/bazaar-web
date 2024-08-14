@@ -4,9 +4,14 @@ import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 import axios from "axios";
 import "../profilePage/ProfilePage.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function EditProfile() {
+
+  const navigate = useNavigate();
+
   const getUserId = () => {
     const userId = localStorage.getItem("userId");
     return userId;
@@ -16,7 +21,7 @@ export default function EditProfile() {
     nomeCompleto: "",
     numeroTelefone: "",
     novaSenha: "",
-    confirmaSenha: ""
+    confirmaSenha: "",
   });
 
   const [image, setImage] = useState(null);
@@ -63,12 +68,10 @@ export default function EditProfile() {
   };
 
   const handleFormSubmit = async (e) => {
-
     const userId = getUserId();
 
-    const { id, cpf, email, endereco, login, situacao, senha, ...dataToSend } = userData;
+    const { id, cpf, email, enderecos, produtos, login, situacao, senha, ...dataToSend } = userData;
     console.log(dataToSend);
-    
 
     const formData = new FormData();
     formData.append("usuario", JSON.stringify(dataToSend));
@@ -77,22 +80,27 @@ export default function EditProfile() {
     }
 
     try {
-      const response = await axios.put(
-        `http://localhost:8080/api/usuario/${userId}`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-
-      if (response.status === 200) {
-        alert("Perfil atualizado com sucesso!");
+      if (userData.novaSenha !== userData.confirmaSenha) {
+        toast.warning("As senhas não coincidem !", {
+          position: "top-right",
+          autoClose: 2000,
+        });
       } else {
-        console.error(
-          "Erro ao atualizar perfil",
-          response.status,
-          response.statusText
+        const response = await axios.put(
+          `http://localhost:8080/api/usuario/${userId}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
         );
+
+        if (response.status === 200) {
+          toast.success("Editado com sucesso!", { position: 'top-right', autoClose: 2000 });
+          navigate('/profile')
+        } else {
+          console.error("Erro ao atualizar perfil", response.status, response.statusText);
+          toast.error("Erro ao editar!", { position: 'top-right', autoClose: 2000 });
+        }
       }
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
@@ -158,7 +166,9 @@ export default function EditProfile() {
                     color="orange"
                   >
                     <Icon name="reply" />
-                    <Link to={"/profile"} style={{color: 'orange'}}>Voltar</Link>
+                    <Link to={"/profile"} style={{ color: "orange" }}>
+                      Voltar
+                    </Link>
                   </Button>
 
                   <Button

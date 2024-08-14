@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Form, Input, FormField, Icon, Button, Loader} from "semantic-ui-react";
+import {
+  Form,
+  Input,
+  FormField,
+  Icon,
+  Button,
+  Loader,
+} from "semantic-ui-react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
@@ -16,42 +23,38 @@ export default function LoginPage() {
   const navigation = useNavigate();
 
   function salvar() {
-
     let user = {
       username: login,
-      password: senha
-    }
+      password: senha,
+    };
 
     setLoading(true);
-    axios.post('http://localhost:8080/api/usuario/login', user)
-     .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem('login', response.data.login);
-        localStorage.setItem('userId', response.data.userId);
-        setLoading(false);
-        toast.success(
-          "Logado com Sucesso!",
-          {
+    axios
+      .post("http://localhost:8080/api/usuario/login", user)
+      .then((response) => {
+        console.log(response.data);
+        
+        if (response.status === 200 && response.data.token !== "Acesso negado") {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("login", response.data.login);
+          localStorage.setItem("userId", response.data.userId);
+          setLoading(false);
+          toast.success("Logado com Sucesso!", {
             position: "top-right",
             autoClose: 2000,
-          }
-        );
-        setLogin('');
-        setSenha('');
-        navigation('/');
-     })
-     .catch((error) => {
-      toast.error(
-        "Login ou senha Inválidos!",
-        {
-          position: "top-right",
-          autoClose: 2000,
+          });
+          setLogin("");
+          setSenha("");
+          navigation("/");
+        } else {
+          toast.error("Login ou senha Inválidos!", {
+            position: "top-right",
+            autoClose: 2000,
+          });
+          setLoading(false);
+          setSenha("");
         }
-      );
-      setLoading(false);
-      setLogin('');
-      setSenha('');
-      });
+      })
   }
 
   return (
@@ -104,7 +107,7 @@ export default function LoginPage() {
                 {loading ? (
                   <Loader active inline inverted size="tiny" />
                 ) : (
-                  <span style={{color: 'black'}}>Entrar</span>
+                  <span style={{ color: "black" }}>Entrar</span>
                 )}
               </Button>
             </div>
@@ -112,7 +115,11 @@ export default function LoginPage() {
               <p>Não tem uma conta?</p>
               <Link to={"/register"}>Cadastre-se</Link>
             </div>
-            <span className="forgotPassword"><Link to={"/forgotPassword"} style={{color: 'red'}}>Esqueceu sua senha?</Link></span>
+            <span className="forgotPassword">
+              <Link to={"/forgotPassword"} style={{ color: "red" }}>
+                Esqueceu sua senha?
+              </Link>
+            </span>
           </div>
         </div>
       </div>

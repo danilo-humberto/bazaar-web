@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -15,11 +16,14 @@ import { AiTwotoneExclamationCircle } from "react-icons/ai";
 import axios from "axios";
 import Cart from "./Cart/Cart";
 import { CartProvider } from "./Cart/CartContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function MainPage() {
   const [isActive, setIsActive] = useState(false);
   const [profileClick, setProfileClick] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loginUser = localStorage.getItem("login");
@@ -38,9 +42,29 @@ export default function MainPage() {
           } else {
             setIsActive(false);
           }
-        });
+        }).catch((error) => {
+          if(error.reponse && error.response.status === 401){
+            navigate('/login')
+            toast.warning("Tempo de login foi expirado, faça login novamente!", {position: 'top-right', autoClose: 2000})
+          } else console.log("Erro: " + error);
+        })
     }
   }, []);
+
+  const handleLogout = () => {
+    // Remove os dados do localStorage
+    localStorage.removeItem("login");
+    localStorage.removeItem("token");
+
+    // Redireciona o usuário para a página de login
+    navigate("/login");
+    
+    // Exibe uma mensagem de sucesso
+    toast.success("Logout realizado com sucesso!", {
+      position: "top-right",
+      autoClose: 2000,
+    });
+  };
 
   return (
     <div>
@@ -76,25 +100,16 @@ export default function MainPage() {
         <main>
           <div className="content-above-grids">
             <h1>Produtos Mais Baratos da Moda Masculina</h1>
-            <a href="#">
-              <span>Ver mais...</span>
-            </a>
           </div>
           <GridTemplate descricao="ModaMasculina" />
 
-          <div className="content-above-grids" style={{ paddingTop: "20px" }}>
+          <div className="content-above-grids">
             <h1>Produtos Mais Baratos da Moda Feminina</h1>
-            <a href="#">
-              <span>Ver mais...</span>
-            </a>
           </div>
           <GridTemplate descricao="ModaFeminina" />
 
-          <div className="content-above-grids" style={{ paddingTop: "20px" }}>
+          <div className="content-above-grids">
             <h1>Produtos Mais Baratos da Moda Infantil</h1>
-            <a href="#">
-              <span>Ver mais...</span>
-            </a>
           </div>
           <GridTemplate descricao="ModaInfantil" />
         </main>
@@ -144,7 +159,7 @@ export default function MainPage() {
             <Link to={"/profile"} style={{ color: "black" }}>
               <span>Ver perfil</span>
             </Link>
-            <span style={{ color: "black" }}>Sair</span>
+            <span style={{ color: "black", cursor: 'pointer' }} onClick={handleLogout}>Sair</span>
           </div>
         )}
       </div>
