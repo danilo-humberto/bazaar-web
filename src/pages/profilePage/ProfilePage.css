@@ -1,13 +1,13 @@
 .container-profile {
-    width: 1000vw;
-    height: 100vh;
+    width: 100vw;
+    height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .background-profile {
-    width: 500px;
+    width: 1000px;
     height: 550px;
     background-color: white;
     border: 2px solid black;
@@ -16,20 +16,9 @@
 }
 
 .content-profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-top: 50px;
+    margin-left: 200px;
 }
-
-
-.form-content-profile {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 300px;
-    padding-top: 30px;
-}
-
 
 @media(max-width: 500px) {
     .background-profile {
@@ -38,9 +27,35 @@
 }
 
 .name{
-    font-size: 20px;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: black;
 }
 
 .infos{
-    font-size: 10px
+    font-size: 15px;
+    color: black;
+}
+
+.profile-edit {
+   color: white;
+}
+
+.img-profile {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: fill;
+    object-position: center;
+}
+
+.profile-without-photo {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(222, 222, 222);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

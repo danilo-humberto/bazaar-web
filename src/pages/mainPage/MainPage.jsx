@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./MainPage.css";
@@ -12,25 +13,43 @@ import { Autoplay, Pagination } from "swiper/modules";
 import GridTemplate from "./Grids/gridTemplate";
 import { AiTwotoneExclamationCircle } from "react-icons/ai";
 import axios from "axios";
+import Cart from "./Cart/Cart";
+import { CartProvider } from "./Cart/CartContext";
+import { Link } from "react-router-dom";
 
 export default function MainPage() {
-
   const [isActive, setIsActive] = useState(false);
+  const [profileClick, setProfileClick] = useState(false);
 
   useEffect(() => {
-    const IdUser = localStorage.getItem("id");
-
-    // axios.get(`http://localhost:8080/api/usuario/${IdUser}`)
-    //   .then((response) => {
-
-    //   })
-  }, [])
+    const loginUser = localStorage.getItem("login");
+    const token = localStorage.getItem("token");
+    if (loginUser == null) {
+      console.log("sem Id");
+    } else {
+      axios
+        .get(
+          "http://localhost:8080/api/usuario/userCondition?login=" + loginUser,
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        .then((response) => {
+          if (response.data === true) {
+            setIsActive(true);
+          } else {
+            setIsActive(false);
+          }
+        });
+    }
+  }, []);
 
   return (
     <div>
-      <OtherHeader />
+      <CartProvider>
+        <OtherHeader onClickProfile={() => setProfileClick(!profileClick)} />
+        <Cart />
+      </CartProvider>
       <div className="background-main">
-        <div className="slider-contents">
+        <div>
           <Swiper
             pagination={{ clickable: true }}
             autoplay={{
@@ -38,6 +57,7 @@ export default function MainPage() {
               disableOnInteraction: false,
             }}
             modules={[Autoplay, Pagination]}
+            style={{ zIndex: "0" }}
           >
             <SwiperSlide>
               <img src={Banner1} alt="" className="slide-item" />
@@ -55,28 +75,28 @@ export default function MainPage() {
         </div>
         <main>
           <div className="content-above-grids">
-            <h1>Principais Produtos Masculinos</h1>
+            <h1>Produtos Mais Baratos da Moda Masculina</h1>
             <a href="#">
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate />
+          <GridTemplate descricao="ModaMasculina" />
 
           <div className="content-above-grids" style={{ paddingTop: "20px" }}>
-            <h1>Principais Produtos Femininos</h1>
+            <h1>Produtos Mais Baratos da Moda Feminina</h1>
             <a href="#">
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate />
+          <GridTemplate descricao="ModaFeminina" />
 
           <div className="content-above-grids" style={{ paddingTop: "20px" }}>
-            <h1>Principais Produtos Infantis</h1>
+            <h1>Produtos Mais Baratos da Moda Infantil</h1>
             <a href="#">
               <span>Ver mais...</span>
             </a>
           </div>
-          <GridTemplate />
+          <GridTemplate descricao="ModaInfantil" />
         </main>
         <div className="contact">
           <div className="image-contact">
@@ -108,15 +128,25 @@ export default function MainPage() {
             </div>
           </div>
         </div>
-         {isActive ?(
-             <div style={{display: 'none'}}></div> 
-          ) : (
-            <div className="info">
-              <AiTwotoneExclamationCircle className="exclamation-icon"/>
-              <span>Verifique a sua conta no e-mail para uma melhor experiência !</span>
-            </div>
-         )}
+        {isActive ? (
+          <div style={{ display: "none" }}></div>
+        ) : (
+          <div className="info">
+            <AiTwotoneExclamationCircle className="exclamation-icon" />
+            <span>
+              Verifique a sua conta no e-mail para uma melhor experiência !
+            </span>
+          </div>
+        )}
         <OtherFooter />
+        {profileClick && (
+          <div className="pop-up">
+            <Link to={"/profile"} style={{ color: "black" }}>
+              <span>Ver perfil</span>
+            </Link>
+            <span style={{ color: "black" }}>Sair</span>
+          </div>
+        )}
       </div>
     </div>
   );
