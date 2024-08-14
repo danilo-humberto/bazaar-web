@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Form, Icon, Button, Container, Input } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import { Form, Icon, Button, Container, Input, FormTextArea } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
@@ -11,23 +11,46 @@ export default function FormCliente() {
   const [codigo, setCodigo] = useState();
   const [titulo, setTitulo] = useState();
   const [valorUnitario, setValorUnitario] = useState();
-  const [tempoEntregaMinimo, setTempoEntregaMinimo] = useState();
-  const [tempoEntregaMaximo, setTempoEntregaMaximo] = useState();
   const [idCategoria, setIdCategoria] = useState();
   const [imagem, setImagem] = useState(null);
+  const [listaCategoria, setListaCategoria] = useState([])
+  const [descricao, setDescricao] = useState([])
+  
 
   const handleFileChange = (e) => {
     setImagem(e.target.files[0]);
   };
 
+  const getUserId = () => {
+    const userId = localStorage.getItem("userId");
+    return userId;
+  };
+
+  const limpar =() =>{
+
+    setCodigo('')
+          
+    setTitulo('')
+
+    setValorUnitario('')
+
+    setImagem('')
+
+    setListaCategoria('')
+  
+    setDescricao('')
+    
+  }
   const salvar = () => {
+
+    const userId = getUserId();
+    
     let produtoRequest = {
       idCategoria: idCategoria,
       codigo: codigo,
       titulo: titulo,
       valorUnitario: valorUnitario,
-      tempoEntregaMinimo: tempoEntregaMinimo,
-      tempoEntregaMaximo: tempoEntregaMaximo,
+      descricao:descricao
     };
 
     let formData = new FormData();
@@ -39,13 +62,14 @@ export default function FormCliente() {
     if (idProduto != null) {
       // Alteração:
       axios
-        .put("http://localhost:8080/api/produto" + idProduto, formData, {
+        .put(`http://localhost:8080/api/produto/${userId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((response) => {
           console.log("Produto alterado com sucesso.");
+          limpar();
         })
         .catch((error) => {
           console.log("Erro ao alterar um produto.");
@@ -53,19 +77,30 @@ export default function FormCliente() {
     } else {
       // Cadastro:
       axios
-        .post("http://localhost:8080/api/produto", formData, {
+      .post(`http://localhost:8080/api/produto/${userId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((response) => {
           console.log("Produto cadastrado com sucesso.");
+          limpar();
         })
         .catch((error) => {
           console.log("Erro ao incluir o produto.");
         });
     }
   };
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/api/categoriaproduto")
+       .then((response) => {
+           const dropDownCategorias = response.data.map(c => ({ text: c.descricao, value: c.id }));
+           setListaCategoria(dropDownCategorias);
+       })
+
+  }, [])
+
 
   return (
     <div>
@@ -121,16 +156,16 @@ export default function FormCliente() {
 
               <Form.Group>
                 <Form.Select
-                width={8}
-                  required
-                  fluid
-                  tabIndex="3"
-                  placeholder="Selecione"
-                  label="Categoria"
-                  value={idCategoria}
-                  onChange={(e, { value }) => {
-                    setIdCategoria(value);
-                  }}
+                required
+                fluid
+                tabIndex='3'
+                placeholder='Selecione'
+                label='Categoria'
+                options={listaCategoria}
+                value={idCategoria}
+                onChange={(e, { value }) => {
+                  setIdCategoria(value)
+                }}
                 />
 
                 <Form.Input
@@ -141,6 +176,17 @@ export default function FormCliente() {
                   value={valorUnitario}
                   onChange={(e) => setValorUnitario(e.target.value)}
                 ></Form.Input>
+              </Form.Group>
+
+              <Form.Group>
+                <FormTextArea
+                  required
+                  label='Descrição'
+                  placeholder='Informe a descrição do produto'
+                  width={16}
+                  value={descricao}
+                  onChange={(e) => setDescricao(e.target.value)}
+                />
               </Form.Group>
 
               {/* Campo de Upload de Imagem */}
@@ -190,3 +236,4 @@ export default function FormCliente() {
     </div>
   );
 }
+
