@@ -74,7 +74,7 @@ export default function ListProductPage() {
   return (
     <div>
       <HeaderComponent />
-      <div style={{ marginTop: "10%", height: "69.7vh", overflow: 'hidden' }}>
+      <div style={{ marginTop: "8%", height: "69.7vh" }}>
         <Container textAlign="justified">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h1> Produtos </h1>
@@ -91,7 +91,7 @@ export default function ListProductPage() {
 
           <Divider />
 
-          <div style={{ marginTop: "5%" }}>
+          <div style={{ marginTop: "5%", marginBottom: "3%"}}>
             <div style={{ marginBottom: '20px' }}>
               <Input
                 placeholder="Título"
@@ -186,8 +186,8 @@ export default function ListProductPage() {
             </Table>
           </div>
         </Container>
+        <OtherFooter />
       </div>
-      <OtherFooter />
       <Modal
         basic
         onClose={() => setOpenModal(false)}

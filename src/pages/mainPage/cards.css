@@ -19,3 +19,9 @@
     display: flex;
     flex-direction: column;
 }
+
+.image-product {
+    width: 100%;
+    height: 333px;
+    object-fit: initial;
+}

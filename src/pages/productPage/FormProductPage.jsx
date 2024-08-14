@@ -35,8 +35,6 @@ export default function FormCliente() {
     setValorUnitario('')
 
     setImagem('')
-
-    setListaCategoria('')
   
     setDescricao('')
     
@@ -72,7 +70,7 @@ export default function FormCliente() {
           limpar();
         })
         .catch((error) => {
-          console.log("Erro ao alterar um produto.");
+          console.log("Erro ao alterar um produto." + userId);
         });
     } else {
       // Cadastro:

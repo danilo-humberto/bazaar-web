@@ -1,6 +1,5 @@
 import {
   Card,
-  Image,
   CardContent,
   CardDescription,
   CardHeader,
@@ -11,7 +10,7 @@ import "./cards.css";
 export default function CardComponent({imageUrl, titulo, descricao, valorUnitario}) {
   return (
     <Card>
-      <Image src={imageUrl} wrapped ui={false} />
+      <img src={imageUrl} alt="" className="image-product"/>
       <CardContent>
         <CardHeader>{valorUnitario}</CardHeader>
         <CardDescription>

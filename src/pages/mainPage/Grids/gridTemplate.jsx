@@ -16,7 +16,11 @@ export default function GridTemplate({descricao}) {
     await axios.get(`http://localhost:8080/api/produto/mais-baratos/${descricao}`)
     .then((response) => {
       setListProduto(response.data);
-    });
+    })
+    .catch((error) => {
+      console.log("Erro: " + error);
+    })
+    ;
   }
 
   return (

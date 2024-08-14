@@ -38,7 +38,7 @@ export default function LoginPage() {
         );
         setLogin('');
         setSenha('');
-        navigation('/')
+        navigation('/');
      })
      .catch((error) => {
       toast.error(
