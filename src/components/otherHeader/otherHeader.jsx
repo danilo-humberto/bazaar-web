@@ -61,6 +61,7 @@ function OtherHeader({ onClickProfile }) {
               alt="Foto de Perfil"
               className="img-user"
               onClick={onClickProfile}
+              style={{cursor: 'pointer'}}
             />
           ) : (
             <FaRegUser className="profile" onClick={onClickProfile} />

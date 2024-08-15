@@ -25,6 +25,21 @@ export default function MainPage() {
   const [profileClick, setProfileClick] = useState(false);
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    // Remove os dados do localStorage
+    localStorage.removeItem("login");
+    localStorage.removeItem("token");
+
+    // Redireciona o usuário para a página de login
+    navigate("/");
+    
+    // Exibe uma mensagem de sucesso
+    toast.success("Logout realizado com sucesso!", {
+      position: "top-right",
+      autoClose: 2000,
+    });
+  };
+
   useEffect(() => {
     const loginUser = localStorage.getItem("login");
     const token = localStorage.getItem("token");
@@ -49,22 +64,9 @@ export default function MainPage() {
           } else console.log("Erro: " + error);
         })
     }
-  }, []);
+  }, [handleLogout]);
 
-  const handleLogout = () => {
-    // Remove os dados do localStorage
-    localStorage.removeItem("login");
-    localStorage.removeItem("token");
-
-    // Redireciona o usuário para a página de login
-    navigate("/login");
-    
-    // Exibe uma mensagem de sucesso
-    toast.success("Logout realizado com sucesso!", {
-      position: "top-right",
-      autoClose: 2000,
-    });
-  };
+  
 
   return (
     <div>
