@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Form, Icon, Button, Container, Input, FormTextArea } from "semantic-ui-react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Button, Container, Form, FormTextArea, Icon, Input } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
-import axios from "axios";
-import "./FormProductPage.css"; 
+import "./FormProductPage.css";
 
 export default function FormCliente() {
   // eslint-disable-next-line no-unused-vars
@@ -16,6 +16,7 @@ export default function FormCliente() {
   const [imagem, setImagem] = useState(null);
   const [listaCategoria, setListaCategoria] = useState([])
   const [descricao, setDescricao] = useState([])
+  const token = localStorage.getItem('token')
   
 
   const handleFileChange = (e) => {
@@ -91,13 +92,21 @@ export default function FormCliente() {
     }
   };
 
+  const [productData, setProductData] = useState({
+    titulo: '',
+    codigo: '',
+    descricao: '',
+    valorUnitario: '',
+    categora: '',
+
+  }) 
+
   useEffect(() => {
-    axios.get("http://localhost:8080/api/categoriaproduto")
+    axios.get("http://localhost:8080/api/categoriaproduto", {headers: {Authorization: `Bearer ${token}`}})
        .then((response) => {
            const dropDownCategorias = response.data.map(c => ({ text: c.descricao, value: c.id }));
            setListaCategoria(dropDownCategorias);
        })
-
   }, [])
 
 

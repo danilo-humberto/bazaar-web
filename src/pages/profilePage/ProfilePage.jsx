@@ -70,6 +70,7 @@ export default function ProfilePage() {
                             src={userData.imagemUrl}
                             alt="foto de perfil"
                             className="img-profile"
+                            loading="lazy"
                           />
                         ) : (
                           <div className="profile-without-photo">

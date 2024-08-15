@@ -67,7 +67,7 @@ export default function ListProductPage() {
   const remover = async () => {
     await axios
       .delete(
-        `http://localhost:8080/api/usuario/${getUserId()}/produto/${idRemover}`
+        `http://localhost:8080/api/produto/${idRemover}`
       )
       .then((response) => {
         console.log("Produto removido com sucesso.");
@@ -158,7 +158,7 @@ export default function ListProductPage() {
                       <Table.Cell>{produto.codigo}</Table.Cell>
                       <Table.Cell>{produto.titulo}</Table.Cell>
                       <Table.Cell>{produto.descricao}</Table.Cell>
-                      <Table.Cell>{produto.valorUnitario}</Table.Cell>
+                      <Table.Cell>R$ {produto.valorUnitario}</Table.Cell>
                       <Table.Cell textAlign="center">
                         <Button
                           inverted
@@ -168,7 +168,7 @@ export default function ListProductPage() {
                           icon
                         >
                           <Link
-                            to="/form-produto"
+                            to="/formProduct"
                             state={{ id: produto.id }}
                             style={{ color: "green" }}
                           >

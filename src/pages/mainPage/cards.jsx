@@ -10,7 +10,7 @@ import "./cards.css";
 export default function CardComponent({imageUrl, titulo, descricao, valorUnitario}) {
   return (
     <Card>
-      <img src={imageUrl} alt="" className="image-product"/>
+      <img src={imageUrl} alt="" className="image-product" loading="lazy"/>
       <CardContent>
         <CardHeader>{valorUnitario}</CardHeader>
         <CardDescription>
