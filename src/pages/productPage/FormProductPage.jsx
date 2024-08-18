@@ -16,7 +16,7 @@ export default function FormCliente() {
   const [imagem, setImagem] = useState(null);
   const [listaCategoria, setListaCategoria] = useState([])
   const [descricao, setDescricao] = useState([])
-  const token = localStorage.getItem('token')
+  const [token, setToken] = useState(null);
   
 
   const handleFileChange = (e) => {
@@ -27,6 +27,15 @@ export default function FormCliente() {
     const userId = localStorage.getItem("userId");
     return userId;
   };
+
+  useEffect(() => {
+    const getToken = async () => {
+      const storedToken = await localStorage.getItem("token");
+      setToken(storedToken);
+    }
+
+    getToken();
+  }, [])
 
   const limpar =() =>{
 
@@ -41,7 +50,7 @@ export default function FormCliente() {
     setDescricao('')
     
   }
-  const salvar = () => {
+  const salvar = async () => {
 
     const userId = getUserId();
     
@@ -61,10 +70,11 @@ export default function FormCliente() {
 
     if (idProduto != null) {
       // Alteração:
-      axios
+      await axios
         .put(`http://localhost:8080/api/produto/${userId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`
           },
         })
         .then((response) => {
@@ -76,10 +86,11 @@ export default function FormCliente() {
         });
     } else {
       // Cadastro:
-      axios
+      await axios
       .post(`http://localhost:8080/api/produto/${userId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`
           },
         })
         .then((response) => {
@@ -102,12 +113,35 @@ export default function FormCliente() {
   }) 
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/categoriaproduto", {headers: {Authorization: `Bearer ${token}`}})
-       .then((response) => {
-           const dropDownCategorias = response.data.map(c => ({ text: c.descricao, value: c.id }));
-           setListaCategoria(dropDownCategorias);
-       })
-  }, [])
+    const buscarCategorias = async () => {
+      if (!token) {
+        console.log("Token não disponível ainda");
+        return;
+      }
+  
+      try {
+        const response = await axios.get("http://localhost:8080/api/categoriaproduto", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if (response.status === 200) {
+          const dropDownCategorias = response.data.map((c) => ({
+            text: c.descricao,
+            value: c.id,
+          }));
+          setListaCategoria(dropDownCategorias);
+        } else {
+          console.log("Erro ao trazer as categorias, status: ", response.status);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+  
+    buscarCategorias();
+  }, [token]);
+
+  
 
 
   return (
@@ -166,6 +200,7 @@ export default function FormCliente() {
                 <Form.Select
                 required
                 fluid
+                width={6}
                 tabIndex='3'
                 placeholder='Selecione'
                 label='Categoria'
@@ -177,7 +212,7 @@ export default function FormCliente() {
                 />
 
                 <Form.Input
-                width={8}
+                width={10}
                   required
                   fluid
                   label="Valor Unitário"

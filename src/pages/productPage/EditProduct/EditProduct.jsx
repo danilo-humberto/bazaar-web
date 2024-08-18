@@ -43,11 +43,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
     try {
       const response = await axios.put(
         `http://localhost:8080/api/produto/${produto.id}`,
-        formData,
-        {
-          headers: {"Content-Type: multipart/form-data"}
-        }
-      );
+        formData, { headers: { "Content-Type": "multipart/form-data"}});
 
       if (response.status === 200) {
         toast.success("Editado com sucesso!", {

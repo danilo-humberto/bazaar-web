@@ -40,7 +40,6 @@ export default function ListProductPage() {
     axios
       .get(`http://localhost:8080/api/usuario/${userId}`)
       .then((response) => {
-        console.log("Resposta da API:", response.data);
         setLista(response.data.produtos || []);
         setFilteredList(response.data.produtos || []); // Inicializa a lista filtrada
       })
@@ -100,7 +99,7 @@ export default function ListProductPage() {
   return (
     <div>
       <HeaderComponent />
-      <div style={{ marginTop: "8%", height: "100vh" }}>
+      <div style={{ marginTop: "8%", height: "100%" }}>
         <Container textAlign="justified" style={{height: '100%'}}>
           <div
             style={{
@@ -123,7 +122,7 @@ export default function ListProductPage() {
 
           <Divider />
 
-          <div style={{ marginTop: "5%", marginBottom: "3%" }}>
+          <div style={{ marginTop: "5%", marginBottom: "5%" }}>
             <div style={{ marginBottom: "20px" }}>
               <Input
                 placeholder="Título"
@@ -218,8 +217,8 @@ export default function ListProductPage() {
             </Table>
           </div>
         </Container>
-        <OtherFooter />
       </div>
+        <OtherFooter />
       <Modal
         basic
         onClose={() => setOpenModalEdit(false)}
