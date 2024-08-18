@@ -15,17 +15,21 @@ import {
 } from "semantic-ui-react";
 import HeaderComponent from "../../components/header/header";
 import OtherFooter from "../../components/otherFooter/otherFooter";
+import EditProduct from "./EditProduct/EditProduct";
 
 export default function ListProductPage() {
   const [lista, setLista] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
   const [idRemover, setIdRemover] = useState();
   const [titulo, setTitulo] = useState("");
   const [codigo, setCodigo] = useState("");
   const [valorUnitario, setValorUnitario] = useState("");
   const [imagem, setImagem] = useState("");
   const [descricao, setDescricao] = useState("");
+
+  const [produtoSelecionado, setProdutoSelecionado] = useState(null);
 
   const getUserId = () => {
     return localStorage.getItem("userId");
@@ -66,9 +70,7 @@ export default function ListProductPage() {
 
   const remover = async () => {
     await axios
-      .delete(
-        `http://localhost:8080/api/produto/${idRemover}`
-      )
+      .delete(`http://localhost:8080/api/produto/${idRemover}`)
       .then((response) => {
         console.log("Produto removido com sucesso.");
         carregarLista(); // Recarregar a lista de produtos após remoção
@@ -79,11 +81,27 @@ export default function ListProductPage() {
     setOpenModal(false);
   };
 
+  const editarProduto = async (produtoId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/produto/${produtoId}`
+      );
+      if (response.status === 200) {
+        setProdutoSelecionado(response.data);
+        setOpenModalEdit(true);
+      } else {
+        console.error("Erro ao buscar dados do produto específico!");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer a requisição: ", error);
+    }
+  };
+
   return (
     <div>
       <HeaderComponent />
-      <div style={{ marginTop: "8%", height: "100%" }}>
-        <Container textAlign="justified">
+      <div style={{ marginTop: "8%", height: "100vh" }}>
+        <Container textAlign="justified" style={{height: '100%'}}>
           <div
             style={{
               display: "flex",
@@ -166,14 +184,11 @@ export default function ListProductPage() {
                           color="green"
                           title="Clique aqui para editar os dados deste produto"
                           icon
+                          onClick={() => {
+                            editarProduto(produto.id);
+                          }}
                         >
-                          <Link
-                            to="/formProduct"
-                            state={{ id: produto.id }}
-                            style={{ color: "green" }}
-                          >
-                            <Icon name="edit" />
-                          </Link>
+                          <Icon name="edit" />
                         </Button>{" "}
                         &nbsp;
                         <Button
@@ -203,8 +218,19 @@ export default function ListProductPage() {
             </Table>
           </div>
         </Container>
-      <OtherFooter />
+        <OtherFooter />
       </div>
+      <Modal
+        basic
+        onClose={() => setOpenModalEdit(false)}
+        onOpen={() => setOpenModalEdit(true)}
+        open={openModalEdit}
+      >
+        <EditProduct
+          produto={produtoSelecionado}
+          onCloseModal={() => setOpenModalEdit(!openModalEdit)}
+        />
+      </Modal>
       <Modal
         basic
         onClose={() => setOpenModal(false)}
