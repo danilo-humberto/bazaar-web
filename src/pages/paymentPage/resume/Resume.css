@@ -1,0 +1,82 @@
+.itens-payment {
+    display: flex;
+    padding: 10px 0;
+    transition: 0.3s;
+}
+
+.itens-payment:hover {
+    background-color: rgba(90, 88, 88, 0.221);
+    border-radius: 10px;
+    padding: 10px 5px;
+}
+
+.itens-payment img {
+    width: 150px;
+    height: 100px;
+    border-radius: 10px;
+}
+
+.info-itens-payment {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: start;
+}
+
+.info-itens-payment p {
+    color: black;
+    max-width: 150px;
+    font-size: 16px;
+    text-transform: capitalize;
+    text-align: start;
+}
+
+.info-itens-payment span {
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.total-itens-payment {
+    border-top: 1px solid black;
+    margin-top: 20px;
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.total-itens-payment p {
+    color: black;
+    margin: 0;
+    font-size: 18px;
+}
+
+.total-itens-payment span {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.btn-finish {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.btn-finish button {
+    border: none;
+    padding: 15px 10px;
+    width: 200px;
+    background-color: #FF7A00;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-finish button:hover {
+    background-color: #eb7201;
+}

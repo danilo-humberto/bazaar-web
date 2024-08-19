@@ -35,19 +35,32 @@ export default function ListProductPage() {
     return localStorage.getItem("userId");
   };
 
-  const carregarLista = useCallback(() => {
+  const getToken = () => {
+    return localStorage.getItem("token");
+  }
+
+  const carregarLista = useCallback(async () => {
     const userId = getUserId();
-    axios
-      .get(`http://localhost:8080/api/usuario/${userId}`)
-      .then((response) => {
+    const token = getToken();
+    if(!token) {
+      console.log("Token não carregado ainda")
+    }
+
+    try {
+      const response = await axios.get(`http://localhost:8080/api/usuario/${userId}`, {headers: {Authorization: `Bearer ${token}`}})
+
+      if ( response.status === 200) {
         setLista(response.data.produtos || []);
-        setFilteredList(response.data.produtos || []); // Inicializa a lista filtrada
-      })
-      .catch((error) => {
-        console.error("Erro ao carregar a lista", error);
+        console.log(response.data.produtos)
+        setFilteredList(response.data.produtos || []);
+      } else {
+        console.error("Erro ao carregar a lista");
         setLista([]);
         setFilteredList([]);
-      });
+      }
+    } catch (error ) {
+      console.error("Falha ao receber os dados", error)
+    }
   }, []);
 
   useEffect(() => {
@@ -88,6 +101,7 @@ export default function ListProductPage() {
       if (response.status === 200) {
         setProdutoSelecionado(response.data);
         setOpenModalEdit(true);
+        console.log(response.data)
       } else {
         console.error("Erro ao buscar dados do produto específico!");
       }
@@ -122,7 +136,7 @@ export default function ListProductPage() {
 
           <Divider />
 
-          <div style={{ marginTop: "5%", marginBottom: "5%" }}>
+          <div style={{ marginTop: "5%", marginBottom: "5%", 'display': 'flex', 'flexDirection': 'column' }}>
             <div style={{ marginBottom: "20px" }}>
               <Input
                 placeholder="Título"
@@ -150,71 +164,71 @@ export default function ListProductPage() {
               </Button>
             </div>
 
-            <Table color="orange" sortable celled>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>Imagem</Table.HeaderCell>
-                  <Table.HeaderCell>Código</Table.HeaderCell>
-                  <Table.HeaderCell>Título</Table.HeaderCell>
-                  <Table.HeaderCell>Descrição</Table.HeaderCell>
-                  <Table.HeaderCell>Valor Unitário</Table.HeaderCell>
-                  <Table.HeaderCell textAlign="center">Ações</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-
-              <Table.Body>
-                {filteredList.length > 0 ? (
-                  filteredList.map((produto) => (
-                    <Table.Row key={produto.id}>
-                      <Table.Cell>
-                        <Image
-                          src={produto.imagemUrl || "default-image.jpg"}
-                          size="small"
-                        />
-                      </Table.Cell>
-                      <Table.Cell>{produto.codigo}</Table.Cell>
-                      <Table.Cell>{produto.titulo}</Table.Cell>
-                      <Table.Cell>{produto.descricao}</Table.Cell>
-                      <Table.Cell>R$ {produto.valorUnitario}</Table.Cell>
-                      <Table.Cell textAlign="center">
-                        <Button
-                          inverted
-                          circular
-                          color="green"
-                          title="Clique aqui para editar os dados deste produto"
-                          icon
-                          onClick={() => {
-                            editarProduto(produto.id);
-                          }}
-                        >
-                          <Icon name="edit" />
-                        </Button>{" "}
-                        &nbsp;
-                        <Button
-                          inverted
-                          circular
-                          color="red"
-                          title="Clique aqui para remover este produto"
-                          icon
-                          onClick={() => {
-                            setIdRemover(produto.id);
-                            setOpenModal(true);
-                          }}
-                        >
-                          <Icon name="trash" />
-                        </Button>
+            <div style={{'flex': 1}}>
+              <Table color="orange" sortable celled>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>Imagem</Table.HeaderCell>
+                    <Table.HeaderCell>Código</Table.HeaderCell>
+                    <Table.HeaderCell>Título</Table.HeaderCell>
+                    <Table.HeaderCell>Descrição</Table.HeaderCell>
+                    <Table.HeaderCell>Valor Unitário</Table.HeaderCell>
+                    <Table.HeaderCell textAlign="center">Ações</Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {filteredList.length > 0 ? (
+                    filteredList.map((produto) => (
+                      <Table.Row key={produto.id}>
+                        <Table.Cell>
+                          <Image
+                            src={produto.imagemUrl || "default-image.jpg"}
+                            size="small"
+                          />
+                        </Table.Cell>
+                        <Table.Cell>{produto.codigo}</Table.Cell>
+                        <Table.Cell>{produto.titulo}</Table.Cell>
+                        <Table.Cell>{produto.descricao}</Table.Cell>
+                        <Table.Cell>R$ {produto.valorUnitario}</Table.Cell>
+                        <Table.Cell textAlign="center">
+                          <Button
+                            inverted
+                            circular
+                            color="green"
+                            title="Clique aqui para editar os dados deste produto"
+                            icon
+                            onClick={() => {
+                              editarProduto(produto.id);
+                            }}
+                          >
+                            <Icon name="edit" />
+                          </Button>{" "}
+                          <Button
+                            inverted
+                            circular
+                            color="red"
+                            title="Clique aqui para remover este produto"
+                            icon
+                            onClick={() => {
+                              setIdRemover(produto.id);
+                              setOpenModal(true);
+                            }}
+                          >
+                            <Icon name="trash" />
+                          </Button>
+                        </Table.Cell>
+                      </Table.Row>
+                    ))
+                  ) : (
+                    <Table.Row>
+                      <Table.Cell colSpan="6" textAlign="center">
+                        Nenhum produto encontrado.
                       </Table.Cell>
                     </Table.Row>
-                  ))
-                ) : (
-                  <Table.Row>
-                    <Table.Cell colSpan="6" textAlign="center">
-                      Nenhum produto encontrado.
-                    </Table.Cell>
-                  </Table.Row>
-                )}
-              </Table.Body>
-            </Table>
+                  )}
+                </Table.Body>
+              </Table>
+            </div>
           </div>
         </Container>
       </div>

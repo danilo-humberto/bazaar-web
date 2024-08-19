@@ -5,22 +5,62 @@ import { Button, Form, Icon } from "semantic-ui-react";
 import { toast } from "react-toastify";
 
 const EditProduct = ({ produto, onCloseModal }) => {
+  const [token, setToken] = useState(null);
+  const [listaCategoria, setListaCategoria] = useState([])
+  const [idCategoria, setIdCategoria] = useState();
   const [productData, setProductData] = useState({
     titulo: "",
     codigo: "",
     descricao: "",
     valorUnitario: "",
+    idCategoria: ""
   });
 
   const [image, setImage] = useState(null);
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
+
+    const getToken = () => {
+      const tokenStored = localStorage.getItem("token");
+      setToken(tokenStored);
+    }
+
+    getToken();
+
     if (produto) {
       setProductData(produto);
-      console.log(produto);
+      console.log(produto)
     }
   }, [produto]);
+
+  useEffect(() => {
+    const buscarCategorias = async () => {
+      if (!token) {
+        console.log("Token não disponível ainda");
+        return;
+      }
+  
+      try {
+        const response = await axios.get("http://localhost:8080/api/categoriaproduto", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if (response.status === 200) {
+          const dropDownCategorias = response.data.map((c) => ({
+            text: c.descricao,
+            value: c.id,
+          }));
+          setListaCategoria(dropDownCategorias);
+        } else {
+          console.log("Erro ao trazer as categorias, status: ", response.status);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+  
+    buscarCategorias();
+  }, [token]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,10 +72,11 @@ const EditProduct = ({ produto, onCloseModal }) => {
   };
 
   const handleFormSubmit = async (e) => {
-    const { dataToSend } = productData;
+    
+    console.log(productData)
 
     const formData = new FormData();
-    formData.append("produto", JSON.stringify(dataToSend));
+    formData.append("produto", JSON.stringify(productData));
     if (image) {
       formData.append("imagem", image);
     }
@@ -43,7 +84,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
     try {
       const response = await axios.put(
         `http://localhost:8080/api/produto/${produto.id}`,
-        formData, { headers: { "Content-Type": "multipart/form-data"}});
+        formData, { headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}});
 
       if (response.status === 200) {
         toast.success("Editado com sucesso!", {
@@ -88,15 +129,32 @@ const EditProduct = ({ produto, onCloseModal }) => {
             />
           </Form.Group>
 
-          <Form.Input
-            fluid
-            required
-            label="Descrição"
-            name="descricao"
-            width={16}
-            value={productData.descricao}
-            onChange={handleInputChange}
-          />
+          <Form.Group>
+
+            <Form.Select 
+              required
+              fluid
+              width={6}
+              tabIndex={3}
+              placeholder="Selecione"
+              label='Categoria'
+              options={listaCategoria}
+              value={idCategoria}
+              onChange={({value}) => {
+                setIdCategoria(value)
+              }}
+            />
+
+            <Form.Input
+              fluid
+              required
+              label="Descrição"
+              name="descricao"
+              width={16}
+              value={productData.descricao}
+              onChange={handleInputChange}
+            />
+          </Form.Group>
 
           <Form.Group>
             <Form.Input
@@ -145,7 +203,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
           onClick={handleFormSubmit}
         >
           <Icon name="save" />
-          Adicionar
+          Alterar
         </Button>
       </div>
     </div>

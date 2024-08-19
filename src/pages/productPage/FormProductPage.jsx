@@ -68,24 +68,6 @@ export default function FormCliente() {
       formData.append("imagem", imagem);
     }
 
-    if (idProduto != null) {
-      // Alteração:
-      await axios
-        .put(`http://localhost:8080/api/produto/${userId}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`
-          },
-        })
-        .then((response) => {
-          console.log("Produto alterado com sucesso.");
-          limpar();
-        })
-        .catch((error) => {
-          console.log("Erro ao alterar um produto." + userId);
-        });
-    } else {
-      // Cadastro:
       await axios
       .post(`http://localhost:8080/api/produto/${userId}`, formData, {
           headers: {
@@ -100,17 +82,7 @@ export default function FormCliente() {
         .catch((error) => {
           console.log("Erro ao incluir o produto.");
         });
-    }
   };
-
-  const [productData, setProductData] = useState({
-    titulo: '',
-    codigo: '',
-    descricao: '',
-    valorUnitario: '',
-    categora: '',
-
-  }) 
 
   useEffect(() => {
     const buscarCategorias = async () => {
