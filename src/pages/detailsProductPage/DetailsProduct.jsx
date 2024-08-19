@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import OtherHeader from "../../components/otherHeader/otherHeader";
 import OtherFooter from "../../components/otherFooter/otherFooter";
 import Cart from "../mainPage/Cart/Cart"
@@ -9,8 +10,45 @@ import { IoShieldCheckmarkOutline } from "react-icons/io5";
 
 import "./DetailsProduct.css";
 import { CartProvider } from "../mainPage/Cart/CartContext";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 function DetailsProduct() {
+
+    const { id } = useParams();
+    const [productData, setProductData] = useState(null);
+
+    const buscarProduto = async () => {
+        const token = localStorage.getItem("token")
+
+        if(!token) {
+            console.log("Token não reinvidicado ainda")
+            return
+        }
+
+        try {
+            const response = await axios.get(`http://localhost:8080/api/produto/${id}`, { headers: {Authorization: `Bearer ${token}`}});
+
+            if(response.status === 200) {
+                setProductData(response.data)
+                console.log(response.data)
+            } else {
+                console.log("Erro ao trazer os dados");
+            }
+        
+        } catch {
+            console.error("Erro ao realizar a requisição")
+        }
+    }
+
+    useEffect(() => {
+        buscarProduto()
+    }, [id])
+
+    if(!productData) {
+        return <div>Carregando...</div>
+    }
+
   return (
     <div>
       <CartProvider>
@@ -20,13 +58,13 @@ function DetailsProduct() {
       <div className="container-details-product">
         <div className="content-details-product">
             <div className="info-product">
-                <h2>Titulo do Produto</h2>
+                <h2>{productData.titulo || 'Titulo do Produto'}</h2>
                 <div className="swiper-imgs-products">
-                    <img src={ImageTeste} alt="" />
+                    <img src={productData.imagemUrl || 'no image'} alt="" />
                 </div>
                 <div className="description-price-product">
-                    <p style={{color: 'black'}}>descrição do produto</p>
-                    <span>R$ 20,00</span>
+                    <p style={{color: 'black'}}>{productData.descricao || 'descrição do produto'}</p>
+                    <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(productData.valorUnitario)}</span>
                 </div>
                 <div className="btn-add-to-cart">
                     <button>Adicionar ao Carrinho</button>

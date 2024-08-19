@@ -43,7 +43,7 @@ function OtherHeader({ onClickProfile }) {
   return (
     <div className="new-background">
       <div>
-        <img src={LogoLaranja} alt="logo do bazaar" width={170} height={170} loading="lazy"/>
+        <Link to={'/'}><img src={LogoLaranja} alt="logo do bazaar" width={170} height={170} loading="lazy"/></Link>
         <Input
           type="text"
           icon="search"

@@ -113,8 +113,8 @@ export default function ListProductPage() {
   return (
     <div>
       <HeaderComponent />
-      <div style={{ marginTop: "8%", height: "100%" }}>
-        <Container textAlign="justified" style={{height: '100%'}}>
+      <div style={{ marginTop: "8%", height: "74.6vh" }}>
+        <Container textAlign="justified" style={{height: '100%', overflow: 'auto'}}>
           <div
             style={{
               display: "flex",
@@ -136,7 +136,7 @@ export default function ListProductPage() {
 
           <Divider />
 
-          <div style={{ marginTop: "5%", marginBottom: "5%", 'display': 'flex', 'flexDirection': 'column' }}>
+          <div style={{ marginTop: "5%", marginBottom: "2%"}}>
             <div style={{ marginBottom: "20px" }}>
               <Input
                 placeholder="Título"

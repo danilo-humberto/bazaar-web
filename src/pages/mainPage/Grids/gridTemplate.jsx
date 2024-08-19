@@ -43,6 +43,7 @@ export default function GridTemplate({descricao}) {
                   descricao={produto.descricao}
                   titulo={produto.titulo}
                   valorUnitario={produto.valorUnitario}
+                  id={produto.id}
                 />
               </GridColumn>
             );

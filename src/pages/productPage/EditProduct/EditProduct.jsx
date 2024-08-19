@@ -13,7 +13,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
     codigo: "",
     descricao: "",
     valorUnitario: "",
-    idCategoria: ""
+    idCategoria: idCategoria
   });
 
   const [image, setImage] = useState(null);
@@ -73,13 +73,15 @@ const EditProduct = ({ produto, onCloseModal }) => {
 
   const handleFormSubmit = async (e) => {
     
-    console.log(productData)
+    const {  id, ...newProductData} = productData;
+    console.log(newProductData)
 
     const formData = new FormData();
-    formData.append("produto", JSON.stringify(productData));
+    formData.append("produto", JSON.stringify(newProductData));
     if (image) {
       formData.append("imagem", image);
-    }
+    } 
+  
 
     try {
       const response = await axios.put(
@@ -139,7 +141,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
               placeholder="Selecione"
               label='Categoria'
               options={listaCategoria}
-              value={idCategoria}
+              value={productData.idCategoria}
               onChange={({value}) => {
                 setIdCategoria(value)
               }}

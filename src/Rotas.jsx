@@ -25,7 +25,7 @@ function Rotas() {
         <Route path="/" element={ <MainPage />}/>
         <Route path="/formProduct" element={ <FormProductPage />}/>
         <Route path="/listProduct" element={ <ListProductPage />}/>
-        <Route path="/detailsProduct" element={ <DetailsProduct />}/>
+        <Route path="/detailsProduct/:id" element={ <DetailsProduct />}/>
         <Route path="/payment" element={ <Payment />}/>
         <Route path="/editProfile" element={ <EditProfile />}/>
       </Routes>
