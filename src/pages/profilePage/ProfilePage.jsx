@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Grid, GridColumn, ButtonGroup, List } from "semantic-ui-react";
+import { Button, Grid, GridColumn, ButtonGroup, List, Loader } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 import axios from "axios";
@@ -106,7 +106,9 @@ export default function ProfilePage() {
                       </List>
                     </>
                   ) : (
-                    <div>Nenhum usuário encontrado</div>
+                    <div style={{marginLeft: '70px', marginTop: '50px'}}>
+                      <Loader active inline size="big"/>
+                    </div>
                   )}
                 </GridColumn>
 

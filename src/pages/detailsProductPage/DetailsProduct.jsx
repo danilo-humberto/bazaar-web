@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import OtherHeader from "../../components/otherHeader/otherHeader";
 import OtherFooter from "../../components/otherFooter/otherFooter";
 import Cart from "../mainPage/Cart/Cart"
-import ImageTeste from "../../assets/imageteste.jpeg"
 import { FaWhatsapp, FaRegUser } from "react-icons/fa";
 import { TbClockHour3 } from "react-icons/tb";
 import { IoShieldCheckmarkOutline } from "react-icons/io5";

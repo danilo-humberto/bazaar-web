@@ -16,7 +16,7 @@ export default function CardComponent({id, imageUrl, titulo, descricao, valorUni
         <CardContent>
           <CardHeader>{valorUnitario}</CardHeader>
           <CardDescription>
-            {titulo + " / " + descricao}
+            {titulo}
           </CardDescription>
         </CardContent>
         <CardContent extra>
