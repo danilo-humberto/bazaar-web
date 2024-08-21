@@ -3,6 +3,7 @@ import { useCart } from './CartContext';
 
 import "./Cart.css";
 import CartItem from "./CartItem/CartItem";
+import { Link } from "react-router-dom";
 
 function Cart() {
 
@@ -25,7 +26,7 @@ function Cart() {
             <span>R$ 246,00</span>
         </div>
         <div className="cart-btn-finish">
-          <button>Finalizar Compra</button>
+          <Link to={'/payment'}><button>Finalizar Compra</button></Link>
         </div>
       </div>
     </section>

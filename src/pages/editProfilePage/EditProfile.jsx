@@ -68,6 +68,7 @@ export default function EditProfile() {
   };
 
   const handleFormSubmit = async (e) => {
+    e.preventDefault();
     const userId = getUserId();
 
     const { id, cpf, email, enderecos, produtos, login, situacao, senha, ...dataToSend } = userData;
@@ -77,6 +78,19 @@ export default function EditProfile() {
     formData.append("usuario", JSON.stringify(dataToSend));
     if (image) {
       formData.append("imagem", image);
+    }
+
+    if(
+      !userData.nomeCompleto ||
+      !userData.novaSenha ||
+      !userData.confirmaSenha ||
+      !userData.numeroTelefone
+    ) {
+      toast.error("Todos os campos precisam ser preenchidos !", {
+        position: 'top-right',
+        autoClose: 2000
+      })
+      return
     }
 
     try {
@@ -179,7 +193,6 @@ export default function EditProfile() {
                     labelPosition="left"
                     color="green"
                     floated="right"
-                    onClick={() => handleFormSubmit()}
                   >
                     <Icon name="save" />
                     Salvar

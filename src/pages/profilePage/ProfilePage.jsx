@@ -62,7 +62,7 @@ export default function ProfilePage() {
             <div className="grid-content-profile">
               <Grid columns={2}>
                 <GridColumn width={4}>
-                  {userData && (
+                  {userData ? (
                     <>
                       <div>
                         {userData && userData.imagemUrl ? (
@@ -105,6 +105,8 @@ export default function ProfilePage() {
                         </List.Item>
                       </List>
                     </>
+                  ) : (
+                    <div>Nenhum usuário encontrado</div>
                   )}
                 </GridColumn>
 

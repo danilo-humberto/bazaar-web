@@ -43,17 +43,33 @@ function OtherHeader({ onClickProfile }) {
   return (
     <div className="new-background">
       <div>
-        <Link to={'/'}><img src={LogoLaranja} alt="logo do bazaar" width={170} height={170} loading="lazy"/></Link>
+        <Link to={"/"}>
+          <img
+            src={LogoLaranja}
+            alt="logo do bazaar"
+            width={170}
+            height={170}
+            loading="lazy"
+          />
+        </Link>
         <Input
+          size="big"
           type="text"
           icon="search"
           placeholder="Digite aqui para pesquisar..."
-          style={{ margin: "0", width: "350px", height: "50%" }}
+          style={{ marginLeft: "20px", width: "400px" }}
         />
       </div>
 
       <div>
-        <FaShoppingCart className="cart-icon" onClick={toggleCartVisibility} />
+        <FaShoppingCart
+          className={`cart-icon ${!isLogged ? "disabled" : ""}`}
+          onClick={isLogged ? toggleCartVisibility : null}
+          style={{
+            cursor: isLogged ? "pointer" : "not-allowed",
+            opacity: isLogged ? 1 : 0.5,
+          }}
+        />
         {isLogged ? (
           profileImage ? (
             <img
@@ -61,7 +77,7 @@ function OtherHeader({ onClickProfile }) {
               alt="Foto de Perfil"
               className="img-user"
               onClick={onClickProfile}
-              style={{cursor: 'pointer'}}
+              style={{ cursor: "pointer" }}
             />
           ) : (
             <FaRegUser className="profile" onClick={onClickProfile} />

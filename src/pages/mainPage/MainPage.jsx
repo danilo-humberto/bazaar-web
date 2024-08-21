@@ -26,14 +26,11 @@ export default function MainPage() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Remove os dados do localStorage
     localStorage.removeItem("login");
     localStorage.removeItem("token");
 
-    // Redireciona o usuário para a página de login
-    navigate("/");
-    
-    // Exibe uma mensagem de sucesso
+    navigate(0);
+
     toast.success("Logout realizado com sucesso!", {
       position: "top-right",
       autoClose: 2000,
@@ -57,16 +54,18 @@ export default function MainPage() {
           } else {
             setIsActive(false);
           }
-        }).catch((error) => {
-          if(error.reponse && error.response.status === 401){
-            navigate('/login')
-            toast.warning("Tempo de login foi expirado, faça login novamente!", {position: 'top-right', autoClose: 2000})
-          } else console.log("Erro: " + error);
         })
+        .catch((error) => {
+          if (error.reponse && error.response.status === 401) {
+            navigate("/login");
+            toast.warning(
+              "Tempo de login foi expirado, faça login novamente!",
+              { position: "top-right", autoClose: 2000 }
+            );
+          } else console.log("Erro: " + error);
+        });
     }
   }, [handleLogout]);
-
-  
 
   return (
     <div>
@@ -161,7 +160,12 @@ export default function MainPage() {
             <Link to={"/profile"} style={{ color: "black" }}>
               <span>Ver perfil</span>
             </Link>
-            <span style={{ color: "black", cursor: 'pointer' }} onClick={handleLogout}>Sair</span>
+            <span
+              style={{ color: "black", cursor: "pointer" }}
+              onClick={handleLogout}
+            >
+              Sair
+            </span>
           </div>
         )}
       </div>
