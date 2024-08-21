@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   Container,
@@ -30,6 +30,11 @@ export default function ListProductPage() {
   const [descricao, setDescricao] = useState("");
 
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
+  const navigate = useNavigate();
+
+  const atualizarListaProduto = () => {
+    navigate(0);
+  };
 
   const getUserId = () => {
     return localStorage.getItem("userId");
@@ -37,29 +42,32 @@ export default function ListProductPage() {
 
   const getToken = () => {
     return localStorage.getItem("token");
-  }
+  };
 
   const carregarLista = useCallback(async () => {
     const userId = getUserId();
     const token = getToken();
-    if(!token) {
-      console.log("Token não carregado ainda")
+    if (!token) {
+      console.log("Token não carregado ainda");
     }
 
     try {
-      const response = await axios.get(`http://localhost:8080/api/usuario/${userId}`, {headers: {Authorization: `Bearer ${token}`}})
+      const response = await axios.get(
+        `http://localhost:8080/api/usuario/${userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      if ( response.status === 200) {
+      if (response.status === 200) {
         setLista(response.data.produtos || []);
-        console.log(response.data.produtos)
+        console.log(response.data.produtos);
         setFilteredList(response.data.produtos || []);
       } else {
         console.error("Erro ao carregar a lista");
         setLista([]);
         setFilteredList([]);
       }
-    } catch (error ) {
-      console.error("Falha ao receber os dados", error)
+    } catch (error) {
+      console.error("Falha ao receber os dados", error);
     }
   }, []);
 
@@ -101,7 +109,7 @@ export default function ListProductPage() {
       if (response.status === 200) {
         setProdutoSelecionado(response.data);
         setOpenModalEdit(true);
-        console.log(response.data)
+        console.log(response.data);
       } else {
         console.error("Erro ao buscar dados do produto específico!");
       }
@@ -114,7 +122,10 @@ export default function ListProductPage() {
     <div>
       <HeaderComponent />
       <div style={{ marginTop: "8%", height: "74.6vh" }}>
-        <Container textAlign="justified" style={{height: '100%', overflow: 'auto'}}>
+        <Container
+          textAlign="justified"
+          style={{ height: "100%", overflow: "auto" }}
+        >
           <div
             style={{
               display: "flex",
@@ -123,20 +134,30 @@ export default function ListProductPage() {
             }}
           >
             <h1> Produtos </h1>
-            <Button
-              label="Novo"
-              circular
-              color="orange"
-              icon="clipboard outline"
-              floated="right"
-              as={Link}
-              to="/formProduct"
-            />
+            <div>
+              <Button color="orange" as={Link} to="/listVendas">
+                Minhas Vendas
+              </Button>
+
+              <Button color="orange" as={Link} to="/listCompras" style={{margin: '0 30px'}}>
+                Minhas Compras
+              </Button>
+
+              <Button
+                label='Cadastrar Produto'
+                color="orange"
+                circular
+                icon="clipboard outline"
+                floated="right"
+                as={Link}
+                to="/formProduct"
+              ></Button>
+            </div>
           </div>
 
           <Divider />
 
-          <div style={{ marginTop: "5%", marginBottom: "2%"}}>
+          <div style={{ marginTop: "5%", marginBottom: "2%" }}>
             <div style={{ marginBottom: "20px" }}>
               <Input
                 placeholder="Título"
@@ -162,9 +183,17 @@ export default function ListProductPage() {
               >
                 Filtrar
               </Button>
+
+              <Button
+                color="green"
+                onClick={atualizarListaProduto}
+                style={{ marginLeft: "350px" }}
+              >
+                Atualizar
+              </Button>
             </div>
 
-            <div style={{'flex': 1}}>
+            <div style={{ flex: 1 }}>
               <Table color="orange" sortable celled>
                 <Table.Header>
                   <Table.Row>
@@ -173,7 +202,9 @@ export default function ListProductPage() {
                     <Table.HeaderCell>Título</Table.HeaderCell>
                     <Table.HeaderCell>Descrição</Table.HeaderCell>
                     <Table.HeaderCell>Valor Unitário</Table.HeaderCell>
-                    <Table.HeaderCell textAlign="center">Ações</Table.HeaderCell>
+                    <Table.HeaderCell textAlign="center">
+                      Ações
+                    </Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
@@ -232,7 +263,7 @@ export default function ListProductPage() {
           </div>
         </Container>
       </div>
-        <OtherFooter />
+      <OtherFooter />
       <Modal
         basic
         onClose={() => setOpenModalEdit(false)}
