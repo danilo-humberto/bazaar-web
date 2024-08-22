@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 export default function ProfilePage() {
   const getUserId = () => {
     const userId = localStorage.getItem("userId");
-    console.log("userId obtido:", userId);
     return userId;
   };
 
@@ -31,7 +30,6 @@ export default function ProfilePage() {
       );
       if (response.status === 200) {
         const userData = response.data;
-        console.log(userData);
 
         setUserData(userData);
       } else {

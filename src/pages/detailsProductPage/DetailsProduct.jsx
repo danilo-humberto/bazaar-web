@@ -16,6 +16,7 @@ function DetailsProduct() {
 
     const { id } = useParams();
     const [productData, setProductData] = useState(null);
+    const [usuario, setUsuario] = useState();
 
     const buscarProduto = async () => {
         const token = localStorage.getItem("token")
@@ -30,7 +31,12 @@ function DetailsProduct() {
 
             if(response.status === 200) {
                 setProductData(response.data)
-                console.log(response.data)
+
+                const response = await axios.get(`http://localhost:8080/api/produto/obterUsuario/${id}`, { headers: {Authorization: `Bearer ${token}`}})
+
+                if(response.status === 200) {
+                    setUsuario(response.data)
+                }
             } else {
                 console.log("Erro ao trazer os dados");
             }
@@ -78,7 +84,7 @@ function DetailsProduct() {
                     <span>Informações do Vendedor</span>
                     <div className="name-seller">
                         <FaRegUser style={{color: '#ff7a00', fontSize: '21px', paddingLeft: '3px'}}/>
-                        <span>Nome do Vendedor</span>
+                        <span>{usuario.nome}</span>
                     </div>
                     <div className="time-product">
                         <TbClockHour3 style={{color: '#ff7a00', fontSize: '25px'}}/>
