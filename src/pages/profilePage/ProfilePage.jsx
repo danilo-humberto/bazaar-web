@@ -8,6 +8,7 @@ import "./ProfilePage.css";
 import { Link } from "react-router-dom";
 
 export default function ProfilePage() {
+  
   const getUserId = () => {
     const userId = localStorage.getItem("userId");
     return userId;

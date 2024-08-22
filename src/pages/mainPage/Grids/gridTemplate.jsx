@@ -18,6 +18,7 @@ export default function GridTemplate({descricao}) {
   }, []);
 
   const mostrarProdutos = async () => {
+    setListProduto([]);
     await axios.get(`http://localhost:8080/api/produto/mais-baratos/${descricao}`, {headers: {Authorization: `Bearer ${token}`}})
     .then((response) => {
       setListProduto(response.data);

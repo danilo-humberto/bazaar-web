@@ -51,13 +51,13 @@ export default function AddressPage() {
 
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell>Pernambuco</Table.Cell>
-                  <Table.Cell>Jaboatão Dos Guararapes</Table.Cell>
-                  <Table.Cell>Vila Rica</Table.Cell>
-                  <Table.Cell>Avenida 4</Table.Cell>
-                  <Table.Cell>54090470</Table.Cell>
-                  <Table.Cell>302</Table.Cell>
-                  <Table.Cell>Em frente ao mercado</Table.Cell>
+                  <Table.Cell></Table.Cell>
+                  <Table.Cell></Table.Cell>
+                  <Table.Cell></Table.Cell>
+                  <Table.Cell></Table.Cell>
+                  <Table.Cell></Table.Cell>
+                  <Table.Cell></Table.Cell>
+                  <Table.Cell></Table.Cell>
                   <Table.Cell textAlign="center">
                     <Button
                         inverted

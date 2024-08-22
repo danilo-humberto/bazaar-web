@@ -27,15 +27,18 @@ function DetailsProduct() {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8080/api/produto/${id}`, { headers: {Authorization: `Bearer ${token}`}});
+            const responseProduct = await axios.get(`http://localhost:8080/api/produto/${id}`, { headers: {Authorization: `Bearer ${token}`}});
 
-            if(response.status === 200) {
-                setProductData(response.data)
+            if(responseProduct.status === 200) {
+                setProductData(responseProduct.data)
 
                 const response = await axios.get(`http://localhost:8080/api/produto/obterUsuario/${id}`, { headers: {Authorization: `Bearer ${token}`}})
 
                 if(response.status === 200) {
                     setUsuario(response.data)
+                    console.log(response.data)
+                } else {
+                    console.error("Usuário não encontrado")
                 }
             } else {
                 console.log("Erro ao trazer os dados");
@@ -84,7 +87,7 @@ function DetailsProduct() {
                     <span>Informações do Vendedor</span>
                     <div className="name-seller">
                         <FaRegUser style={{color: '#ff7a00', fontSize: '21px', paddingLeft: '3px'}}/>
-                        <span>{usuario.nome}</span>
+                        <span>{usuario.nomeCompleto}</span>
                     </div>
                     <div className="time-product">
                         <TbClockHour3 style={{color: '#ff7a00', fontSize: '25px'}}/>

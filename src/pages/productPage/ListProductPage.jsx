@@ -51,6 +51,7 @@ export default function ListProductPage() {
       console.log("Token não carregado ainda");
     }
 
+    setLista([]);
     try {
       const response = await axios.get(
         `http://localhost:8080/api/usuario/${userId}`,
