@@ -14,6 +14,7 @@ import Payment from "./pages/paymentPage/Payment";
 import EditProfile from "./pages/editProfilePage/EditProfile";
 import ListCompras from "./pages/comprasPage/ListCompras";
 import ListVendas from "./pages/vendasPage/ListVendas";
+import SearchPage from "./pages/searchPage/SearchPage"
 
 function Rotas() {
   return (
@@ -24,6 +25,7 @@ function Rotas() {
         <Route path="forgotPassword" element={<ForgotPassword />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="address" element={<AddressPage />} />
+        <Route path="searchPage" element={ <SearchPage />}/>
         <Route path="/" element={ <MainPage />}/>
         <Route path="/formProduct" element={ <FormProductPage />}/>
         <Route path="/listProduct" element={ <ListProductPage />}/>

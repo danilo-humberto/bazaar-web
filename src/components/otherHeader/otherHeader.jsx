@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "semantic-ui-react";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../pages/mainPage/Cart/CartContext";
 import axios from "axios";
 
@@ -14,6 +14,8 @@ function OtherHeader({ onClickProfile }) {
   const [isLogged, setIsLogged] = useState(false);
   const { toggleCartVisibility } = useCart();
   const [profileImage, setProfileImage] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de pesquisa
+  const navigate = useNavigate(); // Hook para navegação
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -22,14 +24,13 @@ function OtherHeader({ onClickProfile }) {
     if (token) {
       setIsLogged(true);
 
-      // Faz a requisição para obter os dados do usuário e a imagem de perfil
       axios
         .get(`http://localhost:8080/api/usuario/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           if (response.data.imagemUrl) {
-            setProfileImage(response.data.imagemUrl); // Define a URL da imagem de perfil
+            setProfileImage(response.data.imagemUrl);
           }
         })
         .catch((error) => {
@@ -39,6 +40,12 @@ function OtherHeader({ onClickProfile }) {
       setIsLogged(false);
     }
   }, []);
+
+  const handleSearch = () => {
+    if (searchTerm.trim() !== "") {
+      navigate(`/searchPage?query=${encodeURIComponent(searchTerm)}`); // Redireciona para a SearchPage com o termo na URL
+    }
+  };
 
   return (
     <div className="new-background">
@@ -58,6 +65,13 @@ function OtherHeader({ onClickProfile }) {
           icon="search"
           placeholder="Digite aqui para pesquisar..."
           style={{ marginLeft: "20px", width: "400px" }}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              handleSearch(); // Redireciona ao pressionar Enter
+            }
+          }}
         />
       </div>
 
