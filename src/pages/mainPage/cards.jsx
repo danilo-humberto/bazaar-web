@@ -2,36 +2,21 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardHeader,
-  Icon,
+  CardHeader
 } from "semantic-ui-react";
 import "./cards.css";
 import { Link } from "react-router-dom";
 
-export default function CardComponent({id, imageUrl, titulo, descricao, valorUnitario}) {
+export default function CardComponent({id, imageUrl, titulo, valorUnitario}) {
   return (
     <Link to={`/detailsProduct/${id}`}>
-      <Card>
+      <Card style={{height: '400px'}}>
         <img src={imageUrl} alt="" className="image-product" loading="lazy"/>
         <CardContent>
-          <CardHeader>{valorUnitario}</CardHeader>
+          <CardHeader>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valorUnitario)}</CardHeader>
           <CardDescription>
             {titulo}
           </CardDescription>
-        </CardContent>
-        <CardContent extra>
-          <div className="bottom">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Icon name="user circle outline" size="big" />
-              nome
-            </div>
-          </div>
         </CardContent>
       </Card>
     </Link>

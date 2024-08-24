@@ -64,7 +64,7 @@ function OtherHeader({ onClickProfile }) {
           type="text"
           icon="search"
           placeholder="Digite aqui para pesquisar..."
-          style={{ marginLeft: "20px", width: "400px" }}
+          style={{ marginLeft: "20px", width: "400px", marginTop: '0px' }}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyPress={(e) => {
