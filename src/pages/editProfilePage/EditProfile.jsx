@@ -7,7 +7,7 @@ import axios from "axios";
 import "../profilePage/ProfilePage.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { notifyError, notifyWarn, notifySuccess } from "../../views/util/Util";
+import { notifyError, notifyWarn } from "../../views/util/Util";
 
 export default function EditProfile() {
 
@@ -108,11 +108,9 @@ export default function EditProfile() {
         );
 
         if (response.status === 200) {
-          notifySuccess("Editado com sucesso!", { position: 'top-right', autoClose: 2000 });
           navigate('/profile')
         } else {
           console.error("Erro ao atualizar perfil", response.status, response.statusText);
-          notifyError("Erro ao editar!", { position: 'top-right', autoClose: 2000 });
         }
       }
     } catch (error) {

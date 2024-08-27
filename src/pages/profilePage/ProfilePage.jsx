@@ -1,60 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Button, Grid, GridColumn, ButtonGroup, List, Loader } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
-import axios from "axios";
 
 import "./ProfilePage.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { notifyError } from "../../views/util/Util";
+import { useAxios } from "../../hooks/useAxios";
 
 export default function ProfilePage() {
   
   const {authState} = useContext(AuthContext);
 
-  const UserData = async (setUserData) => {
-
-    if (!authState.userId) {
-      notifyError("ID do usuário não encontrado");
-      console.error("ID do usuário não encontrado");
-      return;
-    }
-
-    try {
-
-      const response = await axios.get(
-        `http://localhost:8080/api/usuario/${authState.userId}`,
-        { headers: { Authorization: `Bearer ${authState.token}` } }
-      );
-      if (response.status === 200) {
-        const userData = response.data;
-
-        setUserData(userData);
-      } else {
-        notifyError(
-          "Erro ao buscar dados do usuário",
-          response.status,
-          response.statusText
-        );
-        console.error(
-          "Erro ao buscar dados do usuário",
-          response.status,
-          response.statusText
-        );
-      }
-    } catch (error) {
-      notifyError("Erro ao fazer a requisição:", error);
-      console.error("Erro ao fazer a requisição:", error);
-    }
-  };
-
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    UserData(setUserData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { data } = useAxios(`http://localhost:8080/api/usuario/${authState.userId}`);
 
   return (
     <div>
@@ -65,12 +23,12 @@ export default function ProfilePage() {
             <div className="grid-content-profile">
               <Grid columns={2}>
                 <GridColumn width={4}>
-                  {userData ? (
+                  {data ? (
                     <>
                       <div>
-                        {userData && userData.imagemUrl ? (
+                        {data && data.imagemUrl ? (
                           <img
-                            src={userData.imagemUrl}
+                            src={data.imagemUrl}
                             alt="foto de perfil"
                             className="img-profile"
                             loading="lazy"
@@ -86,7 +44,7 @@ export default function ProfilePage() {
                           <List.Header className>
                             Nome:{" "}
                             <span style={{ color: "black" }}>
-                              {userData.nomeCompleto}
+                              {data.nomeCompleto}
                             </span>
                           </List.Header>
                         </List.Item>
@@ -94,7 +52,7 @@ export default function ProfilePage() {
                           <List.Header>
                             Número:{" "}
                             <span style={{ color: "black" }}>
-                              {userData.numeroTelefone}
+                              {data.numeroTelefone}
                             </span>
                           </List.Header>
                         </List.Item>
@@ -102,7 +60,7 @@ export default function ProfilePage() {
                           <List.Header>
                             Email:{" "}
                             <span style={{ color: "black" }}>
-                              {userData.email}
+                              {data.email}
                             </span>
                           </List.Header>
                         </List.Item>

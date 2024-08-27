@@ -12,19 +12,20 @@ import { CartProvider } from "../mainPage/Cart/CartContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { notifyError, notifyWarn } from "../../views/util/Util";
+import { notifyError } from "../../views/util/Util"
 
 function DetailsProduct() {
 
     const { id } = useParams();
     const [productData, setProductData] = useState(null);
-    const [usuario, setUsuario] = useState();
+    const [usuario, setUsuario] = useState(null);
     const { authState } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(true);
+    const [timeoutError, setTimeoutError] = useState(false);
 
     const buscarProduto = async () => {
 
         if(!authState.token) {
-            notifyWarn("Token não reinvidicado ainda")
             console.log("Token não reinvidicado ainda")
             return
         }
@@ -34,30 +35,55 @@ function DetailsProduct() {
 
             if(responseProduct.status === 200) {
                 setProductData(responseProduct.data)
-
-                const response = await axios.get(`http://localhost:8080/api/produto/obterUsuario/${id}`, { headers: {Authorization: `Bearer ${authState.token}`}})
-
-                if(response.status === 200) {
-                    setUsuario(response.data)
-                    console.log(response.data)
-                } else {
-                    notifyError("Usuário não encontrado")
-                    console.error("Usuário não encontrado")
-                }
+                setIsLoading(false);
+                buscarUsuario();
             } else {
-                notifyError("Erro ao trazer os dados")
                 console.log("Erro ao trazer os dados")
             }
         
         } catch {
-            notifyError("Erro ao realizar a requisição")
             console.error("Erro ao realizar a requisição")
         }
     }
 
+    const buscarUsuario = async () => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8080/api/produto/obterUsuario/${id}`,
+                { headers: { Authorization: `Bearer ${authState.token}` } }
+            );
+
+            if (response.status === 200) {
+                setUsuario(response.data);
+            } else {
+                console.error("Usuário não encontrado");
+            }
+        } catch (error) {
+            console.error("Erro ao realizar a requisição do usuário", error);
+        }
+    };
+
     useEffect(() => {
         buscarProduto()
     }, [id])
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (isLoading) {
+                setTimeoutError(true);
+            }
+        }, 5000);
+
+        return () => clearTimeout(timeoutId); 
+    }, [isLoading]);
+
+    if (timeoutError) {
+        notifyError("O carregamento demorou muito. Tente novamente.");
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 1000); 
+        return null;
+    }
 
     if(!productData) {
         return <div>Carregando...</div>
@@ -93,7 +119,7 @@ function DetailsProduct() {
                     <span>Informações do Vendedor</span>
                     <div className="name-seller">
                         <FaRegUser style={{color: '#ff7a00', fontSize: '21px', paddingLeft: '3px'}}/>
-                        <span>{usuario.nomeCompleto}</span>
+                        <span>{usuario ? usuario.nomeCompleto : 'null'}</span>
                     </div>
                     <div className="time-product">
                         <TbClockHour3 style={{color: '#ff7a00', fontSize: '25px'}}/>

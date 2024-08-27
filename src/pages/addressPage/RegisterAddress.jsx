@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
 import InputMask from "react-input-mask";
 import axios from "axios";
 import { notifyError, notifySuccess } from "../../views/util/Util";
+import { AuthContext } from '../../context/AuthContext'
 
 export default function RegisterAddress({ onCloseModal }) {
 
@@ -13,9 +14,9 @@ export default function RegisterAddress({ onCloseModal }) {
   const [cep, setCep] = useState();
   const [numero, setNumero] = useState();
   const [complemento, setComplemento] = useState();
-
+  const { authState } = useContext(AuthContext);
+  
   const salvar = async () => {
-    const idUser = localStorage.getItem("userId")
 
     let enderecoRequest = {
       estado: estado,
@@ -28,8 +29,7 @@ export default function RegisterAddress({ onCloseModal }) {
     }
 
     try {
-      const token = localStorage.getItem("token")
-      const response = await axios.post(`http://localhost:8080/api/endereco/${idUser}`, enderecoRequest, {headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.post(`http://localhost:8080/api/endereco/${authState.userId}`, enderecoRequest, {headers: {Authorization: `Bearer ${authState.token}`}});
   
       if(response.status === 201) {
         notifySuccess("Endereço Cadastrado com Sucesso!")
@@ -37,7 +37,6 @@ export default function RegisterAddress({ onCloseModal }) {
         onCloseModal();
       } else {
         notifyError("Erro ao cadastrar endereço!")
-        console.log(enderecoRequest, idUser)
       }
     } catch (error) {
       console.error("Erro ao fazer a requisição", error)
