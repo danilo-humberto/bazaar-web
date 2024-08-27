@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
 import InputMask from "react-input-mask";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { notifyError, notifySuccess } from "../../views/util/Util";
 
 export default function RegisterAddress({ onCloseModal }) {
 
@@ -32,21 +32,16 @@ export default function RegisterAddress({ onCloseModal }) {
       const response = await axios.post(`http://localhost:8080/api/endereco/${idUser}`, enderecoRequest, {headers: {Authorization: `Bearer ${token}`}});
   
       if(response.status === 201) {
-        toast.success("Endereço Cadastrado com Sucesso!", {
-          position: 'top-right',
-          autoClose: 1000
-        })
+        notifySuccess("Endereço Cadastrado com Sucesso!")
         console.log(response)
         onCloseModal();
       } else {
-        toast.error("Erro ao cadastrar endereço!", {
-          position: 'top-right',
-          autoClose: 1000
-        })
+        notifyError("Erro ao cadastrar endereço!")
         console.log(enderecoRequest, idUser)
       }
     } catch (error) {
       console.error("Erro ao fazer a requisição", error)
+      notifyError("Erro ao fazer a requisição", error)
     }
   }
 

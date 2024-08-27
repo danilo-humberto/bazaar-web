@@ -7,6 +7,7 @@ import axios from "axios";
 import "./ProfilePage.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { notifyError } from "../../views/util/Util";
 
 export default function ProfilePage() {
   
@@ -15,6 +16,7 @@ export default function ProfilePage() {
   const UserData = async (setUserData) => {
 
     if (!authState.userId) {
+      notifyError("ID do usuário não encontrado");
       console.error("ID do usuário não encontrado");
       return;
     }
@@ -30,6 +32,11 @@ export default function ProfilePage() {
 
         setUserData(userData);
       } else {
+        notifyError(
+          "Erro ao buscar dados do usuário",
+          response.status,
+          response.statusText
+        );
         console.error(
           "Erro ao buscar dados do usuário",
           response.status,
@@ -37,6 +44,7 @@ export default function ProfilePage() {
         );
       }
     } catch (error) {
+      notifyError("Erro ao fazer a requisição:", error);
       console.error("Erro ao fazer a requisição:", error);
     }
   };

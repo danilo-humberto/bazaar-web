@@ -6,9 +6,8 @@ import Footer from "../../components/otherFooter/otherFooter";
 import axios from "axios";
 import "../profilePage/ProfilePage.css";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../context/AuthContext";
+import { notifyError, notifyWarn, notifySuccess } from "../../views/util/Util";
 
 export default function EditProfile() {
 
@@ -28,6 +27,7 @@ export default function EditProfile() {
     const fetchUserData = async () => {
 
       if (!authState.userId) {
+        notifyError("ID do usuário não encontrado");
         console.error("ID do usuário não encontrado");
         return;
       }
@@ -40,6 +40,9 @@ export default function EditProfile() {
         if (response.status === 200) {
           setUserData(response.data);
         } else {
+          notifyError("Erro ao buscar dados do usuário",
+            response.status,
+            response.statusText);
           console.error(
             "Erro ao buscar dados do usuário",
             response.status,
@@ -47,6 +50,7 @@ export default function EditProfile() {
           );
         }
       } catch (error) {
+        notifyError("Erro ao fazer a requisição:", error);
         console.error("Erro ao fazer a requisição:", error);
       }
     };
@@ -81,7 +85,7 @@ export default function EditProfile() {
       !userData.confirmaSenha ||
       !userData.numeroTelefone
     ) {
-      toast.error("Todos os campos precisam ser preenchidos !", {
+      notifyWarn("Todos os campos precisam ser preenchidos!", {
         position: 'top-right',
         autoClose: 2000
       })
@@ -90,7 +94,7 @@ export default function EditProfile() {
 
     try {
       if (userData.novaSenha !== userData.confirmaSenha) {
-        toast.warning("As senhas não coincidem !", {
+        notifyWarn("As senhas não coincidem !", {
           position: "top-right",
           autoClose: 2000,
         });
@@ -104,11 +108,11 @@ export default function EditProfile() {
         );
 
         if (response.status === 200) {
-          toast.success("Editado com sucesso!", { position: 'top-right', autoClose: 2000 });
+          notifySuccess("Editado com sucesso!", { position: 'top-right', autoClose: 2000 });
           navigate('/profile')
         } else {
           console.error("Erro ao atualizar perfil", response.status, response.statusText);
-          toast.error("Erro ao editar!", { position: 'top-right', autoClose: 2000 });
+          notifyError("Erro ao editar!", { position: 'top-right', autoClose: 2000 });
         }
       }
     } catch (error) {

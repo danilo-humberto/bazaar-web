@@ -6,6 +6,7 @@ import "./SearchPage.css";
 import Header from "../../components/header/header";
 import OtherFooter from "../../components/otherFooter/otherFooter";
 import GridProduct from "./productGrid/gridProduct";
+import { notifyError } from "../../views/util/Util";
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +20,7 @@ export default function SearchPage() {
     
     if (query) {
       setSearchTerm(query);
-      fetchResults(query); // Busca resultados ao carregar a página com uma query na URL
+      fetchResults(query);
     }
   }, [location.search]);
 
@@ -30,14 +31,15 @@ export default function SearchPage() {
         setResults(response.data);
       })
       .catch((error) => {
+        notifyError("Erro ao realizar a pesquisa:", error);
         console.error("Erro ao realizar a pesquisa:", error);
       });
   };
 
   const handleSearch = () => {
     if (searchTerm.trim() !== "") {
-      navigate(`/searchPage?query=${encodeURIComponent(searchTerm)}`); // Redireciona com a nova pesquisa
-      fetchResults(searchTerm); // Faz a nova pesquisa
+      navigate(`/searchPage?query=${encodeURIComponent(searchTerm)}`);
+      fetchResults(searchTerm);
     }
   };
 
@@ -58,14 +60,14 @@ export default function SearchPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {
-                    handleSearch(); // Realiza a pesquisa ao pressionar Enter
+                    handleSearch();
                   }
                 }}
               />
             </div>
           </div>
           <br />
-          <GridProduct searchTerm={searchTerm} results={results} /> {/* Renderiza os resultados */}
+          <GridProduct searchTerm={searchTerm} results={results} />
         </main>
       </div>
       <OtherFooter />

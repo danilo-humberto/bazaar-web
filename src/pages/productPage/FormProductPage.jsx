@@ -6,6 +6,7 @@ import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 import "./FormProductPage.css";
 import { AuthContext } from '../../context/AuthContext'
+import { notifyError, notifyWarn, notifySuccess } from "../../views/util/Util";
 
 export default function FormCliente() {
   // eslint-disable-next-line no-unused-vars
@@ -62,10 +63,12 @@ export default function FormCliente() {
           },
         })
         .then((response) => {
+          notifySuccess("Produto cadastrado com sucesso.");
           console.log("Produto cadastrado com sucesso.");
           limpar();
         })
         .catch((error) => {
+          notifyError("Erro ao incluir o produto.");
           console.log("Erro ao incluir o produto.");
         });
   };
@@ -73,6 +76,7 @@ export default function FormCliente() {
   useEffect(() => {
     const buscarCategorias = async () => {
       if (!authState.token) {
+        notifyWarn("Token não disponível ainda");
         console.log("Token não disponível ainda");
         return;
       }
@@ -89,9 +93,11 @@ export default function FormCliente() {
           }));
           setListaCategoria(dropDownCategorias);
         } else {
+          notifyError("Erro ao trazer as categorias, status: ", response.status);
           console.log("Erro ao trazer as categorias, status: ", response.status);
         }
       } catch (error) {
+        notifyError("Erro ao buscar categorias:", error);
         console.error("Erro ao buscar categorias:", error);
       }
     };

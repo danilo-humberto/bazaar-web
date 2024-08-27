@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./EditProduct.css";
 import { Button, Form, Icon } from "semantic-ui-react";
-import { toast } from "react-toastify";
+import { notifyError, notifyWarn, notifySuccess } from "../../../views/util/Util";
 
 const EditProduct = ({ produto, onCloseModal }) => {
   const [token, setToken] = useState(null);
@@ -36,6 +36,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
   useEffect(() => {
     const buscarCategorias = async () => {
       if (!token) {
+        notifyWarn("Token não disponível ainda");
         console.log("Token não disponível ainda");
         return;
       }
@@ -52,9 +53,11 @@ const EditProduct = ({ produto, onCloseModal }) => {
           }));
           setListaCategoria(dropDownCategorias);
         } else {
+          notifyError("Erro ao trazer as categorias, status: ", response.status);
           console.log("Erro ao trazer as categorias, status: ", response.status);
         }
       } catch (error) {
+        notifyError("Erro ao buscar categorias:", error);
         console.error("Erro ao buscar categorias:", error);
       }
     };
@@ -89,17 +92,12 @@ const EditProduct = ({ produto, onCloseModal }) => {
         formData, { headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}});
 
       if (response.status === 200) {
-        toast.success("Editado com sucesso!", {
-          position: "top-right",
-          autoClose: 2000,
-        });
+        notifySuccess("Editado com sucesso!");
         onCloseModal();
       } else
-        toast.error("Erro ao editar!", {
-          position: "top-right",
-          autoClose: 2000,
-        });
+        notifyError("Erro ao editar!");
     } catch (error) {
+      notifyError("Falha na requisição: ", error);
       console.error("Falha na requisição: ", error);
     }
   };

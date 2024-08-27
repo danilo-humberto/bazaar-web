@@ -10,9 +10,9 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from '../../context/AuthContext'
+import { notifyError, notifySuccess } from "../../views/util/Util";
 
 import "./LoginPage.css";
 import axios from "axios";
@@ -39,18 +39,12 @@ export default function LoginPage() {
         if (response.status === 200 && response.data.token !== "Acesso negado") {
           login(response.data.token, response.data.login, response.data.userId);
           setLoading(false);
-          toast.success("Logado com Sucesso!", {
-            position: "top-right",
-            autoClose: 2000,
-          });
+          notifySuccess("Logado com Sucesso!");
           setLoginInput("");
           setSenha("");
           navigation("/");
         } else {
-          toast.error("Login ou senha Inválidos!", {
-            position: "top-right",
-            autoClose: 2000,
-          });
+          notifyError("Login ou senha Inválidos!");
           setLoading(false);
           setSenha("");
         }

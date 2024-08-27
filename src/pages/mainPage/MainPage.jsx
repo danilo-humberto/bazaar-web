@@ -17,7 +17,7 @@ import axios from "axios";
 import Cart from "./Cart/Cart";
 import { CartProvider } from "./Cart/CartContext";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { notifyWarn, notifySuccess } from "../../views/util/Util";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function MainPage() {
@@ -31,10 +31,7 @@ export default function MainPage() {
 
     navigate(0);
 
-    toast.success("Logout realizado com sucesso!", {
-      position: "top-right",
-      autoClose: 2000,
-    });
+    notifySuccess("Logout realizado com sucesso!");
   };
 
   useEffect(() => {
@@ -58,10 +55,7 @@ export default function MainPage() {
         .catch((error) => {
           if (error.reponse && error.response.status === 401) {
             navigate("/login");
-            toast.warning(
-              "Tempo de login foi expirado, faça login novamente!",
-              { position: "top-right", autoClose: 2000 }
-            );
+            notifyWarn("Tempo de login foi expirado, faça login novamente!");
           } else console.log("Erro: " + error);
         });
     }

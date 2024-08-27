@@ -12,6 +12,7 @@ import { CartProvider } from "../mainPage/Cart/CartContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { notifyError, notifyWarn } from "../../views/util/Util";
 
 function DetailsProduct() {
 
@@ -23,6 +24,7 @@ function DetailsProduct() {
     const buscarProduto = async () => {
 
         if(!authState.token) {
+            notifyWarn("Token não reinvidicado ainda")
             console.log("Token não reinvidicado ainda")
             return
         }
@@ -39,13 +41,16 @@ function DetailsProduct() {
                     setUsuario(response.data)
                     console.log(response.data)
                 } else {
+                    notifyError("Usuário não encontrado")
                     console.error("Usuário não encontrado")
                 }
             } else {
-                console.log("Erro ao trazer os dados");
+                notifyError("Erro ao trazer os dados")
+                console.log("Erro ao trazer os dados")
             }
         
         } catch {
+            notifyError("Erro ao realizar a requisição")
             console.error("Erro ao realizar a requisição")
         }
     }

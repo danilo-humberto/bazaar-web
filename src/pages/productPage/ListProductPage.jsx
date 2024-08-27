@@ -18,6 +18,7 @@ import HeaderComponent from "../../components/header/header";
 import OtherFooter from "../../components/otherFooter/otherFooter";
 import EditProduct from "./EditProduct/EditProduct";
 import { AuthContext } from "../../context/AuthContext";
+import { notifyError, notifyWarn, notifySuccess } from "../../views/util/Util";
 
 export default function ListProductPage() {
   const [lista, setLista] = useState([]);
@@ -41,6 +42,7 @@ export default function ListProductPage() {
 
   const carregarLista = useCallback(async () => {
     if (!authState.token) {
+      notifyWarn("Token não carregado ainda");
       console.log("Token não carregado ainda");
     }
 
@@ -56,11 +58,13 @@ export default function ListProductPage() {
         console.log(response.data.produtos);
         setFilteredList(response.data.produtos || []);
       } else {
+        notifyError("Erro ao carregar a lista");
         console.error("Erro ao carregar a lista");
         setLista([]);
         setFilteredList([]);
       }
     } catch (error) {
+      notifyError("Falha ao receber os dados", error);
       console.error("Falha ao receber os dados", error);
     }
   }, []);
@@ -86,10 +90,12 @@ export default function ListProductPage() {
     await axios
       .delete(`http://localhost:8080/api/produto/${idRemover}`)
       .then((response) => {
+        notifySuccess("Produto removido com sucesso.");
         console.log("Produto removido com sucesso.");
         carregarLista(); // Recarregar a lista de produtos após remoção
       })
       .catch((error) => {
+        notifyError("Erro ao remover o produto.", error);
         console.log("Erro ao remover o produto.", error);
       });
     setOpenModal(false);
@@ -105,9 +111,11 @@ export default function ListProductPage() {
         setOpenModalEdit(true);
         console.log(response.data);
       } else {
+        notifyError("Erro ao buscar dados do produto específico!");
         console.error("Erro ao buscar dados do produto específico!");
       }
     } catch (error) {
+      notifyError("Erro ao fazer a requisição: ", error);
       console.error("Erro ao fazer a requisição: ", error);
     }
   };
