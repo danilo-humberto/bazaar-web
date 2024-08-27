@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -16,6 +17,7 @@ import {
 import HeaderComponent from "../../components/header/header";
 import OtherFooter from "../../components/otherFooter/otherFooter";
 import EditProduct from "./EditProduct/EditProduct";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function ListProductPage() {
   const [lista, setLista] = useState([]);
@@ -31,31 +33,22 @@ export default function ListProductPage() {
 
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
   const navigate = useNavigate();
+  const { authState } = useContext(AuthContext);
 
   const atualizarListaProduto = () => {
     navigate(0);
   };
 
-  const getUserId = () => {
-    return localStorage.getItem("userId");
-  };
-
-  const getToken = () => {
-    return localStorage.getItem("token");
-  };
-
   const carregarLista = useCallback(async () => {
-    const userId = getUserId();
-    const token = getToken();
-    if (!token) {
+    if (!authState.token) {
       console.log("Token não carregado ainda");
     }
 
     setLista([]);
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/usuario/${userId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `http://localhost:8080/api/usuario/${authState.userId}`,
+        { headers: { Authorization: `Bearer ${authState.token}` } }
       );
 
       if (response.status === 200) {

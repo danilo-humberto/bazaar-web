@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Grid, GridColumn, ButtonGroup, List, Loader } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
@@ -6,28 +6,24 @@ import axios from "axios";
 
 import "./ProfilePage.css";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function ProfilePage() {
   
-  const getUserId = () => {
-    const userId = localStorage.getItem("userId");
-    return userId;
-  };
+  const {authState} = useContext(AuthContext);
 
   const UserData = async (setUserData) => {
-    const userId = getUserId();
 
-    if (!userId) {
+    if (!authState.userId) {
       console.error("ID do usuário não encontrado");
       return;
     }
 
     try {
-      const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://localhost:8080/api/usuario/${userId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `http://localhost:8080/api/usuario/${authState.userId}`,
+        { headers: { Authorization: `Bearer ${authState.token}` } }
       );
       if (response.status === 200) {
         const userData = response.data;
@@ -139,7 +135,7 @@ export default function ProfilePage() {
                       style={{ borderRadius: "5px" }}
                     >
                       <Link to={"/address"} style={{ color: "white" }}>
-                        Adicionar Endereço
+                        Meus Endereços
                       </Link>
                     </Button>
                     <br />

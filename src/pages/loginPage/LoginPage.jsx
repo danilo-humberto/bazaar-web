@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Form,
   Input,
@@ -12,19 +12,21 @@ import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from '../../context/AuthContext'
 
 import "./LoginPage.css";
 import axios from "axios";
 
 export default function LoginPage() {
-  const [login, setLogin] = useState("");
+  const { login } = useContext(AuthContext);
+  const [loginInput, setLoginInput] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
   const navigation = useNavigate();
 
   function salvar() {
     let user = {
-      username: login,
+      username: loginInput,
       password: senha,
     };
 
@@ -35,15 +37,13 @@ export default function LoginPage() {
         console.log(response.data);
         
         if (response.status === 200 && response.data.token !== "Acesso negado") {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("login", response.data.login);
-          localStorage.setItem("userId", response.data.userId);
+          login(response.data.token, response.data.login, response.data.userId);
           setLoading(false);
           toast.success("Logado com Sucesso!", {
             position: "top-right",
             autoClose: 2000,
           });
-          setLogin("");
+          setLoginInput("");
           setSenha("");
           navigation("/");
         } else {
@@ -76,8 +76,8 @@ export default function LoginPage() {
                   >
                     <Icon name="user" />
                     <input
-                      value={login}
-                      onChange={(e) => setLogin(e.target.value)}
+                      value={loginInput}
+                      onChange={(e) => setLoginInput(e.target.value)}
                     />
                   </Input>
                 </FormField>

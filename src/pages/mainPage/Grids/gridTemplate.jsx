@@ -1,36 +1,37 @@
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import "./gridTemplate.css";
 import CardComponente from "../cards";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from '../../../context/AuthContext'
 
 export default function GridTemplate({descricao}) {
   const [listProduto, setListProduto] = useState([]);
-  const token = localStorage.getItem('token');
-  const navigate = useNavigate();
+  const {authState} = useContext(AuthContext);
 
   useEffect(() => {
+    const mostrarProdutos = async () => {
+
+      if(!authState.token) {
+        console.error("Token não encontrado");
+      }
+
+      try{
+        const response =  await axios.get(`http://localhost:8080/api/produto/mais-baratos/${descricao}`, {headers: {Authorization: `Bearer ${authState.token}`}});
+
+        if(response.status === 200) {
+          setListProduto(response.data)
+        } else {
+          console.error("Erro ao trazer os dados")
+        }
+      } catch(error) {
+        console.error("Erro ao fazer a requisição")
+      }
+    }
     mostrarProdutos();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [authState.token]);
 
-  const mostrarProdutos = async () => {
-    setListProduto([]);
-    await axios.get(`http://localhost:8080/api/produto/mais-baratos/${descricao}`, {headers: {Authorization: `Bearer ${token}`}})
-    .then((response) => {
-      setListProduto(response.data);
-    })
-    .catch((error) => {
-      if(error.reponse && error.response.status === 401){
-        navigate('/login')
-        toast.warning("Tempo de login foi expirado, faça login novamente!", {position: 'top-right', autoClose: 2000})
-      } else console.log("Erro: " + error);
-    })
-    ;
-  }
 
   return (
     <div className="background-grid">

@@ -1,10 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Form, FormTextArea, Icon, Input } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
 import "./FormProductPage.css";
+import { AuthContext } from '../../context/AuthContext'
 
 export default function FormCliente() {
   // eslint-disable-next-line no-unused-vars
@@ -16,26 +17,13 @@ export default function FormCliente() {
   const [imagem, setImagem] = useState(null);
   const [listaCategoria, setListaCategoria] = useState([])
   const [descricao, setDescricao] = useState([])
-  const [token, setToken] = useState(null);
+
+  const { authState } = useContext(AuthContext);
   
 
   const handleFileChange = (e) => {
     setImagem(e.target.files[0]);
   };
-
-  const getUserId = () => {
-    const userId = localStorage.getItem("userId");
-    return userId;
-  };
-
-  useEffect(() => {
-    const getToken = async () => {
-      const storedToken = await localStorage.getItem("token");
-      setToken(storedToken);
-    }
-
-    getToken();
-  }, [])
 
   const limpar =() =>{
 
@@ -51,8 +39,6 @@ export default function FormCliente() {
     
   }
   const salvar = async () => {
-
-    const userId = getUserId();
     
     let produtoRequest = {
       idCategoria: idCategoria,
@@ -69,10 +55,10 @@ export default function FormCliente() {
     }
 
       await axios
-      .post(`http://localhost:8080/api/produto/${userId}`, formData, {
+      .post(`http://localhost:8080/api/produto/${authState.userId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${authState.token}`
           },
         })
         .then((response) => {
@@ -86,14 +72,14 @@ export default function FormCliente() {
 
   useEffect(() => {
     const buscarCategorias = async () => {
-      if (!token) {
+      if (!authState.token) {
         console.log("Token não disponível ainda");
         return;
       }
   
       try {
         const response = await axios.get("http://localhost:8080/api/categoriaproduto", {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${authState.token}` },
         });
   
         if (response.status === 200) {
@@ -111,10 +97,7 @@ export default function FormCliente() {
     };
   
     buscarCategorias();
-  }, [token]);
-
-  
-
+  }, [authState.token]);
 
   return (
     <div>

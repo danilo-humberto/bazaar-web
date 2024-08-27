@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import OtherHeader from "../../components/otherHeader/otherHeader";
 import OtherFooter from "../../components/otherFooter/otherFooter";
 import Cart from "../mainPage/Cart/Cart"
@@ -11,28 +11,29 @@ import "./DetailsProduct.css";
 import { CartProvider } from "../mainPage/Cart/CartContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 function DetailsProduct() {
 
     const { id } = useParams();
     const [productData, setProductData] = useState(null);
     const [usuario, setUsuario] = useState();
+    const { authState } = useContext(AuthContext);
 
     const buscarProduto = async () => {
-        const token = localStorage.getItem("token")
 
-        if(!token) {
+        if(!authState.token) {
             console.log("Token não reinvidicado ainda")
             return
         }
 
         try {
-            const responseProduct = await axios.get(`http://localhost:8080/api/produto/${id}`, { headers: {Authorization: `Bearer ${token}`}});
+            const responseProduct = await axios.get(`http://localhost:8080/api/produto/${id}`, { headers: {Authorization: `Bearer ${authState.token}`}});
 
             if(responseProduct.status === 200) {
                 setProductData(responseProduct.data)
 
-                const response = await axios.get(`http://localhost:8080/api/produto/obterUsuario/${id}`, { headers: {Authorization: `Bearer ${token}`}})
+                const response = await axios.get(`http://localhost:8080/api/produto/obterUsuario/${id}`, { headers: {Authorization: `Bearer ${authState.token}`}})
 
                 if(response.status === 200) {
                     setUsuario(response.data)
