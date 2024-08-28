@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Input } from "semantic-ui-react";
-import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./SearchPage.css";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Input } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import OtherFooter from "../../components/otherFooter/otherFooter";
 import GridProduct from "./productGrid/gridProduct";
-import { notifyError } from "../../views/util/Util";
+import "./SearchPage.css";
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,7 +30,6 @@ export default function SearchPage() {
         setResults(response.data);
       })
       .catch((error) => {
-        notifyError("Erro ao realizar a pesquisa:", error);
         console.error("Erro ao realizar a pesquisa:", error);
       });
   };
@@ -40,14 +38,17 @@ export default function SearchPage() {
     if (searchTerm.trim() !== "") {
       navigate(`/searchPage?query=${encodeURIComponent(searchTerm)}`);
       fetchResults(searchTerm);
+    } else if(searchTerm.trim() === "") {
+      navigate(`/searchPage?query=${encodeURIComponent(searchTerm)}`);
+      fetchResults(searchTerm);
     }
   };
 
   return (
     <div>
       <Header />
-      <div className="background-main">
-        <main>
+      <div className="background-search">
+        <main style={{marginTop: '10vh', height: '100vh', marginBottom: '20px'}}>
           <div className="content-gridproducts">
             <br />
             <div className="input">

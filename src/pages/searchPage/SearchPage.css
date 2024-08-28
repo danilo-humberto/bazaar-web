@@ -1,7 +1,6 @@
-.background-main {
+.background-search {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
     width: 100vw;
     background-image: url('../../assets/logoTimbrada.png');
 }
@@ -11,6 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    padding-bottom: 10px;
 }
 
 .input {

@@ -1,6 +1,5 @@
 import {
   Card,
-  Image,
   CardContent,
   CardDescription,
   CardHeader,
@@ -8,29 +7,18 @@ import {
 } from "semantic-ui-react";
 import "./cardsProduct.css";
 
-export default function CardsProduct({imageUrl, titulo, valorUnitario}) {
+export default function CardsProduct({imageUrl, titulo, valorUnitario, descricao}) {
   return (
     <Card>
-      <Image src={imageUrl} wrapped ui={false} />
+      <img src={imageUrl} wrapped ui={false} className="image-product-search"/>
       <CardContent>
-        <CardHeader>{valorUnitario}</CardHeader>
+        <CardHeader>{titulo}</CardHeader>
         <CardDescription>
-          {titulo}
+          {descricao}
         </CardDescription>
-      </CardContent>
-      <CardContent extra>
-        <div className="bottom">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Icon name="user circle outline" size="big" />
-            nome
-          </div>
-        </div>
+        <CardDescription className="card-description-product">
+          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valorUnitario)}
+        </CardDescription>
       </CardContent>
     </Card>
   );

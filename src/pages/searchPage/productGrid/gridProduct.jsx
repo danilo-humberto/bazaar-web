@@ -25,7 +25,7 @@ export default function GridProduct({ searchTerm }) {
   }, [searchTerm]);
 
   return (
-    <div className="background-grid">
+    <div className="background-grid-product">
       <Grid columns={5}>
         <GridRow>
           {listProduto.map((produto) => {
@@ -35,6 +35,7 @@ export default function GridProduct({ searchTerm }) {
                   imageUrl={produto.imagemUrl}
                   titulo={produto.titulo}
                   valorUnitario={produto.valorUnitario}
+                  descricao={produto.descricao}
                 />
                 <br />
               </GridColumn>

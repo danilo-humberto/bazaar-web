@@ -17,3 +17,11 @@
     height: 320px;
     object-fit: initial;
 }
+
+.card-description-main-product {
+    padding-top: 20px;
+    text-align: right;
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
