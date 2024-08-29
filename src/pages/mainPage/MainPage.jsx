@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./MainPage.css";
 import OtherHeader from "../../components/otherHeader/otherHeader";
@@ -17,13 +17,18 @@ import axios from "axios";
 import Cart from "./Cart/Cart";
 import { CartProvider } from "./Cart/CartContext";
 import { Link, useNavigate } from "react-router-dom";
-import { notifyWarn, notifySuccess } from "../../views/util/Util";
+import { notifyWarn, notifySuccess, notifyError } from "../../views/util/Util";
 import "react-toastify/dist/ReactToastify.css";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function MainPage() {
   const [isActive, setIsActive] = useState(false);
   const [profileClick, setProfileClick] = useState(false);
   const navigate = useNavigate();
+  const { authState } = useContext(AuthContext);
+  const [nome, setNome] = useState();
+  const [email, setEmail] = useState();
+  const [mensagem, setMensagem] = useState();
 
   const handleLogout = () => {
     localStorage.removeItem("login");
@@ -35,15 +40,14 @@ export default function MainPage() {
   };
 
   useEffect(() => {
-    const loginUser = localStorage.getItem("login");
-    const token = localStorage.getItem("token");
-    if (loginUser == null) {
+    if (authState.userId == null) {
       console.log("sem Id");
     } else {
       axios
         .get(
-          "http://localhost:8080/api/usuario/userCondition?login=" + loginUser,
-          { headers: { Authorization: `Bearer ${token}` } }
+          "http://localhost:8080/api/usuario/userCondition?login=" +
+            authState.userId,
+          { headers: { Authorization: `Bearer ${authState.token}` } }
         )
         .then((response) => {
           if (response.data === true) {
@@ -60,6 +64,35 @@ export default function MainPage() {
         });
     }
   }, [handleLogout]);
+
+  const sendFeedback = async (e) => {
+    e.preventDefault();
+
+    const formData = new URLSearchParams();
+    formData.append("fullName", e.target.fullName.value);
+    formData.append("email", e.target.email.value);
+    formData.append("message", e.target.message.value);
+
+    const response = await axios.post(
+      "http://localhost:8080/api/email/feedback",
+      formData,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${authState.token}`,
+        },
+      }
+    );
+
+    setNome("");
+    setEmail("");
+    setMensagem("");
+    if (response.status === 200) {
+      notifySuccess("Feedback enviado com sucesso!");
+    } else {
+      notifyError("Algo inesperado aconteceu, tente novamente mais tarde!");
+    }
+  };
 
   return (
     <div>
@@ -115,15 +148,31 @@ export default function MainPage() {
           <div className="form-contact">
             <h2>Entre em Contato</h2>
             <div className="form-content-contact">
-              <div className="form-inputs">
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="Nome Completo"
-                />
-                <input type="text" name="email" placeholder="E-mail" />
-                <input type="text" name="message" placeholder="Mensagem" />
-                <button>Contato Agora</button>
+              <div style={{ flex: 1 }} onSubmit={sendFeedback}>
+                <form className="form-inputs">
+                  <input
+                    type="text"
+                    name="fullName"
+                    placeholder="Nome Completo"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    name="email"
+                    placeholder="E-mail"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    name="message"
+                    placeholder="Mensagem"
+                    value={mensagem}
+                    onChange={(e) => setMensagem(e.target.value)}
+                  />
+                  <button type="submit">Contato Agora</button>
+                </form>
               </div>
               <div className="form-social">
                 <div className="form-social-contact">
