@@ -1,10 +1,10 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Input } from "semantic-ui-react";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
+import { Input } from "semantic-ui-react";
 import { useCart } from "../../pages/mainPage/Cart/CartContext";
-import axios from "axios";
 
 import LogoLaranja from "../../assets/logo-laranja.png";
 
@@ -84,6 +84,7 @@ function OtherHeader({ onClickProfile }) {
             opacity: isLogged ? 1 : 0.5,
           }}
         />
+        <div className="count-products-cart">0</div>
         {isLogged ? (
           profileImage ? (
             <img

@@ -48,3 +48,17 @@
     border-radius: 50%;
     object-fit: fill;
 }
+
+.count-products-cart {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    color: black;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    top: 25px;
+    right: 210px;
+}
