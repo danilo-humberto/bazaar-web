@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import { useCart } from "../../pages/mainPage/Cart/CartContext";
 import LogoLaranja from "../../assets/logo-laranja.png";
 
 import "./otherHeader.css";
+import { AuthContext } from "../../context/AuthContext";
 
 function OtherHeader({ onClickProfile }) {
   const [isLogged, setIsLogged] = useState(false);
@@ -16,17 +18,17 @@ function OtherHeader({ onClickProfile }) {
   const [profileImage, setProfileImage] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para o termo de pesquisa
   const navigate = useNavigate(); // Hook para navegação
+  const { authState } = useContext(AuthContext);
+  const { cartItems } = useCart();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
 
-    if (token) {
+    if (authState.token) {
       setIsLogged(true);
 
       axios
-        .get(`http://localhost:8080/api/usuario/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
+        .get(`http://localhost:8080/api/usuario/${authState.userId}`, {
+          headers: { Authorization: `Bearer ${authState.token}` },
         })
         .then((response) => {
           if (response.data.imagemUrl) {
@@ -84,7 +86,7 @@ function OtherHeader({ onClickProfile }) {
             opacity: isLogged ? 1 : 0.5,
           }}
         />
-        <div className="count-products-cart">0</div>
+        <div className="count-products-cart" style={{display: isLogged ? 'flex' : 'none'}}>{cartItems.length}</div>
         {isLogged ? (
           profileImage ? (
             <img

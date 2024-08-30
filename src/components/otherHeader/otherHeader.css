@@ -21,11 +21,12 @@
     margin-right: 20px;
 }
 
-.bell, .cart-icon, .profile {
+.cart-icon, .profile {
     color: #ff7a00;
     height: 30px;
     width: 30px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .btn-login {
@@ -61,4 +62,12 @@
     border-radius: 50%;
     top: 25px;
     right: 210px;
+}
+
+.cart-icon:hover {
+    color: #ff7b00b4;
+}
+
+.profile:hover {
+    color: #ff7b00b4;
 }
