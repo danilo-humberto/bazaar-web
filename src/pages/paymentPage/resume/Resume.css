@@ -1,60 +1,76 @@
-.itens-payment {
-    display: flex;
-    padding: 10px 0;
-    transition: 0.3s;
+.resume {
+    padding: 20px;
 }
 
-.itens-payment:hover {
+.items-payment-container {
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-payment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    padding: 10px 0;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.item-payment:hover {
     background-color: rgba(90, 88, 88, 0.221);
     border-radius: 10px;
     padding: 10px 5px;
 }
 
-.itens-payment img {
+.item-payment img {
     width: 150px;
     height: 100px;
+    object-fit: contain;
     border-radius: 10px;
+    margin-bottom: 10px;
 }
 
-.info-itens-payment {
-    width: 100%;
+.info-item-payment {
     display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    align-items: start;
+    flex-direction: column;
+    align-items: center;
 }
 
-.info-itens-payment p {
+.info-item-payment p {
     color: black;
-    max-width: 150px;
     font-size: 16px;
     text-transform: capitalize;
-    text-align: start;
+    margin: 0;
 }
 
-.info-itens-payment span {
+.info-item-payment span {
     font-weight: bold;
     font-size: 18px;
-    text-align: center;
-    margin-top: 30px;
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
-.total-itens-payment {
+.total-payment {
     border-top: 1px solid black;
     margin-top: 20px;
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: space-between;
     padding: 15px 0;
 }
 
-.total-itens-payment p {
+.total-payment p {
     color: black;
     margin: 0;
     font-size: 18px;
 }
 
-.total-itens-payment span {
+.total-payment span {
     font-weight: bold;
     font-size: 18px;
 }

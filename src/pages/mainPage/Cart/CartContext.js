@@ -24,7 +24,7 @@ export function CartProvider({ children }) {
     );
 
     if (index !== -1) {
-      updatedCartItems.splice(index, 1); // Remove apenas a primeira ocorrência encontrada
+      updatedCartItems.splice(index, 1); 
       setCartItems(updatedCartItems);
     }
   };

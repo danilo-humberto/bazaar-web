@@ -25,7 +25,7 @@ const Payment = () => {
                 <div className="methods-payment">
                   <p>Pix</p>
                   <button onClick={() => setSelectedPaymentMethod("pix")}>
-                    <FaArrowRightLong />{" "}
+                    <FaArrowRightLong />
                   </button>
                 </div>
                 <div className="methods-payment">
@@ -33,13 +33,13 @@ const Payment = () => {
                   <button
                     onClick={() => setSelectedPaymentMethod("creditCard")}
                   >
-                    <FaArrowRightLong />{" "}
+                    <FaArrowRightLong />
                   </button>
                 </div>
                 <div className="methods-payment">
                   <p>Cartão de Débito</p>
                   <button onClick={() => setSelectedPaymentMethod("debitCard")}>
-                    <FaArrowRightLong />{" "}
+                    <FaArrowRightLong />
                   </button>
                 </div>
 
