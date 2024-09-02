@@ -42,7 +42,6 @@ export default function ListProductPage() {
 
   const carregarLista = useCallback(async () => {
     if (!authState.token) {
-      notifyWarn("Token não carregado ainda");
       console.log("Token não carregado ainda");
     }
 
@@ -58,13 +57,11 @@ export default function ListProductPage() {
         console.log(response.data.produtos);
         setFilteredList(response.data.produtos || []);
       } else {
-        notifyError("Erro ao carregar a lista");
         console.error("Erro ao carregar a lista");
         setLista([]);
         setFilteredList([]);
       }
     } catch (error) {
-      notifyError("Falha ao receber os dados", error);
       console.error("Falha ao receber os dados", error);
     }
   }, []);
@@ -109,13 +106,10 @@ export default function ListProductPage() {
       if (response.status === 200) {
         setProdutoSelecionado(response.data);
         setOpenModalEdit(true);
-        console.log(response.data);
       } else {
-        notifyError("Erro ao buscar dados do produto específico!");
         console.error("Erro ao buscar dados do produto específico!");
       }
     } catch (error) {
-      notifyError("Erro ao fazer a requisição: ", error);
       console.error("Erro ao fazer a requisição: ", error);
     }
   };
@@ -163,20 +157,21 @@ export default function ListProductPage() {
             <div style={{ marginBottom: "20px" }}>
               <Input
                 placeholder="Título"
+                style={{width: '300px'}}
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
               />
               <Input
                 placeholder="Código"
+                style={{width: '300px', marginLeft: "10px"}}
                 value={codigo}
                 onChange={(e) => setCodigo(e.target.value)}
-                style={{ marginLeft: "10px" }}
               />
               <Input
                 placeholder="Valor Unitário"
                 value={valorUnitario}
                 onChange={(e) => setValorUnitario(e.target.value)}
-                style={{ marginLeft: "10px" }}
+                style={{width: '250px', marginLeft: "10px"}}
               />
               <Button
                 color="blue"
@@ -189,7 +184,7 @@ export default function ListProductPage() {
               <Button
                 color="green"
                 onClick={atualizarListaProduto}
-                style={{ marginLeft: "350px" }}
+                style={{ marginLeft: "58px" }}
               >
                 Atualizar
               </Button>
