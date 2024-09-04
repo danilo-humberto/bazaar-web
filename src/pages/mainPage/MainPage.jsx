@@ -12,17 +12,15 @@ import Banner4 from "../../assets/banner4.png";
 import ContactImage from "../../assets/image-contact.png";
 import { Autoplay, Pagination } from "swiper/modules";
 import GridTemplate from "./Grids/gridTemplate";
-import { AiTwotoneExclamationCircle } from "react-icons/ai";
 import axios from "axios";
 import Cart from "./Cart/Cart";
 import { CartProvider } from "./Cart/CartContext";
 import { Link, useNavigate } from "react-router-dom";
-import { notifyWarn, notifySuccess, notifyError } from "../../views/util/Util";
+import { notifySuccess, notifyError } from "../../views/util/Util";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function MainPage() {
-  const [isActive, setIsActive] = useState(false);
   const [profileClick, setProfileClick] = useState(false);
   const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
@@ -38,32 +36,6 @@ export default function MainPage() {
 
     notifySuccess("Logout realizado com sucesso!");
   };
-
-  useEffect(() => {
-    if (authState.userId == null) {
-      console.log("sem Id");
-    } else {
-      axios
-        .get(
-          "http://localhost:8080/api/usuario/userCondition?login=" +
-            authState.userId,
-          { headers: { Authorization: `Bearer ${authState.token}` } }
-        )
-        .then((response) => {
-          if (response.data === true) {
-            setIsActive(true);
-          } else {
-            setIsActive(false);
-          }
-        })
-        .catch((error) => {
-          if (error.reponse && error.response.status === 401) {
-            navigate("/login");
-            notifyWarn("Tempo de login foi expirado, faça login novamente!");
-          } else console.log("Erro: " + error);
-        });
-    }
-  }, [handleLogout]);
 
   const sendFeedback = async (e) => {
     e.preventDefault();
@@ -93,6 +65,21 @@ export default function MainPage() {
       notifyError("Algo inesperado aconteceu, tente novamente mais tarde!");
     }
   };
+
+  useEffect(() => {
+    createCart(authState.userId)
+  }, [])
+
+  const createCart = async (userID) => {
+    const response = await axios.post(`http://localhost:8080/api/carrinho/${userID}`)
+
+    if(response.status === 201 || response.status === 200) {
+      console.log("carrinho criado")
+      console.log(response)
+    } else {
+      console.log("erro ao criar o carrinho")
+    }
+  }
 
   return (
     <div>
@@ -187,16 +174,6 @@ export default function MainPage() {
             </div>
           </div>
         </div>
-        {isActive ? (
-          <div style={{ display: "none" }}></div>
-        ) : (
-          <div className="info">
-            <AiTwotoneExclamationCircle className="exclamation-icon" />
-            <span>
-              Verifique a sua conta no e-mail para uma melhor experiência !
-            </span>
-          </div>
-        )}
         <OtherFooter />
         {profileClick && (
           <div className="pop-up">

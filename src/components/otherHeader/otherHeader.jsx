@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
@@ -11,6 +10,7 @@ import LogoLaranja from "../../assets/logo-laranja.png";
 
 import "./otherHeader.css";
 import { AuthContext } from "../../context/AuthContext";
+import { useAxios } from "../../hooks/useAxios";
 
 function OtherHeader({ onClickProfile }) {
   const [isLogged, setIsLogged] = useState(false);
@@ -21,23 +21,13 @@ function OtherHeader({ onClickProfile }) {
   const { authState } = useContext(AuthContext);
   const { cartItems } = useCart();
 
+  const { data } = useAxios(`http://localhost:8080/api/usuario/${authState.userId}`);
   useEffect(() => {
-
     if (authState.token) {
       setIsLogged(true);
-
-      axios
-        .get(`http://localhost:8080/api/usuario/${authState.userId}`, {
-          headers: { Authorization: `Bearer ${authState.token}` },
-        })
-        .then((response) => {
-          if (response.data.imagemUrl) {
-            setProfileImage(response.data.imagemUrl);
-          }
-        })
-        .catch((error) => {
-          console.error("Erro ao buscar imagem de perfil:", error);
-        });
+      if(data) {
+        setProfileImage(data.imagemUrl)
+      }
     } else {
       setIsLogged(false);
     }
