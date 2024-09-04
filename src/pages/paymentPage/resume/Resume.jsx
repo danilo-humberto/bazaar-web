@@ -1,10 +1,29 @@
-import React from 'react';
-import { useCart } from '../../mainPage/Cart/CartContext';
+import axios from 'axios';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
+import { AuthContext } from '../../../context/AuthContext';
+import { notifySuccess } from '../../../views/util/Util';
+import { useCart } from '../../mainPage/Cart/CartContext';
 import './Resume.css';
 
 const Resume = () => {
-  const { cartItems, getTotalPrice, removeFromCart } = useCart();
+  const { cartItems, getTotalPrice, removeFromCart} = useCart();
+  const { authState } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const finishPayment = async () => {
+    const response = await axios.post(`http://localhost:8080/api/pagamento/${authState.userId}`, true, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if(response.status === 200 || response.status === 201) {
+      notifySuccess("Compra Efetuada !")
+      navigate('/listCompras')
+    }
+  }
 
   const handleRemove = (item) => {
     removeFromCart(item);
@@ -42,7 +61,7 @@ const Resume = () => {
       <div className="btn-finish">
         <Button
           color="orange"
-          onClick={() => {}}
+          onClick={finishPayment}
         >
           Finalizar Compra
         </Button>

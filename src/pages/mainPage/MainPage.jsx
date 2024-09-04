@@ -1,41 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "./MainPage.css";
-import OtherHeader from "../../components/otherHeader/otherHeader";
-import OtherFooter from "../../components/otherFooter/otherFooter";
 import Banner1 from "../../assets/banner1.png";
 import Banner2 from "../../assets/banner2.png";
 import Banner3 from "../../assets/banner3.png";
 import Banner4 from "../../assets/banner4.png";
 import ContactImage from "../../assets/image-contact.png";
-import { Autoplay, Pagination } from "swiper/modules";
-import GridTemplate from "./Grids/gridTemplate";
-import axios from "axios";
+import OtherFooter from "../../components/otherFooter/otherFooter";
+import OtherHeader from "../../components/otherHeader/otherHeader";
+import { AuthContext } from "../../context/AuthContext";
+import { notifyError, notifySuccess } from "../../views/util/Util";
 import Cart from "./Cart/Cart";
 import { CartProvider } from "./Cart/CartContext";
-import { Link, useNavigate } from "react-router-dom";
-import { notifySuccess, notifyError } from "../../views/util/Util";
-import "react-toastify/dist/ReactToastify.css";
-import { AuthContext } from "../../context/AuthContext";
+import GridTemplate from "./Grids/gridTemplate";
+import "./MainPage.css";
 
 export default function MainPage() {
-  const [profileClick, setProfileClick] = useState(false);
-  const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
   const [nome, setNome] = useState();
   const [email, setEmail] = useState();
   const [mensagem, setMensagem] = useState();
-
-  const handleLogout = () => {
-    localStorage.removeItem("login");
-    localStorage.removeItem("token");
-
-    navigate(0);
-
-    notifySuccess("Logout realizado com sucesso!");
-  };
 
   const sendFeedback = async (e) => {
     e.preventDefault();
@@ -66,25 +54,10 @@ export default function MainPage() {
     }
   };
 
-  useEffect(() => {
-    createCart(authState.userId)
-  }, [])
-
-  const createCart = async (userID) => {
-    const response = await axios.post(`http://localhost:8080/api/carrinho/${userID}`)
-
-    if(response.status === 201 || response.status === 200) {
-      console.log("carrinho criado")
-      console.log(response)
-    } else {
-      console.log("erro ao criar o carrinho")
-    }
-  }
-
   return (
     <div>
       <CartProvider>
-        <OtherHeader onClickProfile={() => setProfileClick(!profileClick)} />
+        <OtherHeader />
         <Cart />
       </CartProvider>
       <div className="background-main">
@@ -175,19 +148,6 @@ export default function MainPage() {
           </div>
         </div>
         <OtherFooter />
-        {profileClick && (
-          <div className="pop-up">
-            <Link to={"/profile"} style={{ color: "black" }}>
-              <span>Ver perfil</span>
-            </Link>
-            <span
-              style={{ color: "black", cursor: "pointer" }}
-              onClick={handleLogout}
-            >
-              Sair
-            </span>
-          </div>
-        )}
       </div>
     </div>
   );

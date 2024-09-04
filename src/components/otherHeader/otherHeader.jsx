@@ -8,11 +8,13 @@ import { useCart } from "../../pages/mainPage/Cart/CartContext";
 
 import LogoLaranja from "../../assets/logo-laranja.png";
 
-import "./otherHeader.css";
 import { AuthContext } from "../../context/AuthContext";
 import { useAxios } from "../../hooks/useAxios";
+import { notifySuccess } from "../../views/util/Util";
+import "./otherHeader.css";
 
 function OtherHeader({ onClickProfile }) {
+  const [isVisible, setIsVisible] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const { toggleCartVisibility } = useCart();
   const [profileImage, setProfileImage] = useState(null);
@@ -37,6 +39,15 @@ function OtherHeader({ onClickProfile }) {
     if (searchTerm.trim() !== "") {
       navigate(`/searchPage?query=${encodeURIComponent(searchTerm)}`); // Redireciona para a SearchPage com o termo na URL
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("login");
+    localStorage.removeItem("token");
+
+    navigate(0);
+
+    notifySuccess("Logout realizado com sucesso!");
   };
 
   return (
@@ -83,11 +94,11 @@ function OtherHeader({ onClickProfile }) {
               src={profileImage}
               alt="Foto de Perfil"
               className="img-user"
-              onClick={onClickProfile}
+              onClick={() => setIsVisible(!isVisible)}
               style={{ cursor: "pointer" }}
             />
           ) : (
-            <FaRegUser className="profile" onClick={onClickProfile} />
+            <FaRegUser className="profile" onClick={() => setIsVisible(!isVisible)} />
           )
         ) : (
           <Link to={"/login"} style={{ color: "black" }}>
@@ -95,6 +106,19 @@ function OtherHeader({ onClickProfile }) {
           </Link>
         )}
       </div>
+      {isVisible && (
+        <div className="pop-up">
+              <Link to={"/profile"} style={{ color: "black" }}>
+                <span>Ver perfil</span>
+              </Link>
+              <span
+                style={{ color: "black", cursor: "pointer" }}
+                onClick={handleLogout}
+              >
+                Sair
+              </span>
+          </div>
+      )}
     </div>
   );
 }

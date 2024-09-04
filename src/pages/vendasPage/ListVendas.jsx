@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Container,
@@ -8,9 +9,8 @@ import {
   Table,
 } from "semantic-ui-react";
 import imageTest from "../../assets/imageteste.jpeg";
-import HeaderComponent from '../../components/header/header'
-import OtherFooter from '../../components/otherFooter/otherFooter'
-import { useNavigate } from "react-router-dom";
+import HeaderComponent from '../../components/header/header';
+import OtherFooter from '../../components/otherFooter/otherFooter';
 
 const ListVendas = () => {
 
@@ -37,19 +37,19 @@ const ListVendas = () => {
           <div style={{ marginTop: "5%", marginBottom: "2%" }}>
             <div style={{ marginBottom: "20px" }}>
               <Input placeholder="Título" />
-              <Input placeholder="Código" style={{ marginLeft: "10px" }} />
+              <Input placeholder="Código" style={{ marginLeft: "10px", width: '150px' }} />
               <Input
                 placeholder="Valor Unitário"
-                style={{ marginLeft: "10px" }}
+                style={{ marginLeft: "10px", width: '150px' }}
               />
-              <Button color="blue" style={{ marginLeft: "10px" }}>
+              <Button color="blue" style={{ marginLeft: "255px" }}>
                 Filtrar
               </Button>
 
               <Button
                 color="green"
                 onClick={atualizarListaCompras()}
-                style={{ marginLeft: "362px" }}
+                style={{ marginLeft: "10px" }}
               >
                 Atualizar
               </Button>

@@ -1,13 +1,13 @@
   import React from "react";
-  import { useCart } from './CartContext';
+import { useCart } from './CartContext';
 
-  import "./Cart.css";
-  import CartItem from "./CartItem/CartItem";
   import { Link } from "react-router-dom";
+import "./Cart.css";
+import CartItem from "./CartItem/CartItem";
 
   function Cart() {
 
-      const { isCartVisible, toggleCartVisibility, cartItems, getTotalPrice } = useCart();
+      const { isCartVisible, toggleCartVisibility, cartItems, getTotalPrice, cleanCart } = useCart();
 
     return (
       <section className={`cart ${isCartVisible ? 'cart--active' : ''}`}>
@@ -28,6 +28,7 @@
               <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(getTotalPrice())}</span>
           </div>
           <div className="cart-btn-finish">
+            <button className="cleanCart" onClick={cleanCart}>Limpar Carrinho</button>
             <Link to={'/payment'}><button>Finalizar Compra</button></Link>
           </div>
         </div>

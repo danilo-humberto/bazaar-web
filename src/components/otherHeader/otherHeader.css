@@ -71,3 +71,18 @@
 .profile:hover {
     color: #ff7b00b4;
 }
+
+.new-background .pop-up {
+    background-color: white;
+    width: 100%;
+    max-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    position: fixed;
+    top: 80px;
+    right: 200px;
+    z-index: 1001;
+    padding: 10px;
+    border-radius: 5px 0 5px 5px;
+}

@@ -1,8 +1,11 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import axios from "axios";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../context/AuthContext";
 
 const CartContext = createContext();
 
 export function CartProvider({ children }) {
+  const { authState } = useContext(AuthContext);
   const [isCartVisible, setIsCartVisible] = useState(false);
   const [cartItems, setCartItems] = useState(() => {
     const storedCartItems = localStorage.getItem("cartItems");
@@ -13,19 +16,45 @@ export function CartProvider({ children }) {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addToCart = (product) => {
-    setCartItems((prevItems) => [...prevItems, product]);
-  };
-
-  const removeFromCart = (itemToRemove) => {
-    const updatedCartItems = [...cartItems];
-    const index = updatedCartItems.findIndex(
-      (item) => item.id === itemToRemove.id
+  const addToCart = async (product) => {
+    const response = await axios.get(
+      `http://localhost:8080/api/carrinho/cartId/${authState.userId}`
     );
 
-    if (index !== -1) {
-      updatedCartItems.splice(index, 1); 
-      setCartItems(updatedCartItems);
+    if (!response.data) {
+      await axios.post(
+        `http://localhost:8080/api/carrinho/${authState.userId}`
+      );
+    }
+
+    const resAddItemCart = await axios.put(
+      `http://localhost:8080/api/carrinho/add/${response.data}/${product.id}`
+    );
+
+    if (resAddItemCart.status === 200) {
+      setCartItems((prevItems) => [...prevItems, product]);
+    }
+  };
+
+  const removeFromCart = async (itemToRemove) => {
+    const response = await axios.get(
+      `http://localhost:8080/api/carrinho/cartId/${authState.userId}`
+    );
+
+    const resRemove = await axios.put(
+      `http://localhost:8080/api/carrinho/remove/${response.data}/${itemToRemove.id}`
+    );
+
+    if (resRemove.status === 200) {
+      const updatedCartItems = [...cartItems];
+      const index = updatedCartItems.findIndex(
+        (item) => item.id === itemToRemove.id
+      );
+
+      if (index !== -1) {
+        updatedCartItems.splice(index, 1);
+        setCartItems(updatedCartItems);
+      }
     }
   };
 
@@ -34,6 +63,18 @@ export function CartProvider({ children }) {
       return total + item.valorUnitario;
     }, 0);
   };
+
+  const cleanCart = async () => {
+    const response = await axios.get(
+      `http://localhost:8080/api/carrinho/cartId/${authState.userId}`
+    );
+
+    const resCleanCart = await axios.put(`http://localhost:8080/api/carrinho/clean/${response.data}`)
+
+    if(resCleanCart.status === 200) {
+      setCartItems([]);
+    }
+  }
 
   const toggleCartVisibility = () => {
     setIsCartVisible(!isCartVisible);
@@ -48,6 +89,7 @@ export function CartProvider({ children }) {
         addToCart,
         removeFromCart,
         getTotalPrice,
+        cleanCart
       }}
     >
       {children}
