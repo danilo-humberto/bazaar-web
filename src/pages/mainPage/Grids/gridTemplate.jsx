@@ -1,20 +1,20 @@
-import { Grid, GridColumn, GridRow, Loader } from "semantic-ui-react";
-import "./gridTemplate.css";
-import CardComponente from "../cards";
 import React, { useEffect, useState } from "react";
+import { Grid, GridColumn, GridRow, Loader } from "semantic-ui-react";
 import { useAxios } from "../../../hooks/useAxios";
+import CardComponente from "../cards";
+import "./gridTemplate.css";
 
-export default function GridTemplate({ descricao }) {
+function GridTemplate({ descricao }) {
   const [produtos, setProdutos] = useState(null);
   const { data } = useAxios(
     `http://localhost:8080/api/produto/mais-baratos/${descricao}`
   );
 
   useEffect(() => {
-    if(data) {
+    if(data && !produtos) {
       setProdutos(data);
     }
-  }, [data])
+  }, [data, produtos])
 
   return (
     <div className="background-grid">
@@ -44,3 +44,5 @@ export default function GridTemplate({ descricao }) {
     </div>
   );
 }
+
+export default React.memo(GridTemplate);

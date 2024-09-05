@@ -13,7 +13,7 @@ import { useAxios } from "../../hooks/useAxios";
 import { notifySuccess } from "../../views/util/Util";
 import "./otherHeader.css";
 
-function OtherHeader({ onClickProfile }) {
+function OtherHeader() {
   const [isVisible, setIsVisible] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const { toggleCartVisibility } = useCart();
@@ -123,4 +123,4 @@ function OtherHeader({ onClickProfile }) {
   );
 }
 
-export default OtherHeader;
+export default React.memo(OtherHeader);

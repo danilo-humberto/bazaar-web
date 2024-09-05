@@ -14,7 +14,7 @@ export function useAxios(url) {
         });
 
         return response.data;
-    })
+    }, { revalidateOnFocus: false, revalidateOnReconnect: false})
 
     return { data }
 }
