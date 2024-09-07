@@ -88,11 +88,9 @@ export default function ListProductPage() {
       .delete(`http://localhost:8080/api/produto/${idRemover}`)
       .then((response) => {
         notifySuccess("Produto removido com sucesso.");
-        console.log("Produto removido com sucesso.");
         carregarLista(); // Recarregar a lista de produtos após remoção
       })
       .catch((error) => {
-        notifyError("Erro ao remover o produto.", error);
         console.log("Erro ao remover o produto.", error);
       });
     setOpenModal(false);
@@ -117,11 +115,8 @@ export default function ListProductPage() {
   return (
     <div>
       <HeaderComponent />
-      <div style={{ marginTop: "8%", height: "74.6vh" }}>
-        <Container
-          textAlign="justified"
-          style={{ height: "100%", overflow: "auto" }}
-        >
+      <div style={{ marginTop: "8%", marginBottom: '2%' }}>
+        <Container textAlign="justified" style={{ height: "100%" }}>
           <div
             style={{
               display: "flex",
@@ -135,12 +130,17 @@ export default function ListProductPage() {
                 Minhas Vendas
               </Button>
 
-              <Button color="orange" as={Link} to="/listCompras" style={{margin: '0 30px'}}>
+              <Button
+                color="orange"
+                as={Link}
+                to="/listCompras"
+                style={{ margin: "0 30px" }}
+              >
                 Minhas Compras
               </Button>
 
               <Button
-                label='Cadastrar Produto'
+                label="Cadastrar Produto"
                 color="orange"
                 circular
                 icon="clipboard outline"
@@ -157,13 +157,13 @@ export default function ListProductPage() {
             <div style={{ marginBottom: "20px" }}>
               <Input
                 placeholder="Título"
-                style={{width: '300px'}}
+                style={{ width: "300px" }}
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
               />
               <Input
                 placeholder="Código"
-                style={{width: '300px', marginLeft: "10px"}}
+                style={{ width: "300px", marginLeft: "10px" }}
                 value={codigo}
                 onChange={(e) => setCodigo(e.target.value)}
               />
@@ -171,7 +171,7 @@ export default function ListProductPage() {
                 placeholder="Valor Unitário"
                 value={valorUnitario}
                 onChange={(e) => setValorUnitario(e.target.value)}
-                style={{width: '250px', marginLeft: "10px"}}
+                style={{ width: "250px", marginLeft: "10px" }}
               />
               <Button
                 color="blue"
@@ -184,13 +184,13 @@ export default function ListProductPage() {
               <Button
                 color="green"
                 onClick={atualizarListaProduto}
-                style={{ marginLeft: "58px" }}
+                style={{ marginLeft: "40px" }}
               >
                 Atualizar
               </Button>
             </div>
 
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, zIndex: "-1", overflow: "auto" }}>
               <Table color="orange" sortable celled>
                 <Table.Header>
                   <Table.Row>
@@ -210,8 +210,14 @@ export default function ListProductPage() {
                       <Table.Row key={produto.id}>
                         <Table.Cell>
                           <Image
-                            src={produto.imagemUrl || "default-image.jpg"}
+                            src={`http://localhost:8080/static/uploaded-imgs/${produto.imagem}`}
                             size="small"
+                            style={{
+                              width: "150px",
+                              height: "150px",
+                              objectFit: "cover",
+                              borderRadius: '5px'
+                            }}
                           />
                         </Table.Cell>
                         <Table.Cell>{produto.codigo}</Table.Cell>

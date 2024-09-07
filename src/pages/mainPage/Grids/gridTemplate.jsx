@@ -11,7 +11,7 @@ function GridTemplate({ descricao }) {
   );
 
   useEffect(() => {
-    if(data && !produtos) {
+    if(data) {
       setProdutos(data);
     }
   }, [data, produtos])
@@ -26,7 +26,7 @@ function GridTemplate({ descricao }) {
                 return (
                   <GridColumn key={produto.id}>
                     <CardComponente
-                      imageUrl={produto.imagemUrl}
+                      imageUrl={produto.imagem}
                       descricao={produto.descricao}
                       titulo={produto.titulo}
                       valorUnitario={produto.valorUnitario}

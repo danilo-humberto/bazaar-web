@@ -21,7 +21,7 @@ export default function EditProfile() {
     confirmaSenha: "",
   });
 
-  const [image, setImage] = useState(null);
+  const [imagem, setImagem] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -64,19 +64,21 @@ export default function EditProfile() {
   };
 
   const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
+    setImagem(e.target.files[0]);
+    console.log(e.target.files[0]);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const { id, cpf, email, enderecos, produtos, login, situacao, senha, ...dataToSend } = userData;
+    const { id, cpf, email, enderecos, produtos, login, situacao, senha, pagamentos, ...dataToSend } = userData;
     console.log(dataToSend);
 
-    const formData = new FormData();
+    let formData = new FormData();
     formData.append("usuario", JSON.stringify(dataToSend));
-    if (image) {
-      formData.append("imagem", image);
+    if (imagem) {
+      console.log(imagem)
+      formData.append("imagem", imagem);
     }
 
     if(
@@ -103,7 +105,9 @@ export default function EditProfile() {
           `http://localhost:8080/api/usuario/${authState.userId}`,
           formData,
           {
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${authState.token}`
+             },
           }
         );
 
@@ -129,7 +133,7 @@ export default function EditProfile() {
                 <Form onSubmit={handleFormSubmit}>
                   <Form.Field>
                     <label>Foto de Perfil</label>
-                    <Input type="file" onChange={handleFileChange} />
+                    <Input type="file" accept="image/*" onChange={handleFileChange} />
                   </Form.Field>
                   <Form.Field>
                     <label>Nome Completo</label>

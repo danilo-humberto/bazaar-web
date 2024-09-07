@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Container, Form, FormTextArea, Icon, Input } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
@@ -18,6 +18,7 @@ export default function FormCliente() {
   const [imagem, setImagem] = useState(null);
   const [listaCategoria, setListaCategoria] = useState([])
   const [descricao, setDescricao] = useState([])
+  const navigate = useNavigate();
 
   const { authState } = useContext(AuthContext);
   
@@ -64,8 +65,8 @@ export default function FormCliente() {
         })
         .then((response) => {
           notifySuccess("Produto cadastrado com sucesso.");
-          console.log("Produto cadastrado com sucesso.");
           limpar();
+          navigate('/listProduct')
         })
         .catch((error) => {
           notifyError("Erro ao incluir o produto.");
@@ -173,7 +174,8 @@ export default function FormCliente() {
                 />
 
                 <Form.Input
-                width={10}
+                  style={{marginTop: '0'}}
+                  width={10}
                   required
                   fluid
                   label="Valor Unitário"

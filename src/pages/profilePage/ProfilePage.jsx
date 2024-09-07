@@ -14,6 +14,8 @@ export default function ProfilePage() {
 
   const { data } = useAxios(`http://localhost:8080/api/usuario/${authState.userId}`);
 
+  console.log(data)
+
   return (
     <div>
       <Header />
@@ -26,9 +28,9 @@ export default function ProfilePage() {
                   {data ? (
                     <>
                       <div>
-                        {data && data.imagemUrl ? (
+                        {data && data.imagem ? (
                           <img
-                            src={data.imagemUrl}
+                            src={`http://localhost:8080/static/uploaded-imgs/${data.imagem}`}
                             alt="foto de perfil"
                             className="img-profile"
                             loading="lazy"

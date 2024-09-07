@@ -28,7 +28,7 @@ function OtherHeader() {
     if (authState.token) {
       setIsLogged(true);
       if(data) {
-        setProfileImage(data.imagemUrl)
+        setProfileImage(data.imagem)
       }
     } else {
       setIsLogged(false);
@@ -79,19 +79,21 @@ function OtherHeader() {
       </div>
 
       <div>
-        <FaShoppingCart
-          className={`cart-icon ${!isLogged ? "disabled" : ""}`}
-          onClick={isLogged ? toggleCartVisibility : null}
-          style={{
-            cursor: isLogged ? "pointer" : "not-allowed",
-            opacity: isLogged ? 1 : 0.5,
-          }}
-        />
-        <div className="count-products-cart" style={{display: isLogged ? 'flex' : 'none'}}>{cartItems.length}</div>
+        <div className="cart-container">
+          <FaShoppingCart
+            className={`cart-icon ${!isLogged ? "disabled" : ""}`}
+            onClick={isLogged ? toggleCartVisibility : null}
+            style={{
+              cursor: isLogged ? "pointer" : "not-allowed",
+              opacity: isLogged ? 1 : 0.5,
+            }}
+          />
+          <div className="count-products-cart" style={{display: isLogged ? 'flex' : 'none'}}>{cartItems.length}</div>
+        </div>
         {isLogged ? (
           profileImage ? (
             <img
-              src={profileImage}
+              src={`http://localhost:8080/static/uploaded-imgs/${profileImage}`}
               alt="Foto de Perfil"
               className="img-user"
               onClick={() => setIsVisible(!isVisible)}

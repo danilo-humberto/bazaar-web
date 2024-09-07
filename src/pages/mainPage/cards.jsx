@@ -11,7 +11,7 @@ export default function CardComponent({id, imageUrl, titulo, valorUnitario, desc
   return (
     <Link to={`/detailsProduct/${id}`}>
       <Card style={{height: '440px'}}>
-        <img src={imageUrl} alt="" className="image-product" loading="lazy"/>
+        <img src={`http://localhost:8080/static/uploaded-imgs/${imageUrl}`} alt="" className="image-product" loading="lazy"/>
         <CardContent>
           <CardHeader>{titulo}</CardHeader>
           <CardDescription>

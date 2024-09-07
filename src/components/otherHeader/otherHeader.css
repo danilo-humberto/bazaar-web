@@ -44,10 +44,14 @@
 }
 
 .img-user {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    object-fit: fill;
+    object-fit: cover;
+}
+
+.cart-container {
+    position: relative;
 }
 
 .count-products-cart {
@@ -60,8 +64,8 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    top: 25px;
-    right: 210px;
+    top: -10px;
+    right: -35px;
 }
 
 .cart-icon:hover {
