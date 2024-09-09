@@ -1,8 +1,8 @@
-import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import "./gridProduct.css";
-import CardComponente from "../cardsProduct";
-import React, { useState, useEffect } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Grid, GridColumn, GridRow } from "semantic-ui-react";
+import CardComponente from "../cardsProduct";
+import "./gridProduct.css";
 
 export default function GridProduct({ searchTerm }) {
   const [listProduto, setListProduto] = useState([]);
@@ -32,7 +32,7 @@ export default function GridProduct({ searchTerm }) {
             return (
               <GridColumn key={produto.id}>
                 <CardComponente
-                  imageUrl={produto.imagemUrl}
+                  imageUrl={produto.imagem}
                   titulo={produto.titulo}
                   valorUnitario={produto.valorUnitario}
                   descricao={produto.descricao}

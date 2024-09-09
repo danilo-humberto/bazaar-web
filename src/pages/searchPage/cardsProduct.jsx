@@ -3,14 +3,13 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  Icon,
 } from "semantic-ui-react";
 import "./cardsProduct.css";
 
 export default function CardsProduct({imageUrl, titulo, valorUnitario, descricao}) {
   return (
     <Card>
-      <img src={imageUrl} wrapped ui={false} className="image-product-search"/>
+      <img src={`http://localhost:8080/static/uploaded-imgs/${imageUrl}`} wrapped ui={false} className="image-product-search"/>
       <CardContent>
         <CardHeader>{titulo}</CardHeader>
         <CardDescription>

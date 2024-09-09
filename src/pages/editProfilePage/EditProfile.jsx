@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useContext } from "react";
-import { Button, Grid, GridColumn, Form, Input, Icon } from "semantic-ui-react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Form, Grid, GridColumn, Icon, Input } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
-import axios from "axios";
-import "../profilePage/ProfilePage.css";
-import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { notifyError, notifyWarn } from "../../views/util/Util";
+import "../profilePage/ProfilePage.css";
 
 export default function EditProfile() {
 
@@ -112,7 +112,9 @@ export default function EditProfile() {
         );
 
         if (response.status === 200) {
-          navigate('/profile')
+          setTimeout(() => {
+            navigate('/profile')
+          }, 500);
         } else {
           console.error("Erro ao atualizar perfil", response.status, response.statusText);
         }

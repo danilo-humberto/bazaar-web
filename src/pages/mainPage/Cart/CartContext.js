@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
+import { notifyError } from "../../../views/util/Util";
 
 const CartContext = createContext();
 
@@ -17,17 +18,25 @@ export function CartProvider({ children }) {
   }, [cartItems]);
 
   const addToCart = async (product) => {
+
+    const getIdUserFromProduct = await axios.get(`http://localhost:8080/api/produto/obterUsuario/${product.id}`)
+
+    if(getIdUserFromProduct.data.id == authState.userId){
+      notifyError("Você não pode adicionar o seu próprio produto no carrinho!")
+      return
+    }
+  
     const response = await axios.get(
       `http://localhost:8080/api/carrinho/cartId/${authState.userId}`
     );
 
-    console.log(response)
     
     if (response.status === 204) {
       await axios.post(
         `http://localhost:8080/api/carrinho/${authState.userId}`
       );
     }
+
 
     const getIdCart = await axios.get(
       `http://localhost:8080/api/carrinho/cartId/${authState.userId}`
@@ -70,18 +79,6 @@ export function CartProvider({ children }) {
     }, 0);
   };
 
-  const cleanCart = async () => {
-    const response = await axios.get(
-      `http://localhost:8080/api/carrinho/cartId/${authState.userId}`
-    );
-
-    const resCleanCart = await axios.put(`http://localhost:8080/api/carrinho/clean/${response.data}`)
-
-    if(resCleanCart.status === 200) {
-      setCartItems([]);
-    }
-  }
-
   const toggleCartVisibility = () => {
     setIsCartVisible(!isCartVisible);
   };
@@ -94,8 +91,7 @@ export function CartProvider({ children }) {
         cartItems,
         addToCart,
         removeFromCart,
-        getTotalPrice,
-        cleanCart
+        getTotalPrice
       }}
     >
       {children}

@@ -7,7 +7,7 @@ import CartItem from "./CartItem/CartItem";
 
   function Cart() {
 
-      const { isCartVisible, toggleCartVisibility, cartItems, getTotalPrice, cleanCart } = useCart();
+      const { isCartVisible, toggleCartVisibility, cartItems, getTotalPrice } = useCart();
 
     return (
       <section className={`cart ${isCartVisible ? 'cart--active' : ''}`}>
@@ -28,7 +28,6 @@ import CartItem from "./CartItem/CartItem";
               <span>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(getTotalPrice())}</span>
           </div>
           <div className="cart-btn-finish">
-            <button className="cleanCart" onClick={cleanCart}>Limpar Carrinho</button>
             <Link to={'/payment'}><button>Finalizar Compra</button></Link>
           </div>
         </div>

@@ -49,7 +49,7 @@
 
 .cart-resume {
     background-color: rgb(235, 234, 234);
-    height: 180px;
+    height: 140px;
     display: flex;
     flex-direction: column;
     padding: 20px 30px;
@@ -77,17 +77,6 @@
     gap: 5px;
     align-items: center;
     width: 100%;
-}
-
-.cart-btn-finish .cleanCart {
-    width: 100%;
-    height: 40px;
-    border: none;
-    border-radius: 10px;
-    background-color: #be4d41;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
 }
 
 .cart-btn-finish .cleanCart:hover {

@@ -1,24 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useCallback, useContext } from "react";
 import axios from "axios";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   Container,
   Divider,
-  Icon,
-  Table,
-  Modal,
   Header,
+  Icon,
   Image,
   Input,
+  Modal,
+  Table,
 } from "semantic-ui-react";
 import HeaderComponent from "../../components/header/header";
 import OtherFooter from "../../components/otherFooter/otherFooter";
-import EditProduct from "./EditProduct/EditProduct";
 import { AuthContext } from "../../context/AuthContext";
-import { notifyError, notifyWarn, notifySuccess } from "../../views/util/Util";
+import { notifySuccess } from "../../views/util/Util";
+import EditProduct from "./EditProduct/EditProduct";
 
 export default function ListProductPage() {
   const [lista, setLista] = useState([]);
@@ -44,8 +44,7 @@ export default function ListProductPage() {
     if (!authState.token) {
       console.log("Token não carregado ainda");
     }
-
-    setLista([]);
+    
     try {
       const response = await axios.get(
         `http://localhost:8080/api/usuario/${authState.userId}`,
@@ -116,7 +115,7 @@ export default function ListProductPage() {
     <div>
       <HeaderComponent />
       <div style={{ marginTop: "8%", marginBottom: '2%' }}>
-        <Container textAlign="justified" style={{ height: "100%" }}>
+        <Container textAlign="justified" style={{ height: "100vh" }}>
           <div
             style={{
               display: "flex",
@@ -215,7 +214,7 @@ export default function ListProductPage() {
                             style={{
                               width: "150px",
                               height: "150px",
-                              objectFit: "cover",
+                              objectFit: "fill",
                               borderRadius: '5px'
                             }}
                           />
@@ -223,7 +222,7 @@ export default function ListProductPage() {
                         <Table.Cell>{produto.codigo}</Table.Cell>
                         <Table.Cell>{produto.titulo}</Table.Cell>
                         <Table.Cell>{produto.descricao}</Table.Cell>
-                        <Table.Cell>R$ {produto.valorUnitario}</Table.Cell>
+                        <Table.Cell>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(produto.valorUnitario)}</Table.Cell>
                         <Table.Cell textAlign="center">
                           <Button
                             inverted

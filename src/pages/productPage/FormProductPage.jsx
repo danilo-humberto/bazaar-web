@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Container, Form, FormTextArea, Icon, Input } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
+import { AuthContext } from '../../context/AuthContext';
+import { notifyError, notifySuccess, notifyWarn } from "../../views/util/Util";
 import "./FormProductPage.css";
-import { AuthContext } from '../../context/AuthContext'
-import { notifyError, notifyWarn, notifySuccess } from "../../views/util/Util";
 
 export default function FormCliente() {
   // eslint-disable-next-line no-unused-vars
@@ -66,7 +66,9 @@ export default function FormCliente() {
         .then((response) => {
           notifySuccess("Produto cadastrado com sucesso.");
           limpar();
-          navigate('/listProduct')
+          setTimeout(() => {
+            navigate('/listProduct')
+          }, 500)
         })
         .catch((error) => {
           notifyError("Erro ao incluir o produto.");
