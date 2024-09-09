@@ -14,7 +14,7 @@ export default function CartItem({item}) {
 
   return (
     <section className="cart-item">
-      <img src={item.imagemUrl} alt="imagem do produto" className="cart-item-image" />
+      <img src={`http://localhost:8080/static/uploaded-imgs/${item.imagem}`} alt="imagem do produto" className="cart-item-image" />
       <div className="cart-item-content">
         <p className="cart-item-title">{item.titulo}</p>
         <div className="cart-item-price-btn">

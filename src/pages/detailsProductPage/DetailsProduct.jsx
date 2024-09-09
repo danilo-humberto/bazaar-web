@@ -103,7 +103,7 @@ function DetailsProduct() {
           <div className="info-product">
             <h2>{productData.titulo || "Titulo do Produto"}</h2>
             <div className="swiper-imgs-products">
-              <img src={productData.imagemUrl || "no image"} alt="" />
+              <img src={`http://localhost:8080/static/uploaded-imgs/${productData.imagem}` || "no image"} alt="" />
             </div>
             <div className="description-price-product">
               <p style={{ color: "black" }}>

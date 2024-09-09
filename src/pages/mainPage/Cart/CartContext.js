@@ -21,14 +21,20 @@ export function CartProvider({ children }) {
       `http://localhost:8080/api/carrinho/cartId/${authState.userId}`
     );
 
-    if (!response.data) {
+    console.log(response)
+    
+    if (response.status === 204) {
       await axios.post(
         `http://localhost:8080/api/carrinho/${authState.userId}`
       );
     }
 
+    const getIdCart = await axios.get(
+      `http://localhost:8080/api/carrinho/cartId/${authState.userId}`
+    );
+
     const resAddItemCart = await axios.put(
-      `http://localhost:8080/api/carrinho/add/${response.data}/${product.id}`
+      `http://localhost:8080/api/carrinho/add/${getIdCart.data}/${product.id}`
     );
 
     if (resAddItemCart.status === 200) {
