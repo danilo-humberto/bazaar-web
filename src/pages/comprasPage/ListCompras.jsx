@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -8,17 +8,31 @@ import {
   Input,
   Table,
 } from "semantic-ui-react";
-import imageTest from "../../assets/imageteste.jpeg";
-import HeaderComponent from '../../components/header/header';
-import OtherFooter from '../../components/otherFooter/otherFooter';
+import HeaderComponent from "../../components/header/header";
+import OtherFooter from "../../components/otherFooter/otherFooter";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 const ListCompras = () => {
+  const [buyProducts, setBuyProducts] = useState(null);
+  const { authState } = useContext(AuthContext);
 
-    const navigate = useNavigate();
-
-    const atualizarListaCompras = () => {
-        navigate(0);
+  const getBuyProducts = async () => {
+    let response = await axios.get(`http://localhost:8080/api/pedidos/compras/${authState.userId}`)
+    if(response.status === 200 && response.data.length > 0) {
+      setBuyProducts(response.data[0].produtos)
+    } else {
+      setBuyProducts(null)
     }
+  }
+
+  useEffect(() => {
+    getBuyProducts();
+  }, [])
+
+  const atualizarListaCompras = () => {
+    getBuyProducts();
+  };
 
   return (
     <div>
@@ -37,19 +51,22 @@ const ListCompras = () => {
           <div style={{ marginTop: "5%", marginBottom: "2%" }}>
             <div style={{ marginBottom: "20px" }}>
               <Input placeholder="Título" />
-              <Input placeholder="Código" style={{ marginLeft: "10px", width: "150px" }} />
+              <Input
+                placeholder="Código"
+                style={{ marginLeft: "10px", width: "200px" }}
+              />
               <Input
                 placeholder="Valor Unitário"
-                style={{ marginLeft: "10px", width: "150px" }}
+                style={{ marginLeft: "10px", width: "200px" }}
               />
-              <Button color="blue" style={{ marginLeft: "255px" }}>
+              <Button color="blue" style={{ marginLeft: "10px" }}>
                 Filtrar
               </Button>
 
               <Button
                 color="green"
-                onClick={atualizarListaCompras()}
-                style={{ marginLeft: "10px" }}
+                onClick={atualizarListaCompras}
+                style={{ marginLeft: "150px" }}
               >
                 Atualizar
               </Button>
@@ -68,15 +85,23 @@ const ListCompras = () => {
                 </Table.Header>
 
                 <Table.Body>
-                  <Table.Row>
-                    <Table.Cell width={4}>
-                      <Image src={imageTest} size="small" rounded centered/>
-                    </Table.Cell>
-                    <Table.Cell>11111</Table.Cell>
-                    <Table.Cell>titulo teste</Table.Cell>
-                    <Table.Cell>descricao teste</Table.Cell>
-                    <Table.Cell>R$ 30,00</Table.Cell>
-                  </Table.Row>
+                  {buyProducts ? (
+                    buyProducts.map((product) => (
+                      <Table.Row>
+                      <Table.Cell width={4}>
+                        <Image src={`http://localhost:8080/static/uploaded-imgs/${product.imagem}`} size="small" rounded centered />
+                      </Table.Cell>
+                      <Table.Cell>{product.codigo}</Table.Cell>
+                      <Table.Cell>{product.titulo}</Table.Cell>
+                      <Table.Cell>{product.descricao}</Table.Cell>
+                      <Table.Cell>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.valorUnitario)}</Table.Cell>
+                    </Table.Row>
+                    ))  
+                  ) : (
+                    <Table.Row>
+                      <Table.Cell textAlign="center" colSpan="5">Nenhuma Compra Efetuada!</Table.Cell>
+                    </Table.Row>
+                  )}
                 </Table.Body>
               </Table>
             </div>

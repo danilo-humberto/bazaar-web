@@ -66,9 +66,7 @@ export default function FormCliente() {
         .then((response) => {
           notifySuccess("Produto cadastrado com sucesso.");
           limpar();
-          setTimeout(() => {
-            navigate('/listProduct')
-          }, 500)
+          navigate('/listProduct')
         })
         .catch((error) => {
           notifyError("Erro ao incluir o produto.");

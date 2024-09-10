@@ -59,7 +59,7 @@ export default function LoginPage() {
           <div className="content-login">
             <h1>Acesse a sua Conta</h1>
             <div className="form-content-login">
-              <Form widths="equal" size="large">
+              <Form widths="equal" size="large" type="submit">
                 <FormField>
                   <label>Usuário</label>
                   <Input

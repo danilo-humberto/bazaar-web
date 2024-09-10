@@ -52,9 +52,10 @@ export default function ListProductPage() {
       );
 
       if (response.status === 200) {
-        setLista(response.data.produtos || []);
-        console.log(response.data.produtos);
-        setFilteredList(response.data.produtos || []);
+        setTimeout(() => {
+          setLista(response.data.produtos || []);
+          setFilteredList(response.data.produtos || []);
+        }, 500)
       } else {
         console.error("Erro ao carregar a lista");
         setLista([]);
@@ -209,7 +210,7 @@ export default function ListProductPage() {
                       <Table.Row key={produto.id}>
                         <Table.Cell>
                           <Image
-                            src={`http://localhost:8080/static/uploaded-imgs/${produto.imagem}`}
+                            src={produto.imagem ? `http://localhost:8080/static/uploaded-imgs/${produto.imagem}` : ''}
                             size="small"
                             style={{
                               width: "150px",
