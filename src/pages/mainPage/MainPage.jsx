@@ -113,24 +113,24 @@ export default function MainPage() {
                   <input
                     type="text"
                     name="fullName"
-                    placeholder="Nome Completo"
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
                   />
+                  <label className="label-nome">Nome Completo</label>
                   <input
                     type="text"
                     name="email"
-                    placeholder="E-mail"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
+                  <label className="label-email">E-mail</label>
                   <input
                     type="text"
                     name="message"
-                    placeholder="Mensagem"
                     value={mensagem}
                     onChange={(e) => setMensagem(e.target.value)}
                   />
+                  <label className="label-message">Mensagem</label>
                   <button type="submit">Contato Agora</button>
                 </form>
               </div>

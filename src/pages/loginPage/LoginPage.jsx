@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import "react-toastify/dist/ReactToastify.css";
-import { AuthContext } from '../../context/AuthContext'
+import { AuthContext } from "../../context/AuthContext";
 import { notifyError, notifySuccess } from "../../views/util/Util";
 
 import "./LoginPage.css";
@@ -35,8 +35,11 @@ export default function LoginPage() {
       .post("http://localhost:8080/api/usuario/login", user)
       .then((response) => {
         console.log(response.data);
-        
-        if (response.status === 200 && response.data.token !== "Acesso negado") {
+
+        if (
+          response.status === 200 &&
+          response.data.token !== "Acesso negado"
+        ) {
           login(response.data.token, response.data.login, response.data.userId);
           setLoading(false);
           notifySuccess("Logado com Sucesso!");
@@ -48,7 +51,7 @@ export default function LoginPage() {
           setLoading(false);
           setSenha("");
         }
-      })
+      });
   }
 
   return (
@@ -59,7 +62,7 @@ export default function LoginPage() {
           <div className="content-login">
             <h1>Acesse a sua Conta</h1>
             <div className="form-content-login">
-              <Form widths="equal" size="large" type="submit">
+              <Form widths="equal" size="large" onSubmit={salvar}>
                 <FormField>
                   <label>Usuário</label>
                   <Input
@@ -90,20 +93,21 @@ export default function LoginPage() {
                     />
                   </Input>
                 </FormField>
+                <Button
+                  color="orange"
+                  circular
+                  size="medium"
+                  style={{ color: "black", marginTop: "0px", width: '100%' }}
+                  onClick={salvar}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <Loader active inline inverted size="tiny" />
+                  ) : (
+                    <span style={{ color: "black" }}>Entrar</span>
+                  )}
+                </Button>
               </Form>
-              <Button
-                color="orange"
-                circular
-                size="medium"
-                style={{ color: "black", marginTop: "5%" }}
-                onClick={() => salvar()}
-              >
-                {loading ? (
-                  <Loader active inline inverted size="tiny" />
-                ) : (
-                  <span style={{ color: "black" }}>Entrar</span>
-                )}
-              </Button>
             </div>
             <div className="haveAcount">
               <p>Não tem uma conta?</p>

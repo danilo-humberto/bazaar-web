@@ -8,7 +8,7 @@ import { useCart } from '../../mainPage/Cart/CartContext';
 import './Resume.css';
 
 const Resume = () => {
-  const { cartItems, getTotalPrice, removeFromCart} = useCart();
+  const { cartItems, getTotalPrice, removeFromCart, clearCart} = useCart();
   const { authState } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ const Resume = () => {
     if(response.status === 200 || response.status === 201) {
       generateOrder(response.data.id)
       navigate('/listCompras')
-      localStorage.removeItem('cartItems')
+      clearCart();
     }
   }
 

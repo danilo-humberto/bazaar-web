@@ -1,32 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import "./EditProduct.css";
 import { Button, Form, Icon } from "semantic-ui-react";
-import { notifyError, notifyWarn, notifySuccess } from "../../../views/util/Util";
+import { notifyError, notifySuccess } from "../../../views/util/Util";
+import { AuthContext } from "../../../context/AuthContext";
 
 const EditProduct = ({ produto, onCloseModal }) => {
-  const [token, setToken] = useState(null);
+  const { authState } = useContext(AuthContext);
   const [listaCategoria, setListaCategoria] = useState([])
-  const [idCategoria, setIdCategoria] = useState();
   const [productData, setProductData] = useState({
     titulo: "",
     codigo: "",
     descricao: "",
     valorUnitario: "",
-    idCategoria: idCategoria
+    idCategoria: ""
   });
 
-  const [image, setImage] = useState(null);
+  const [imagem, setImagem] = useState(null);
 
   useEffect(() => {
-
-    const getToken = () => {
-      const tokenStored = localStorage.getItem("token");
-      setToken(tokenStored);
-    }
-
-    getToken();
-
     if (produto) {
       setProductData(produto);
       console.log(produto)
@@ -35,15 +27,10 @@ const EditProduct = ({ produto, onCloseModal }) => {
 
   useEffect(() => {
     const buscarCategorias = async () => {
-      if (!token) {
-        notifyWarn("Token não disponível ainda");
-        console.log("Token não disponível ainda");
-        return;
-      }
   
       try {
         const response = await axios.get("http://localhost:8080/api/categoriaproduto", {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${authState.token}` },
         });
   
         if (response.status === 200) {
@@ -53,17 +40,15 @@ const EditProduct = ({ produto, onCloseModal }) => {
           }));
           setListaCategoria(dropDownCategorias);
         } else {
-          notifyError("Erro ao trazer as categorias, status: ", response.status);
           console.log("Erro ao trazer as categorias, status: ", response.status);
         }
       } catch (error) {
-        notifyError("Erro ao buscar categorias:", error);
         console.error("Erro ao buscar categorias:", error);
       }
     };
   
     buscarCategorias();
-  }, [token]);
+  }, [authState.token]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -71,25 +56,36 @@ const EditProduct = ({ produto, onCloseModal }) => {
   };
 
   const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
+    setImagem(e.target.files[0]);
+  };
+
+  const handleCategoryChange = (e, { value }) => {
+    setProductData(prevState => ({
+      ...prevState,
+      idCategoria: value
+    }));
   };
 
   const handleFormSubmit = async (e) => {
-    
-    const {  id, ...newProductData} = productData;
-    console.log(newProductData)
+    e.preventDefault();
 
     const formData = new FormData();
-    formData.append("produto", JSON.stringify(newProductData));
-    if (image) {
-      formData.append("imagem", image);
+    formData.append("produto", JSON.stringify({
+      titulo: productData.titulo,
+      codigo: productData.codigo,
+      descricao: productData.descricao,
+      valorUnitario: productData.valorUnitario,
+      idCategoria: productData.idCategoria,
+    }));
+    if (imagem) {
+      formData.append("imagem", imagem);
     } 
   
 
     try {
       const response = await axios.put(
         `http://localhost:8080/api/produto/${produto.id}`,
-        formData, { headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`}});
+        formData, { headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${authState.token}`}});
 
       if (response.status === 200) {
         notifySuccess("Editado com sucesso!");
@@ -116,6 +112,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
               width={8}
               value={productData.titulo}
               onChange={handleInputChange}
+              style={{marginTop: '0px'}}
             />
 
             <Form.Input
@@ -126,6 +123,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
               width={8}
               value={productData.codigo}
               onChange={handleInputChange}
+              style={{marginTop: '0px'}}
             />
           </Form.Group>
 
@@ -140,9 +138,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
               label='Categoria'
               options={listaCategoria}
               value={productData.idCategoria}
-              onChange={({value}) => {
-                setIdCategoria(value)
-              }}
+              onChange={handleCategoryChange}
             />
 
             <Form.Input
@@ -151,6 +147,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
               label="Descrição"
               name="descricao"
               width={16}
+              style={{marginTop: '0px'}}
               value={productData.descricao}
               onChange={handleInputChange}
             />
@@ -166,6 +163,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
               placeholder="0,00"
               value={productData.valorUnitario}
               onChange={handleInputChange}
+              style={{marginTop: '0px'}}
             />
             <Form.Input
               type="file"
@@ -174,6 +172,7 @@ const EditProduct = ({ produto, onCloseModal }) => {
               label="Imagem do Produto"
               width={11}
               onChange={handleFileChange}
+              style={{marginTop: '0px', height: '38px'}}
             />
           </Form.Group>
         </Form>

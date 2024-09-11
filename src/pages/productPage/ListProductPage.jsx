@@ -68,7 +68,7 @@ export default function ListProductPage() {
 
   useEffect(() => {
     carregarLista();
-  }, [carregarLista]);
+  }, [lista]);
 
   const handleFilter = () => {
     const filtered = lista.filter(
@@ -153,7 +153,7 @@ export default function ListProductPage() {
 
           <Divider />
 
-          <div style={{ marginTop: "5%", marginBottom: "2%" }}>
+          <div style={{ marginTop: "5%", marginBottom: "2%", overflow: 'auto' }}>
             <div style={{ marginBottom: "20px" }}>
               <Input
                 placeholder="Título"

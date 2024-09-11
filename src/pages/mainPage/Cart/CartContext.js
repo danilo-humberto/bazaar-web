@@ -83,6 +83,11 @@ export function CartProvider({ children }) {
     setIsCartVisible(!isCartVisible);
   };
 
+  const clearCart = () => {
+    setCartItems([]); // Limpa o estado local do carrinho
+    localStorage.removeItem("cartItems"); // Remove os itens do localStorage
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -91,7 +96,8 @@ export function CartProvider({ children }) {
         cartItems,
         addToCart,
         removeFromCart,
-        getTotalPrice
+        getTotalPrice,
+        clearCart
       }}
     >
       {children}

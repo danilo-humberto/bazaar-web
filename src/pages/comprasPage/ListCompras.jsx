@@ -14,13 +14,14 @@ import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
 const ListCompras = () => {
-  const [buyProducts, setBuyProducts] = useState(null);
+  const [buyProducts, setBuyProducts] = useState();
   const { authState } = useContext(AuthContext);
 
   const getBuyProducts = async () => {
     let response = await axios.get(`http://localhost:8080/api/pedidos/compras/${authState.userId}`)
     if(response.status === 200 && response.data.length > 0) {
-      setBuyProducts(response.data[0].produtos)
+      console.log(response.data)
+      setBuyProducts(response.data)
     } else {
       setBuyProducts(null)
     }
@@ -66,7 +67,7 @@ const ListCompras = () => {
               <Button
                 color="green"
                 onClick={atualizarListaCompras}
-                style={{ marginLeft: "150px" }}
+                style={{ marginLeft: "145px" }}
               >
                 Atualizar
               </Button>
@@ -86,7 +87,8 @@ const ListCompras = () => {
 
                 <Table.Body>
                   {buyProducts ? (
-                    buyProducts.map((product) => (
+                    buyProducts.map((compras) => (
+                      compras.produtos.map((product) => (
                       <Table.Row>
                       <Table.Cell width={4}>
                         <Image src={`http://localhost:8080/static/uploaded-imgs/${product.imagem}`} size="small" rounded centered />
@@ -96,6 +98,7 @@ const ListCompras = () => {
                       <Table.Cell>{product.descricao}</Table.Cell>
                       <Table.Cell>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.valorUnitario)}</Table.Cell>
                     </Table.Row>
+                      ))
                     ))  
                   ) : (
                     <Table.Row>

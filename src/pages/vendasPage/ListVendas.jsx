@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -8,17 +8,35 @@ import {
   Input,
   Table,
 } from "semantic-ui-react";
-import imageTest from "../../assets/imageteste.jpeg";
-import HeaderComponent from '../../components/header/header';
-import OtherFooter from '../../components/otherFooter/otherFooter';
+import HeaderComponent from "../../components/header/header";
+import OtherFooter from "../../components/otherFooter/otherFooter";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 const ListVendas = () => {
+  const [sellProducts, setSellProducts] = useState(null);
+  const { authState } = useContext(AuthContext);
 
-    const navigate = useNavigate();
+  const getSellProducts = async () => {
+    let response = await axios.get(
+      `http://localhost:8080/api/produto/vendas/${authState.userId}`
+    );
 
-    const atualizarListaCompras = () => {
-        navigate(0);
+    if (response.status === 200 && response.data.length > 0) {
+      setSellProducts(response.data);
+      console.log(response.data);
+    } else {
+      setSellProducts(null);
     }
+  };
+
+  useEffect(() => {
+    getSellProducts();
+  }, [])
+
+  const atualizarListaCompras = () => {
+    getSellProducts();
+  };
 
   return (
     <div>
@@ -37,10 +55,13 @@ const ListVendas = () => {
           <div style={{ marginTop: "5%", marginBottom: "2%" }}>
             <div style={{ marginBottom: "20px" }}>
               <Input placeholder="Título" />
-              <Input placeholder="Código" style={{ marginLeft: "10px", width: '150px' }} />
+              <Input
+                placeholder="Código"
+                style={{ marginLeft: "10px", width: "150px" }}
+              />
               <Input
                 placeholder="Valor Unitário"
-                style={{ marginLeft: "10px", width: '150px' }}
+                style={{ marginLeft: "10px", width: "150px" }}
               />
               <Button color="blue" style={{ marginLeft: "255px" }}>
                 Filtrar
@@ -48,7 +69,7 @@ const ListVendas = () => {
 
               <Button
                 color="green"
-                onClick={atualizarListaCompras()}
+                onClick={atualizarListaCompras}
                 style={{ marginLeft: "10px" }}
               >
                 Atualizar
@@ -68,15 +89,28 @@ const ListVendas = () => {
                 </Table.Header>
 
                 <Table.Body>
-                  <Table.Row>
-                    <Table.Cell width={4}>
-                      <Image src={imageTest} size="small" rounded centered/>
-                    </Table.Cell>
-                    <Table.Cell>11111</Table.Cell>
-                    <Table.Cell>titulo teste</Table.Cell>
-                    <Table.Cell>descricao teste</Table.Cell>
-                    <Table.Cell>R$ 30,00</Table.Cell>
-                  </Table.Row>
+                  {sellProducts ? (
+                    sellProducts.map((product) => (
+                      <Table.Row>
+                        <Table.Cell width={4}>
+                          <Image
+                            src={`http://localhost:8080/static/uploaded-imgs/${product.imagem}`}
+                            size="small"
+                            rounded
+                            centered
+                          />
+                        </Table.Cell>
+                        <Table.Cell>{product.codigo}</Table.Cell>
+                        <Table.Cell>{product.titulo}</Table.Cell>
+                        <Table.Cell>{product.descricao}</Table.Cell>
+                        <Table.Cell>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.valorUnitario)}</Table.Cell>
+                      </Table.Row>
+                    ))
+                  ) : (
+                    <Table.Row>
+                      <Table.Cell textAlign="center" colSpan="5">Nenhuma Venda Efetuada!</Table.Cell>
+                    </Table.Row>
+                  )}
                 </Table.Body>
               </Table>
             </div>

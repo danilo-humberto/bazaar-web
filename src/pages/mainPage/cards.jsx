@@ -12,7 +12,7 @@ export default function CardComponent({id, imageUrl, titulo, valorUnitario, desc
     <Link to={`/detailsProduct/${id}`}>
       <Card style={{height: '440px'}}>
         <img src={`http://localhost:8080/static/uploaded-imgs/${imageUrl}`} alt="" className="image-product" loading="lazy"/>
-        <CardContent>
+        <CardContent style={{border: 'none'}}>
           <CardHeader>{titulo}</CardHeader>
           <CardDescription>
             {descricao}

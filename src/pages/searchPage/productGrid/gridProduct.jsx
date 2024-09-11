@@ -36,6 +36,7 @@ export default function GridProduct({ searchTerm }) {
                   titulo={produto.titulo}
                   valorUnitario={produto.valorUnitario}
                   descricao={produto.descricao}
+                  id={produto.id}
                 />
                 <br />
               </GridColumn>
