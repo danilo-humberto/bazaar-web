@@ -22,9 +22,9 @@ import "./MainPage.css";
 
 export default function MainPage() {
   const { authState } = useContext(AuthContext);
-  const [nome, setNome] = useState();
-  const [email, setEmail] = useState();
-  const [mensagem, setMensagem] = useState();
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [mensagem, setMensagem] = useState('');
   const [loading, setLoading] = useState(false);
 
   const sendFeedback = async (e) => {
@@ -35,25 +35,30 @@ export default function MainPage() {
     formData.append("email", e.target.email.value);
     formData.append("message", e.target.message.value);
 
-    setLoading(true);
-    await axios
-      .post("http://localhost:8080/api/email/feedback", formData, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Bearer ${authState.token}`,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          notifySuccess("Feedback enviado com sucesso!");
-          setLoading(false);
-          setNome("");
-          setEmail("");
-          setMensagem("");
-        } else {
-          notifyError("Algo inesperado aconteceu, tente novamente mais tarde!");
-        }
-      });
+    if(nome == '' || email == '' || mensagem == ''){
+      notifyError("Por favor, preencha os campos acima!")
+    } else {
+      setLoading(true);
+      await axios
+        .post("http://localhost:8080/api/email/feedback", formData, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${authState.token}`,
+          },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            notifySuccess("Feedback enviado com sucesso!");
+            setLoading(false);
+            setNome("");
+            setEmail("");
+            setMensagem("");
+          } else {
+            notifyError("Algo inesperado aconteceu, tente novamente mais tarde!");
+          }
+        });
+    }
+
   };
 
   return (

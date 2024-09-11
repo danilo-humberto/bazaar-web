@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
-import { notifyError } from "../../../views/util/Util";
+import { notifyError, notifySuccess } from "../../../views/util/Util";
 
 const CartContext = createContext();
 
@@ -12,6 +13,7 @@ export function CartProvider({ children }) {
     const storedCartItems = localStorage.getItem("cartItems");
     return storedCartItems ? JSON.parse(storedCartItems) : [];
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -48,6 +50,7 @@ export function CartProvider({ children }) {
 
     if (resAddItemCart.status === 200) {
       setCartItems((prevItems) => [...prevItems, product]);
+      notifySuccess("Produto adicionado com sucesso!")
     }
   };
 
