@@ -1,21 +1,21 @@
 import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import {
+  Button,
   Form,
-  Input,
   FormField,
   Icon,
-  Button,
+  Input,
   Loader,
 } from "semantic-ui-react";
-import { Link, useNavigate } from "react-router-dom";
-import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
-import "react-toastify/dist/ReactToastify.css";
+import Header from "../../components/header/header";
 import { AuthContext } from "../../context/AuthContext";
 import { notifyError, notifySuccess } from "../../views/util/Util";
 
-import "./LoginPage.css";
 import axios from "axios";
+import "./LoginPage.css";
 
 export default function LoginPage() {
   const { login } = useContext(AuthContext);
@@ -34,7 +34,6 @@ export default function LoginPage() {
     axios
       .post("http://localhost:8080/api/usuario/login", user)
       .then((response) => {
-        console.log(response.data);
 
         if (
           response.status === 200 &&

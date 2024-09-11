@@ -44,9 +44,6 @@ const DebitCard = () => {
             </Form.Group>
         </Form>
       </div>
-      <div className="btn-send-card">
-        <button>Enviar Cartão</button>
-      </div>
     </div>
   )
 }

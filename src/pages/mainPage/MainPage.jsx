@@ -3,6 +3,7 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
+import { Loader } from "semantic-ui-react";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Banner1 from "../../assets/banner1.png";
@@ -24,6 +25,7 @@ export default function MainPage() {
   const [nome, setNome] = useState();
   const [email, setEmail] = useState();
   const [mensagem, setMensagem] = useState();
+  const [loading, setLoading] = useState(false);
 
   const sendFeedback = async (e) => {
     e.preventDefault();
@@ -33,25 +35,25 @@ export default function MainPage() {
     formData.append("email", e.target.email.value);
     formData.append("message", e.target.message.value);
 
-    const response = await axios.post(
-      "http://localhost:8080/api/email/feedback",
-      formData,
-      {
+    setLoading(true);
+    await axios
+      .post("http://localhost:8080/api/email/feedback", formData, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: `Bearer ${authState.token}`,
         },
-      }
-    );
-
-    setNome("");
-    setEmail("");
-    setMensagem("");
-    if (response.status === 200) {
-      notifySuccess("Feedback enviado com sucesso!");
-    } else {
-      notifyError("Algo inesperado aconteceu, tente novamente mais tarde!");
-    }
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          notifySuccess("Feedback enviado com sucesso!");
+          setLoading(false);
+          setNome("");
+          setEmail("");
+          setMensagem("");
+        } else {
+          notifyError("Algo inesperado aconteceu, tente novamente mais tarde!");
+        }
+      });
   };
 
   return (
@@ -114,24 +116,30 @@ export default function MainPage() {
                     type="text"
                     name="fullName"
                     value={nome}
+                    placeholder="Nome Completo"
                     onChange={(e) => setNome(e.target.value)}
                   />
-                  <label className="label-nome">Nome Completo</label>
                   <input
                     type="text"
                     name="email"
                     value={email}
+                    placeholder="E-mail"
                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  <label className="label-email">E-mail</label>
                   <input
                     type="text"
                     name="message"
                     value={mensagem}
+                    placeholder="Mensagem"
                     onChange={(e) => setMensagem(e.target.value)}
                   />
-                  <label className="label-message">Mensagem</label>
-                  <button type="submit">Contato Agora</button>
+                  <button type="submit" disabled={loading}>
+                    {loading ? (
+                      <Loader active inline inverted size="tiny" />
+                    ) : (
+                      <span>Contato Agora</span>
+                    )}
+                  </button>
                 </form>
               </div>
               <div className="form-social">

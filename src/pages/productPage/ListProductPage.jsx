@@ -14,8 +14,8 @@ import {
   Modal,
   Table,
 } from "semantic-ui-react";
-import HeaderComponent from "../../components/header/header";
 import OtherFooter from "../../components/otherFooter/otherFooter";
+import HeaderComponent from "../../components/otherHeader/otherHeader";
 import { AuthContext } from "../../context/AuthContext";
 import { notifySuccess } from "../../views/util/Util";
 import EditProduct from "./EditProduct/EditProduct";
@@ -47,14 +47,14 @@ export default function ListProductPage() {
     
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/usuario/${authState.userId}`,
+        `http://localhost:8080/api/produto/usuario/${authState.userId}`,
         { headers: { Authorization: `Bearer ${authState.token}` } }
       );
 
       if (response.status === 200) {
         setTimeout(() => {
-          setLista(response.data.produtos || []);
-          setFilteredList(response.data.produtos || []);
+          setLista(response.data || []);
+          setFilteredList(response.data || []);
         }, 500)
       } else {
         console.error("Erro ao carregar a lista");
@@ -115,8 +115,8 @@ export default function ListProductPage() {
   return (
     <div>
       <HeaderComponent />
-      <div style={{ marginTop: "8%", marginBottom: '2%' }}>
-        <Container textAlign="justified" style={{ height: "100vh" }}>
+      <div style={{ marginTop: "8%", marginBottom: '6%' }}>
+        <Container textAlign="justified" style={{ height: "100vh"}}>
           <div
             style={{
               display: "flex",
@@ -153,7 +153,7 @@ export default function ListProductPage() {
 
           <Divider />
 
-          <div style={{ marginTop: "5%", marginBottom: "2%", overflow: 'auto' }}>
+          <div style={{ marginTop: "5%" }}>
             <div style={{ marginBottom: "20px" }}>
               <Input
                 placeholder="Título"
@@ -190,7 +190,7 @@ export default function ListProductPage() {
               </Button>
             </div>
 
-            <div style={{ flex: 1, zIndex: "-1", overflow: "auto" }}>
+            <div style={{ flex: 1, zIndex: "-1", height: 'calc(100vh - 10vh)', overflow: 'auto' }}>
               <Table color="orange" sortable celled>
                 <Table.Header>
                   <Table.Row>
@@ -221,10 +221,10 @@ export default function ListProductPage() {
                           />
                         </Table.Cell>
                         <Table.Cell>{produto.codigo}</Table.Cell>
-                        <Table.Cell>{produto.titulo}</Table.Cell>
+                        <Table.Cell width={3}>{produto.titulo}</Table.Cell>
                         <Table.Cell>{produto.descricao}</Table.Cell>
                         <Table.Cell>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(produto.valorUnitario)}</Table.Cell>
-                        <Table.Cell textAlign="center">
+                        <Table.Cell textAlign="center" width={2}>
                           <Button
                             inverted
                             circular

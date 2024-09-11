@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
-import { Button, Grid, GridColumn, ButtonGroup, List, Loader } from "semantic-ui-react";
-import Header from "../../components/header/header";
-import Footer from "../../components/otherFooter/otherFooter";
-
-import "./ProfilePage.css";
 import { Link } from "react-router-dom";
+import { Button, ButtonGroup, Grid, GridColumn, List, Loader } from "semantic-ui-react";
+import Footer from "../../components/otherFooter/otherFooter";
+import OtherHeader from "../../components/otherHeader/otherHeader";
 import { AuthContext } from "../../context/AuthContext";
 import { useAxios } from "../../hooks/useAxios";
+import "./ProfilePage.css";
 
 export default function ProfilePage() {
   
@@ -18,7 +17,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <Header />
+      <OtherHeader />
       <div className="container-profile">
         <div className="background-profile">
           <div className="content-profile">

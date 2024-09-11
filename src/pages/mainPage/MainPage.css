@@ -73,43 +73,6 @@ main {
     outline: none;
     padding: 12px 0;
     background-color: transparent;
-    transition: 0.3s;
-}
-
-.label-nome {
-    position: absolute;
-    top: 50px;
-    transition: all 0.3s ease;
-    pointer-events: none;
-    transform: translateY(-50%);
-}
-
-.form-inputs input:focus + .label-nome{
-    top: 30px;
-}
-
-.label-email {
-    position: absolute;
-    top: 120px;
-    transition: all 0.3s ease;
-    pointer-events: none;
-    transform: translateY(-50%);
-}
-
-.form-inputs input:focus + .label-email{
-    top: 100px;
-}
-
-.label-message {
-    position: absolute;
-    top: 190px;
-    transition: all 0.3s ease;
-    pointer-events: none;
-    transform: translateY(-50%);
-}
-
-.form-inputs input:focus + .label-message{
-    top: 170px;
 }
 
 .form-inputs input::placeholder {

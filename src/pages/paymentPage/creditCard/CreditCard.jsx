@@ -1,8 +1,8 @@
 import React from 'react'
 
-import './CreditCard.css'
-import { Form } from 'semantic-ui-react'
 import ReactInputMask from 'react-input-mask'
+import { Form } from 'semantic-ui-react'
+import './CreditCard.css'
 
 const CreditCard = () => {
   return (
@@ -50,9 +50,6 @@ const CreditCard = () => {
                 />
             </Form.Group>
         </Form>
-      </div>
-      <div className="btn-send-card">
-        <button>Enviar Cartão</button>
       </div>
     </div>
   )

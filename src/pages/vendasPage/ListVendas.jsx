@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
@@ -8,9 +9,8 @@ import {
   Input,
   Table,
 } from "semantic-ui-react";
-import HeaderComponent from "../../components/header/header";
 import OtherFooter from "../../components/otherFooter/otherFooter";
-import axios from "axios";
+import HeaderComponent from "../../components/otherHeader/otherHeader";
 import { AuthContext } from "../../context/AuthContext";
 
 const ListVendas = () => {

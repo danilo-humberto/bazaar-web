@@ -11,20 +11,23 @@ export default function AddressPage() {
 
   const [openModal, setOpenModal] = useState(false);
   const { authState } = useContext(AuthContext);
-  const [endereco, setEndereco] = useState([]);
+  const [endereco, setEndereco] = useState();
 
   const { data } = useAxios(`http://localhost:8080/api/usuario/${authState.userId}`)
 
   useEffect(() => {
-    setEndereco(data.enderecos)
-    console.log(endereco)
+    if(data) {
+      setEndereco(data.enderecos)
+    } else {
+      setEndereco(null)
+    }
   }, [data])
 
   return (
     <div>
       <HeaderComponent />
       <div
-        style={{ height: "100vh", width: "80vw", margin: "20vh auto 0 auto" }}
+        style={{ height: "80vh", width: "80vw", margin: "20vh auto 0 auto" }}
       >
         <Container
           textAlign="justified"

@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
@@ -8,9 +9,8 @@ import {
   Input,
   Table,
 } from "semantic-ui-react";
-import HeaderComponent from "../../components/header/header";
 import OtherFooter from "../../components/otherFooter/otherFooter";
-import axios from "axios";
+import HeaderComponent from "../../components/otherHeader/otherHeader";
 import { AuthContext } from "../../context/AuthContext";
 
 const ListCompras = () => {
@@ -20,8 +20,9 @@ const ListCompras = () => {
   const getBuyProducts = async () => {
     let response = await axios.get(`http://localhost:8080/api/pedidos/compras/${authState.userId}`)
     if(response.status === 200 && response.data.length > 0) {
-      console.log(response.data)
-      setBuyProducts(response.data)
+      setTimeout(() => {
+        setBuyProducts(response.data)
+      }, 500)
     } else {
       setBuyProducts(null)
     }
