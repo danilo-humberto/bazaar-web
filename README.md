@@ -1,6 +1,6 @@
-# Bazaar
-
-<img src="src/assets/logo-laranja.png">
+<div align="center">
+ <img src="src/assets/logo-laranja.png" width="250px" height="250px">
+</div>
 
 > Projeto criado para finalização do curso técnico de Informática para Internet para o IFPE campus Jaboatão dos Guararapes. Aqui só contém o front-end, no qual fiquei responsável de montar. Foi minha primeira aventura no ReactJS.
 
