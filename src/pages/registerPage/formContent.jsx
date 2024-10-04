@@ -9,9 +9,9 @@ import {
   Loader,
 } from "semantic-ui-react";
 import InputMask from "react-input-mask";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
+import { notifyError, notifyWarn } from "../../views/util/Util";
 
 
 export default function FormContent() {
@@ -29,10 +29,7 @@ export default function FormContent() {
   function salvar() {
     // Verifica se as senhas coincidem
     if (senha !== confirmarSenha) {
-      toast.error("As senhas não coincidem!", {
-        position: "top-right",
-        autoClose: 2000,
-      });
+      notifyError("As senhas não coincidem!");
       return;
     }
 
@@ -53,21 +50,12 @@ export default function FormContent() {
         const token = response.data.token;
         localStorage.setItem('token', token);
         localStorage.setItem('id', response.data.id);
-        toast.warning(
-          "Confirme seu cadastro no e-mail!",
-          {
-            position: "top-right",
-            autoClose: 2000,
-          }
-        );
+        notifyWarn("Confirme seu cadastro no e-mail!");
         navigate('/login')
       })
       .catch((error) => {
         setLoading(false);
-        toast.error("Falha no Cadastro!", {
-          position: "top-right",
-          autoClose: 2000,
-        });
+        notifyError("Falha no Cadastro!");
       });
   }
 

@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Form, Icon, Button, Container, Input, FormTextArea } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Container, Form, FormTextArea, Icon, Input } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
-import axios from "axios";
-import "./FormProductPage.css"; 
+import { AuthContext } from '../../context/AuthContext';
+import { notifyError, notifySuccess, notifyWarn } from "../../views/util/Util";
+import "./FormProductPage.css";
 
 export default function FormCliente() {
+  // eslint-disable-next-line no-unused-vars
   const [idProduto, setIdProduto] = useState();
   const [codigo, setCodigo] = useState();
   const [titulo, setTitulo] = useState();
@@ -15,15 +18,13 @@ export default function FormCliente() {
   const [imagem, setImagem] = useState(null);
   const [listaCategoria, setListaCategoria] = useState([])
   const [descricao, setDescricao] = useState([])
+  const navigate = useNavigate();
+
+  const { authState } = useContext(AuthContext);
   
 
   const handleFileChange = (e) => {
     setImagem(e.target.files[0]);
-  };
-
-  const getUserId = () => {
-    const userId = localStorage.getItem("userId");
-    return userId;
   };
 
   const limpar =() =>{
@@ -39,9 +40,7 @@ export default function FormCliente() {
     setDescricao('')
     
   }
-  const salvar = () => {
-
-    const userId = getUserId();
+  const salvar = async () => {
     
     let produtoRequest = {
       idCategoria: idCategoria,
@@ -57,48 +56,55 @@ export default function FormCliente() {
       formData.append("imagem", imagem);
     }
 
-    if (idProduto != null) {
-      // Alteração:
-      axios
-        .put(`http://localhost:8080/api/produto/${userId}`, formData, {
+      await axios
+      .post(`http://localhost:8080/api/produto/${authState.userId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${authState.token}`
           },
         })
         .then((response) => {
-          console.log("Produto alterado com sucesso.");
+          notifySuccess("Produto cadastrado com sucesso.");
           limpar();
+          navigate('/listProduct')
         })
         .catch((error) => {
-          console.log("Erro ao alterar um produto." + userId);
-        });
-    } else {
-      // Cadastro:
-      axios
-      .post(`http://localhost:8080/api/produto/${userId}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log("Produto cadastrado com sucesso.");
-          limpar();
-        })
-        .catch((error) => {
+          notifyError("Erro ao incluir o produto.");
           console.log("Erro ao incluir o produto.");
         });
-    }
   };
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/categoriaproduto")
-       .then((response) => {
-           const dropDownCategorias = response.data.map(c => ({ text: c.descricao, value: c.id }));
-           setListaCategoria(dropDownCategorias);
-       })
-
-  }, [])
-
+    const buscarCategorias = async () => {
+      if (!authState.token) {
+        notifyWarn("Token não disponível ainda");
+        console.log("Token não disponível ainda");
+        return;
+      }
+  
+      try {
+        const response = await axios.get("http://localhost:8080/api/categoriaproduto", {
+          headers: { Authorization: `Bearer ${authState.token}` },
+        });
+  
+        if (response.status === 200) {
+          const dropDownCategorias = response.data.map((c) => ({
+            text: c.descricao,
+            value: c.id,
+          }));
+          setListaCategoria(dropDownCategorias);
+        } else {
+          notifyError("Erro ao trazer as categorias, status: ", response.status);
+          console.log("Erro ao trazer as categorias, status: ", response.status);
+        }
+      } catch (error) {
+        notifyError("Erro ao buscar categorias:", error);
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+  
+    buscarCategorias();
+  }, [authState.token]);
 
   return (
     <div>
@@ -106,7 +112,7 @@ export default function FormCliente() {
       <div>
         <Container
           textAlign="justified"
-          style={{ height: "610px", marginTop: "25vh" }}
+          style={{ height: "70vh", marginTop: "20vh" }}
         >
           {idProduto === undefined && (
             <h2>
@@ -156,6 +162,7 @@ export default function FormCliente() {
                 <Form.Select
                 required
                 fluid
+                width={6}
                 tabIndex='3'
                 placeholder='Selecione'
                 label='Categoria'
@@ -167,7 +174,8 @@ export default function FormCliente() {
                 />
 
                 <Form.Input
-                width={8}
+                  style={{marginTop: '0'}}
+                  width={10}
                   required
                   fluid
                   label="Valor Unitário"

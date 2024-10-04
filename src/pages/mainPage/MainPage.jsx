@@ -1,51 +1,70 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { Loader } from "semantic-ui-react";
+import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "./MainPage.css";
-import OtherHeader from "../../components/otherHeader/otherHeader";
-import OtherFooter from "../../components/otherFooter/otherFooter";
 import Banner1 from "../../assets/banner1.png";
 import Banner2 from "../../assets/banner2.png";
 import Banner3 from "../../assets/banner3.png";
 import Banner4 from "../../assets/banner4.png";
 import ContactImage from "../../assets/image-contact.png";
-import { Autoplay, Pagination } from "swiper/modules";
-import GridTemplate from "./Grids/gridTemplate";
-import { AiTwotoneExclamationCircle } from "react-icons/ai";
-import axios from "axios";
+import OtherFooter from "../../components/otherFooter/otherFooter";
+import OtherHeader from "../../components/otherHeader/otherHeader";
+import { AuthContext } from "../../context/AuthContext";
+import { notifyError, notifySuccess } from "../../views/util/Util";
 import Cart from "./Cart/Cart";
 import { CartProvider } from "./Cart/CartContext";
-import { Link } from "react-router-dom";
+import GridTemplate from "./Grids/gridTemplate";
+import "./MainPage.css";
 
 export default function MainPage() {
-  const [isActive, setIsActive] = useState(false);
-  const [profileClick, setProfileClick] = useState(false);
+  const { authState } = useContext(AuthContext);
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [mensagem, setMensagem] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const loginUser = localStorage.getItem("login");
-    const token = localStorage.getItem("token");
-    if (loginUser == null) {
-      console.log("sem Id");
+  const sendFeedback = async (e) => {
+    e.preventDefault();
+
+    const formData = new URLSearchParams();
+    formData.append("fullName", e.target.fullName.value);
+    formData.append("email", e.target.email.value);
+    formData.append("message", e.target.message.value);
+
+    if(nome == '' || email == '' || mensagem == ''){
+      notifyError("Por favor, preencha os campos acima!")
     } else {
-      axios
-        .get(
-          "http://localhost:8080/api/usuario/userCondition?login=" + loginUser,
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
+      setLoading(true);
+      await axios
+        .post("http://localhost:8080/api/email/feedback", formData, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${authState.token}`,
+          },
+        })
         .then((response) => {
-          if (response.data === true) {
-            setIsActive(true);
+          if (response.status === 200) {
+            notifySuccess("Feedback enviado com sucesso!");
+            setLoading(false);
+            setNome("");
+            setEmail("");
+            setMensagem("");
           } else {
-            setIsActive(false);
+            notifyError("Algo inesperado aconteceu, tente novamente mais tarde!");
           }
         });
     }
-  }, []);
+
+  };
 
   return (
     <div>
       <CartProvider>
-        <OtherHeader onClickProfile={() => setProfileClick(!profileClick)} />
+        <OtherHeader />
         <Cart />
       </CartProvider>
       <div className="background-main">
@@ -76,25 +95,16 @@ export default function MainPage() {
         <main>
           <div className="content-above-grids">
             <h1>Produtos Mais Baratos da Moda Masculina</h1>
-            <a href="#">
-              <span>Ver mais...</span>
-            </a>
           </div>
           <GridTemplate descricao="ModaMasculina" />
 
-          <div className="content-above-grids" style={{ paddingTop: "20px" }}>
+          <div className="content-above-grids">
             <h1>Produtos Mais Baratos da Moda Feminina</h1>
-            <a href="#">
-              <span>Ver mais...</span>
-            </a>
           </div>
           <GridTemplate descricao="ModaFeminina" />
 
-          <div className="content-above-grids" style={{ paddingTop: "20px" }}>
+          <div className="content-above-grids">
             <h1>Produtos Mais Baratos da Moda Infantil</h1>
-            <a href="#">
-              <span>Ver mais...</span>
-            </a>
           </div>
           <GridTemplate descricao="ModaInfantil" />
         </main>
@@ -105,15 +115,37 @@ export default function MainPage() {
           <div className="form-contact">
             <h2>Entre em Contato</h2>
             <div className="form-content-contact">
-              <div className="form-inputs">
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="Nome Completo"
-                />
-                <input type="text" name="email" placeholder="E-mail" />
-                <input type="text" name="message" placeholder="Mensagem" />
-                <button>Contato Agora</button>
+              <div style={{ flex: 1 }} onSubmit={sendFeedback}>
+                <form className="form-inputs">
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={nome}
+                    placeholder="Nome Completo"
+                    onChange={(e) => setNome(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    name="email"
+                    value={email}
+                    placeholder="E-mail"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <input
+                    type="text"
+                    name="message"
+                    value={mensagem}
+                    placeholder="Mensagem"
+                    onChange={(e) => setMensagem(e.target.value)}
+                  />
+                  <button type="submit" disabled={loading}>
+                    {loading ? (
+                      <Loader active inline inverted size="tiny" />
+                    ) : (
+                      <span>Contato Agora</span>
+                    )}
+                  </button>
+                </form>
               </div>
               <div className="form-social">
                 <div className="form-social-contact">
@@ -128,25 +160,7 @@ export default function MainPage() {
             </div>
           </div>
         </div>
-        {isActive ? (
-          <div style={{ display: "none" }}></div>
-        ) : (
-          <div className="info">
-            <AiTwotoneExclamationCircle className="exclamation-icon" />
-            <span>
-              Verifique a sua conta no e-mail para uma melhor experiência !
-            </span>
-          </div>
-        )}
         <OtherFooter />
-        {profileClick && (
-          <div className="pop-up">
-            <Link to={"/profile"} style={{ color: "black" }}>
-              <span>Ver perfil</span>
-            </Link>
-            <span style={{ color: "black" }}>Sair</span>
-          </div>
-        )}
       </div>
     </div>
   );

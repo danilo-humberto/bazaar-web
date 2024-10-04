@@ -1,0 +1,24 @@
+.credit-card-container {
+    padding: 20px;
+}
+
+.btn-send-card {
+    margin-top: 20px;
+    text-align: end;
+}
+
+.btn-send-card button {
+    border: none;
+    padding: 10px 30px;
+    background-color: #FF7A00;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-send-card button:hover {
+    background-color: #ee7403;
+    padding: 13px 30px;
+}

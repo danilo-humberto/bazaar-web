@@ -21,11 +21,12 @@
     margin-right: 20px;
 }
 
-.bell, .cart-icon, .profile {
+.cart-icon, .profile {
     color: #ff7a00;
     height: 30px;
     width: 30px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .btn-login {
@@ -43,9 +44,49 @@
 }
 
 .img-user {
-    background-color: white;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    object-fit: fill;
+    object-fit: cover;
+}
+
+.cart-container {
+    position: relative;
+}
+
+.count-products-cart {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    color: black;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    top: -10px;
+    right: -35px;
+}
+
+.cart-icon:hover {
+    color: #ff7b00b4;
+}
+
+.profile:hover {
+    color: #ff7b00b4;
+}
+
+.new-background .pop-up {
+    background-color: white;
+    width: 100%;
+    max-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    position: fixed;
+    top: 80px;
+    right: 200px;
+    z-index: 1001;
+    padding: 10px;
+    border-radius: 5px 0 5px 5px;
 }

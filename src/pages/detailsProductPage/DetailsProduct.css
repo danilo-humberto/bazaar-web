@@ -22,6 +22,7 @@
     text-align: center;
     border-bottom: 1px solid black;
     padding-bottom: 10px;
+    text-transform: capitalize;
 }
 
 .swiper-imgs-products {
@@ -48,9 +49,10 @@
 }
 
 .description-price-product p {
-    text-align: left;
+    text-align: justify;
     width: 70%;
     font-size: 16px;
+    text-transform: capitalize;
 }
 
 .description-price-product span {
@@ -64,6 +66,9 @@
     width: 100%;
     text-align: right;
     margin-top: 15px;
+    position: absolute;
+    right: 870px;
+    bottom: 120px;
 }
 
 .btn-add-to-cart button {
@@ -79,7 +84,7 @@
 }
 
 .btn-add-to-cart button:hover {
-    box-shadow: inset 4px 3px 16px -3px rgba(0,0,0,0.75);
+    background-color: #d76902fb;
 }
 
 .info-contact-seller {

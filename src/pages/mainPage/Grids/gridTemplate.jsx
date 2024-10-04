@@ -1,46 +1,48 @@
-import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import "./gridTemplate.css";
+import React, { useEffect, useState } from "react";
+import { Grid, GridColumn, GridRow, Loader } from "semantic-ui-react";
+import { useAxios } from "../../../hooks/useAxios";
 import CardComponente from "../cards";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import "./gridTemplate.css";
 
-export default function GridTemplate({descricao}) {
-  const [listProduto, setListProduto] = useState([]);
+function GridTemplate({ descricao }) {
+  const [produtos, setProdutos] = useState(null);
+  const { data } = useAxios(
+    `http://localhost:8080/api/produto/mais-baratos/${descricao}`
+  );
 
   useEffect(() => {
-    mostrarProdutos();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const mostrarProdutos = async () => {
-    await axios.get(`http://localhost:8080/api/produto/mais-baratos/${descricao}`)
-    .then((response) => {
-      setListProduto(response.data);
-    })
-    .catch((error) => {
-      console.log("Erro: " + error);
-    })
-    ;
-  }
+    if(data) {
+      setProdutos(data);
+    }
+  }, [data, produtos])
 
   return (
     <div className="background-grid">
       <Grid columns={5}>
         <GridRow>
-          {listProduto.map((produto) => {
-            return (
-              <GridColumn key={produto.id}>
-                <CardComponente
-                  imageUrl={produto.imagemUrl}
-                  descricao={produto.descricao}
-                  titulo={produto.titulo}
-                  valorUnitario={produto.valorUnitario}
-                />
-              </GridColumn>
-            );
-          })}
+          {produtos ? (
+            <>
+              {produtos.map((produto) => {
+                return (
+                  <GridColumn key={produto.id}>
+                    <CardComponente
+                      imageUrl={produto.imagem}
+                      descricao={produto.descricao}
+                      titulo={produto.titulo}
+                      valorUnitario={produto.valorUnitario}
+                      id={produto.id}
+                    />
+                  </GridColumn>
+                );
+              })}
+            </>
+          ) : (
+            <div><Loader active size="big" inline/></div>
+          )}
         </GridRow>
       </Grid>
     </div>
   );
 }
+
+export default React.memo(GridTemplate);

@@ -1,44 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { Button, Grid, GridColumn, Form, Input, Icon } from "semantic-ui-react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Form, Grid, GridColumn, Icon, Input } from "semantic-ui-react";
 import Header from "../../components/header/header";
 import Footer from "../../components/otherFooter/otherFooter";
-import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
+import { notifyError, notifyWarn } from "../../views/util/Util";
 import "../profilePage/ProfilePage.css";
-import { Link } from "react-router-dom";
 
 export default function EditProfile() {
-  const getUserId = () => {
-    const userId = localStorage.getItem("userId");
-    return userId;
-  };
+
+  const navigate = useNavigate();
+  const { authState } = useContext(AuthContext);
 
   const [userData, setUserData] = useState({
     nomeCompleto: "",
     numeroTelefone: "",
     novaSenha: "",
-    confirmaSenha: ""
+    confirmaSenha: "",
   });
 
-  const [image, setImage] = useState(null);
+  const [imagem, setImagem] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userId = getUserId();
 
-      if (!userId) {
+      if (!authState.userId) {
+        notifyError("ID do usuário não encontrado");
         console.error("ID do usuário não encontrado");
         return;
       }
 
       try {
-        const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:8080/api/usuario/${userId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `http://localhost:8080/api/usuario/${authState.userId}`,
+          { headers: { Authorization: `Bearer ${authState.token}` } }
         );
         if (response.status === 200) {
           setUserData(response.data);
         } else {
+          notifyError("Erro ao buscar dados do usuário",
+            response.status,
+            response.statusText);
           console.error(
             "Erro ao buscar dados do usuário",
             response.status,
@@ -46,6 +50,7 @@ export default function EditProfile() {
           );
         }
       } catch (error) {
+        notifyError("Erro ao fazer a requisição:", error);
         console.error("Erro ao fazer a requisição:", error);
       }
     };
@@ -59,40 +64,60 @@ export default function EditProfile() {
   };
 
   const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
+    setImagem(e.target.files[0]);
+    console.log(e.target.files[0]);
   };
 
   const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
-    const userId = getUserId();
-
-    const { id, cpf, email, endereco, login, situacao, senha, ...dataToSend } = userData;
+    const { id, cpf, email, enderecos, produtos, login, situacao, senha, pagamentos, ...dataToSend } = userData;
     console.log(dataToSend);
-    
 
-    const formData = new FormData();
+    let formData = new FormData();
     formData.append("usuario", JSON.stringify(dataToSend));
-    if (image) {
-      formData.append("imagem", image);
+    if (imagem) {
+      console.log(imagem)
+      formData.append("imagem", imagem);
+    }
+
+    if(
+      !userData.nomeCompleto ||
+      !userData.novaSenha ||
+      !userData.confirmaSenha ||
+      !userData.numeroTelefone
+    ) {
+      notifyWarn("Todos os campos precisam ser preenchidos!", {
+        position: 'top-right',
+        autoClose: 2000
+      })
+      return
     }
 
     try {
-      const response = await axios.put(
-        `http://localhost:8080/api/usuario/${userId}`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-
-      if (response.status === 200) {
-        alert("Perfil atualizado com sucesso!");
+      if (userData.novaSenha !== userData.confirmaSenha) {
+        notifyWarn("As senhas não coincidem !", {
+          position: "top-right",
+          autoClose: 2000,
+        });
       } else {
-        console.error(
-          "Erro ao atualizar perfil",
-          response.status,
-          response.statusText
+        const response = await axios.put(
+          `http://localhost:8080/api/usuario/${authState.userId}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${authState.token}`
+             },
+          }
         );
+
+        if (response.status === 200) {
+          setTimeout(() => {
+            navigate('/profile')
+          }, 500);
+        } else {
+          console.error("Erro ao atualizar perfil", response.status, response.statusText);
+        }
       }
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
@@ -103,14 +128,14 @@ export default function EditProfile() {
     <div>
       <Header />
       <div className="container-profile">
-        <div className="background-profile">
-          <div className="content-profile">
+        <div className="background-profile" style={{height: '600px'}}>
+          <div className="content-profile" style={{marginTop: '30px'}}>
             <Grid columns={1}>
               <GridColumn width={6}>
                 <Form onSubmit={handleFormSubmit}>
                   <Form.Field>
                     <label>Foto de Perfil</label>
-                    <Input type="file" onChange={handleFileChange} />
+                    <Input type="file" accept="image/*" onChange={handleFileChange} />
                   </Form.Field>
                   <Form.Field>
                     <label>Nome Completo</label>
@@ -158,7 +183,9 @@ export default function EditProfile() {
                     color="orange"
                   >
                     <Icon name="reply" />
-                    <Link to={"/profile"} style={{color: 'orange'}}>Voltar</Link>
+                    <Link to={"/profile"} style={{ color: "orange" }}>
+                      Voltar
+                    </Link>
                   </Button>
 
                   <Button
@@ -169,7 +196,6 @@ export default function EditProfile() {
                     labelPosition="left"
                     color="green"
                     floated="right"
-                    onClick={() => handleFormSubmit()}
                   >
                     <Icon name="save" />
                     Salvar

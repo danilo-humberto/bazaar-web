@@ -1,19 +1,33 @@
-import { Button, Container, Divider, Icon, Modal, Table } from "semantic-ui-react";
-import React, {useState} from "react";
-import HeaderComponent from "../../components/header/header";
-import Footer from "../../components/footer/footer";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Button, Container, Divider, Icon, Modal, Table } from "semantic-ui-react";
+import Footer from "../../components/footer/footer";
+import HeaderComponent from "../../components/header/header";
+import { AuthContext } from "../../context/AuthContext";
+import { useAxios } from "../../hooks/useAxios";
 import RegisterAddress from "./RegisterAddress";
 
 export default function AddressPage() {
 
   const [openModal, setOpenModal] = useState(false);
+  const { authState } = useContext(AuthContext);
+  const [endereco, setEndereco] = useState();
+
+  const { data } = useAxios(`http://localhost:8080/api/usuario/${authState.userId}`)
+
+  useEffect(() => {
+    if(data) {
+      setEndereco(data.enderecos)
+    } else {
+      setEndereco(null)
+    }
+  }, [data])
 
   return (
     <div>
       <HeaderComponent />
       <div
-        style={{ height: "100vh", width: "80vw", margin: "20vh auto 0 auto" }}
+        style={{ height: "80vh", width: "80vw", margin: "20vh auto 0 auto" }}
       >
         <Container
           textAlign="justified"
@@ -50,14 +64,15 @@ export default function AddressPage() {
               </Table.Header>
 
               <Table.Body>
-                <Table.Row>
-                  <Table.Cell>Pernambuco</Table.Cell>
-                  <Table.Cell>Jaboatão Dos Guararapes</Table.Cell>
-                  <Table.Cell>Vila Rica</Table.Cell>
-                  <Table.Cell>Avenida 4</Table.Cell>
-                  <Table.Cell>54090470</Table.Cell>
-                  <Table.Cell>302</Table.Cell>
-                  <Table.Cell>Em frente ao mercado</Table.Cell>
+                {endereco ? endereco.map((address) => (
+                  <Table.Row key={address.id}>
+                  <Table.Cell>{address.estado}</Table.Cell>
+                  <Table.Cell>{address.cidade}</Table.Cell>
+                  <Table.Cell>{address.bairro}</Table.Cell>
+                  <Table.Cell>{address.rua}</Table.Cell>
+                  <Table.Cell>{address.cep}</Table.Cell>
+                  <Table.Cell>{address.numero}</Table.Cell>
+                  <Table.Cell>{address.complemento}</Table.Cell>
                   <Table.Cell textAlign="center">
                     <Button
                         inverted
@@ -79,6 +94,13 @@ export default function AddressPage() {
                     </Button>
                   </Table.Cell>
                 </Table.Row>
+                )) : (
+                  <Table.Row>
+                    <Table.Cell colSpan="8" textAlign="center">
+                      Nenhum endereço encontrado.
+                    </Table.Cell>
+                  </Table.Row>
+                )}
               </Table.Body>
             </Table>
           </div>

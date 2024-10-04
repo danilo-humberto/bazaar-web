@@ -1,0 +1,98 @@
+.resume {
+    padding: 20px;
+}
+
+.items-payment-container {
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-payment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    padding: 10px 0;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.item-payment:hover {
+    background-color: rgba(90, 88, 88, 0.221);
+    border-radius: 10px;
+    padding: 10px 5px;
+}
+
+.item-payment img {
+    width: 150px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.info-item-payment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-item-payment p {
+    color: black;
+    font-size: 16px;
+    text-transform: capitalize;
+    margin: 0;
+}
+
+.info-item-payment span {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.total-payment {
+    border-top: 1px solid black;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.total-payment p {
+    color: black;
+    margin: 0;
+    font-size: 18px;
+}
+
+.total-payment span {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.btn-finish {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.btn-finish button {
+    border: none;
+    padding: 15px 10px;
+    width: 200px;
+    background-color: #FF7A00;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-finish button:hover {
+    background-color: #eb7201;
+}

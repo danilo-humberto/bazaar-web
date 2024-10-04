@@ -1,13 +1,14 @@
 import React, { useState} from "react";
 import {useNavigate} from "react-router-dom"
 import { Form, FormField, Input, Icon, Button, Loader } from "semantic-ui-react";
-import { toast } from "react-toastify";
+import { notifyWarn } from "../../views/util/Util";
 
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 
 import "./ForgotPassword.css";
 import axios from "axios";
+
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState();
@@ -21,13 +22,7 @@ export default function ForgotPassword() {
     axios.post("http://localhost:8080/api/usuario/redefinir-senha",emailRequest)
     .then((Response)=>{
       setLoading(false);
-      toast.warning(
-        "Confirme sua alteração de senha no e-mail!",
-        {
-          position: "top-right",
-          autoClose: 2000,
-        }
-      );
+      notifyWarn("Confirme sua alteração de senha no e-mail!");
       navigate("/login")
     }) 
   }

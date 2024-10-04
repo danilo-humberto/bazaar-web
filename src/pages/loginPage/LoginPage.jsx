@@ -1,56 +1,55 @@
-import React, { useState } from "react";
-import { Form, Input, FormField, Icon, Button, Loader} from "semantic-ui-react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../../components/header/header";
-import Footer from "../../components/footer/footer";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  Button,
+  Form,
+  FormField,
+  Icon,
+  Input,
+  Loader,
+} from "semantic-ui-react";
+import Footer from "../../components/footer/footer";
+import Header from "../../components/header/header";
+import { AuthContext } from "../../context/AuthContext";
+import { notifyError, notifySuccess } from "../../views/util/Util";
 
-import "./LoginPage.css";
 import axios from "axios";
+import "./LoginPage.css";
 
 export default function LoginPage() {
-  const [login, setLogin] = useState("");
+  const { login } = useContext(AuthContext);
+  const [loginInput, setLoginInput] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
   const navigation = useNavigate();
 
   function salvar() {
-
     let user = {
-      username: login,
-      password: senha
-    }
+      username: loginInput,
+      password: senha,
+    };
 
     setLoading(true);
-    axios.post('http://localhost:8080/api/usuario/login', user)
-     .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem('login', response.data.login);
-        localStorage.setItem('userId', response.data.userId);
-        setLoading(false);
-        toast.success(
-          "Logado com Sucesso!",
-          {
-            position: "top-right",
-            autoClose: 2000,
-          }
-        );
-        setLogin('');
-        setSenha('');
-        navigation('/');
-     })
-     .catch((error) => {
-      toast.error(
-        "Login ou senha Inválidos!",
-        {
-          position: "top-right",
-          autoClose: 2000,
+    axios
+      .post("http://localhost:8080/api/usuario/login", user)
+      .then((response) => {
+
+        if (
+          response.status === 200 &&
+          response.data.token !== "Acesso negado"
+        ) {
+          login(response.data.token, response.data.login, response.data.userId);
+          setLoading(false);
+          notifySuccess("Logado com Sucesso!");
+          setLoginInput("");
+          setSenha("");
+          navigation("/");
+        } else {
+          notifyError("Login ou senha Inválidos!");
+          setLoading(false);
+          setSenha("");
         }
-      );
-      setLoading(false);
-      setLogin('');
-      setSenha('');
       });
   }
 
@@ -62,7 +61,7 @@ export default function LoginPage() {
           <div className="content-login">
             <h1>Acesse a sua Conta</h1>
             <div className="form-content-login">
-              <Form widths="equal" size="large">
+              <Form widths="equal" size="large" onSubmit={salvar}>
                 <FormField>
                   <label>Usuário</label>
                   <Input
@@ -73,8 +72,8 @@ export default function LoginPage() {
                   >
                     <Icon name="user" />
                     <input
-                      value={login}
-                      onChange={(e) => setLogin(e.target.value)}
+                      value={loginInput}
+                      onChange={(e) => setLoginInput(e.target.value)}
                     />
                   </Input>
                 </FormField>
@@ -93,26 +92,31 @@ export default function LoginPage() {
                     />
                   </Input>
                 </FormField>
+                <Button
+                  color="orange"
+                  circular
+                  size="medium"
+                  style={{ color: "black", marginTop: "0px", width: '100%' }}
+                  onClick={salvar}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <Loader active inline inverted size="tiny" />
+                  ) : (
+                    <span style={{ color: "black" }}>Entrar</span>
+                  )}
+                </Button>
               </Form>
-              <Button
-                color="orange"
-                circular
-                size="medium"
-                style={{ color: "black", marginTop: "5%" }}
-                onClick={() => salvar()}
-              >
-                {loading ? (
-                  <Loader active inline inverted size="tiny" />
-                ) : (
-                  <span style={{color: 'black'}}>Entrar</span>
-                )}
-              </Button>
             </div>
             <div className="haveAcount">
               <p>Não tem uma conta?</p>
               <Link to={"/register"}>Cadastre-se</Link>
             </div>
-            <span className="forgotPassword"><Link to={"/forgotPassword"} style={{color: 'red'}}>Esqueceu sua senha?</Link></span>
+            <span className="forgotPassword">
+              <Link to={"/forgotPassword"} style={{ color: "red" }}>
+                Esqueceu sua senha?
+              </Link>
+            </span>
           </div>
         </div>
       </div>

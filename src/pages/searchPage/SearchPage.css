@@ -1,0 +1,20 @@
+.background-search {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    background-image: url('../../assets/logoTimbrada.png');
+}
+
+
+.content-gridproducts {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-bottom: 10px;
+}
+
+.input {
+    margin-top: 20px;
+    width: 350px;
+}
+
