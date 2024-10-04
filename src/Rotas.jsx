@@ -5,7 +5,6 @@ import { Route, Routes } from "react-router-dom";
 import RegisterPage from "./pages/registerPage/registerPage";
 import LoginPage from "./pages/loginPage/LoginPage";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
-import ProfilePage from "./pages/profilePage/ProfilePage";
 import MainPage from "./pages/mainPage/MainPage";
 import ProfilePage from "./pages/profilePage/ProfilePage";
 import AddressPage from "./pages/addressPage/AddressPage";
